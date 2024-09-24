@@ -1,0 +1,14 @@
+import { NextUIProvider } from '@nextui-org/system'
+import { Outlet } from 'react-router-dom'
+import '@/styles/index.css'
+
+// root layout
+export default function AppLayout() {
+  return (
+    <NextUIProvider>
+      <main className='dark text-foreground bg-background font-open'>
+        <Outlet />
+      </main>
+    </NextUIProvider>
+  )
+}
