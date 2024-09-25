@@ -4,8 +4,12 @@ export const PUBLIC_ROUTES = {
 }
 
 export const PRIVATE_ROUTES = {
-  HOME: '/',
+  ROOT: '/',
   ME: '/me',
+  CURRENT_PROJECT: '/:projectId',
   TIMELINE: '/:projectId/timeline',
-  BOARDS: '/:projectId/boards'
+  BOARDS: '/:projectId/boards',
+  CALENDAR: '/:projectId/calendar',
+  BACKLOG: '/:projectId/backlog',
+  MEMBERS: '/:projectId/members'
 }
