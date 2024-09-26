@@ -6,7 +6,7 @@ import '@/styles/index.css'
 export default function AppLayout() {
   return (
     <NextUIProvider>
-      <main className='dark text-foreground bg-background font-open'>
+      <main className='text-foreground bg-background font-open text-base w-screen'>
         <Outlet />
       </main>
     </NextUIProvider>

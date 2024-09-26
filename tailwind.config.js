@@ -7,7 +7,16 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        open: ['Open Sans', 'sans-serif'] // Add your font family here
+        open: ['Open Sans', 'sans-serif'],
+        squada: ['MuseoModerno', 'sans-serif']
+      },
+      fontSize: {
+        base: ['14px', '16.8px'],
+        sm: ['12px', '14.4px'],
+        lg: ['16px', '19.2px']
+      },
+      strokeWidth: {
+        1: 1.3
       }
     }
   },

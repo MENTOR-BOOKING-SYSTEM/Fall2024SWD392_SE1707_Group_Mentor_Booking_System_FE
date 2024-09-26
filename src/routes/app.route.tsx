@@ -2,8 +2,8 @@ import AppLayout from '@/layouts/app.layout'
 import AuthLayout from '@/layouts/auth.layout'
 import GuardLayout from '@/layouts/guard.layout'
 import DefaultLayout from '@/layouts/default.layout'
-
-import Home from '@/pages/home'
+import Redirect from '@/pages/redirect'
+import Backlog from '@/pages/backlog'
 
 import { createBrowserRouter } from 'react-router-dom'
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './routes'
@@ -34,12 +34,36 @@ export const routes = createBrowserRouter([
             element: <DefaultLayout />,
             children: [
               {
-                path: PRIVATE_ROUTES.HOME,
-                element: <Home />
+                path: PRIVATE_ROUTES.ROOT,
+                element: <Redirect />
+              },
+              {
+                path: PRIVATE_ROUTES.CURRENT_PROJECT,
+                element: <div>Current Project</div>
               },
               {
                 path: PRIVATE_ROUTES.ME,
                 element: <div>Me</div>
+              },
+              {
+                path: PRIVATE_ROUTES.TIMELINE,
+                element: <div>Timeline</div>
+              },
+              {
+                path: PRIVATE_ROUTES.BOARDS,
+                element: <div>Boards</div>
+              },
+              {
+                path: PRIVATE_ROUTES.CALENDAR,
+                element: <div>Calendar</div>
+              },
+              {
+                path: PRIVATE_ROUTES.BACKLOG,
+                element: <Backlog />
+              },
+              {
+                path: PRIVATE_ROUTES.MEMBERS,
+                element: <div>Members</div>
               }
             ]
           }
