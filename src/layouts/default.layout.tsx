@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom'
 
 export default function DefaultLayout() {
   return (
-    <div className='w-full min-h-screen flex flex-col gap-2'>
+    <div className='min-h-screen w-full flex flex-col gap-2'>
       <section className='flex flex-col gap-4 flex-1'>
         <Header />
         <div className='flex flex-1 gap-4'>

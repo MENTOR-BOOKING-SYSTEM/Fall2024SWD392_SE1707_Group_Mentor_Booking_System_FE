@@ -3,6 +3,7 @@ import AuthLayout from '@/layouts/auth.layout'
 import GuardLayout from '@/layouts/guard.layout'
 import DefaultLayout from '@/layouts/default.layout'
 import Redirect from '@/pages/redirect'
+import Backlog from '@/pages/backlog'
 
 import { createBrowserRouter } from 'react-router-dom'
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './routes'
@@ -58,7 +59,7 @@ export const routes = createBrowserRouter([
               },
               {
                 path: PRIVATE_ROUTES.BACKLOG,
-                element: <div>Backlog</div>
+                element: <Backlog />
               },
               {
                 path: PRIVATE_ROUTES.MEMBERS,

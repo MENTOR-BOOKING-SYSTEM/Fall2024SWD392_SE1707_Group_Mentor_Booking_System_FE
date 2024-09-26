@@ -13,7 +13,7 @@ export default function Sidebar() {
   const { pathname } = useLocation()
 
   return (
-    <div className='flex flex-col gap-2 px-3.5 w-72'>
+    <div className='flex flex-col gap-2 '>
       <ViewCurrentProject />
       {STUDENT_SIDEBAR_MENU_ITEMS.map((item) => {
         const isCurrentPath = pathname.split('/')[2] === item.value

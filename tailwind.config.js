@@ -12,7 +12,8 @@ export default {
       },
       fontSize: {
         base: ['14px', '16.8px'],
-        sm: ['12px', '14.4px']
+        sm: ['12px', '14.4px'],
+        lg: ['16px', '19.2px']
       },
       strokeWidth: {
         1: 1.3
