@@ -1,6 +1,6 @@
-import Dropdown from './ui/dropdown'
+import Dropdown from '../ui/dropdown'
 import Meetup from '/meetup.svg'
-import Button from './ui/button'
+import Button from '../ui/button'
 import { Avatar } from '@nextui-org/avatar'
 import { Input } from '@nextui-org/input'
 import { Bell, Search } from 'lucide-react'
@@ -8,7 +8,7 @@ import { PROFILE_DROPDOWN_MENU_ITEMS } from '@/constants/menu-items'
 import { Divider } from '@nextui-org/divider'
 import { Link } from 'react-router-dom'
 import { PRIVATE_ROUTES } from '@/routes/routes'
-import Modal from './ui/modal'
+import Modal from '../ui/modal'
 
 export default function Header() {
   return (

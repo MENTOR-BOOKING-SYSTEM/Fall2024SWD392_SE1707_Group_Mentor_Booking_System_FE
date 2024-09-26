@@ -1,6 +1,6 @@
-import Footer from '@/components/footer'
-import Header from '@/components/header'
-import Sidebar from '@/components/sidebar'
+import Footer from '@/components/shared/footer'
+import Header from '@/components/shared/header'
+import Sidebar from '@/components/shared/sidebar'
 import { Outlet } from 'react-router-dom'
 
 export default function DefaultLayout() {
