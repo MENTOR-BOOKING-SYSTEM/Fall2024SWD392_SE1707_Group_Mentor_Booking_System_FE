@@ -1,6 +1,6 @@
-import { type DropdownMenuItem, type SidebarMenuItem } from '@/models/ui.model'
 import { PRIVATE_ROUTES } from '@/routes/routes'
 import { CalendarDays, ChartBarBig, Columns3, Database, LogOut, Settings, User, Users } from 'lucide-react'
+import type { DropdownMenuItem, SidebarMenuItem } from '@/models/ui.model'
 
 // Sidebar
 export const STUDENT_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = [

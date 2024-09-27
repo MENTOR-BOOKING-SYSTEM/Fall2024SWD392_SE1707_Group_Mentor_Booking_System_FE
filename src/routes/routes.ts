@@ -1,6 +1,7 @@
 export const PUBLIC_ROUTES = {
   LOGIN: '/login',
-  REGISTER: '/register'
+  REGISTER: '/register',
+  FORGOT_PASSWORD: '/forgot-password'
 }
 
 export const PRIVATE_ROUTES = {
