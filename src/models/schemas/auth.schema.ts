@@ -22,3 +22,7 @@ export const loginSchema = z.object({
 export const forgotPasswordSchema = z.object({
   email: z.string().email({ message: 'Email is invalid' })
 })
+
+export const otpSchema = z.object({
+  otp: z.string().length(6, { message: 'OTP must be in 6 characters' })
+})

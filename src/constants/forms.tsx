@@ -43,3 +43,15 @@ export const USER_FORGOT_PASSWORD_FORM: UserFormType[] = [
     autoFocus: true
   }
 ]
+
+export const OTP_FORM: UserFormType[] = [
+  {
+    id: 1,
+    type: 'text',
+    inputType: 'input',
+    label: '',
+    placeholder: '',
+    name: 'otp',
+    autoFocus: true
+  }
+]

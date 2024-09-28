@@ -6,6 +6,7 @@ import GuardLayout from '@/layouts/guard.layout'
 import Backlog from '@/pages/backlog'
 import Redirect from '@/pages/redirect'
 import ForgotPwdFormProvider from '@/features/auth/forgot-pwd/forgot-pwd-form.provider'
+import OtpFormProvider from '@/features/auth/otp/otp-form.provider'
 
 import { createBrowserRouter } from 'react-router-dom'
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './routes'
@@ -28,7 +29,7 @@ export const routes = createBrowserRouter([
           },
           {
             path: PUBLIC_ROUTES.OTP,
-            element: <LoginFormProvider />
+            element: <OtpFormProvider />
           },
           {
             path: PUBLIC_ROUTES.RESET_PASSWORD,

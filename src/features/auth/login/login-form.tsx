@@ -12,7 +12,15 @@ export default function LoginForm() {
   return (
     <div className='flex flex-col gap-7 w-full'>
       {USER_LOGIN_FORM.map((field) => {
-        return <FormGenerator key={field.id} register={register} errors={errors} {...field} />
+        return (
+          <FormGenerator
+            key={field.id}
+            register={register}
+            errors={errors}
+            className='font-normal min-w-72'
+            {...field}
+          />
+        )
       })}
     </div>
   )
