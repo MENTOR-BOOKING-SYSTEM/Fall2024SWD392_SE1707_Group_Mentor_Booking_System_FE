@@ -1,17 +1,17 @@
 import FormGenerator from '@/components/forms/form-generator'
-import { OTP_FORM } from '@/constants/forms'
+import { USER_RESET_PASSWORD_FORM } from '@/constants/forms'
 import { useFormContext } from 'react-hook-form'
-import type { OtpFormValues } from './use-otp'
+import type { ResetPwdFormValues } from './use-reset-pwd'
 
-export default function OtpForm() {
+export default function ResetPwdForm() {
   const {
     register,
     formState: { errors }
-  } = useFormContext<OtpFormValues>()
+  } = useFormContext<ResetPwdFormValues>()
 
   return (
     <div className='flex flex-col gap-7 w-full'>
-      {OTP_FORM.map((field) => {
+      {USER_RESET_PASSWORD_FORM.map((field) => {
         return (
           <FormGenerator
             key={field.id}
