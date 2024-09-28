@@ -2,7 +2,7 @@ import FormError from './form-error'
 import { Checkbox, Input, Select, SelectItem } from '@nextui-org/react'
 import { EyeIcon, EyeOff } from 'lucide-react'
 import { useState } from 'react'
-import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form'
+import type { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form'
 
 type FormGeneratorProps = {
   type: 'text' | 'password' | 'email'

@@ -17,7 +17,7 @@ export const USER_LOGIN_FORM: UserFormType[] = [
     id: 1,
     type: 'text',
     inputType: 'input',
-    label: 'Email or username',
+    label: 'Email or student code',
     placeholder: '',
     name: 'email',
     autoFocus: true

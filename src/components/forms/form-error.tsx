@@ -1,5 +1,5 @@
 import { cn } from '@/utils'
-import { FieldErrors } from 'react-hook-form'
+import type { FieldErrors } from 'react-hook-form'
 
 interface FormErrorProps<T> {
   errors: FieldErrors

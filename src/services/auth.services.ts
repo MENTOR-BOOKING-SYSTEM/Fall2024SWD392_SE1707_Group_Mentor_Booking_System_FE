@@ -1,8 +1,10 @@
-import axios from 'axios'
+import axiosInstance from '@/lib/axios/axios'
+import type { LoginAPIRequest } from '@/models/api/req.model'
+import type { LoginAPIResponse } from '@/models/api/res.model'
 
 class AuthService {
-  async login(email: string, password: string) {
-    const response = await axios.post('http://localhost:4000/users/login', {
+  async login({ email, password }: LoginAPIRequest) {
+    const response = await axiosInstance.post<LoginAPIResponse>('users/login', {
       email,
       password
     })

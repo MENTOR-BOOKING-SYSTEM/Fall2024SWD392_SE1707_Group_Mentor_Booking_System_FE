@@ -1,7 +1,7 @@
 import FormGenerator from '@/components/forms/form-generator'
 import { useFormContext } from 'react-hook-form'
-import { LoginFormValues } from './login-form.provider'
 import { USER_LOGIN_FORM } from '@/constants/forms'
+import type { LoginFormValues } from './login-form.provider'
 
 export default function LoginForm() {
   const {
