@@ -1,7 +1,8 @@
 export const PUBLIC_ROUTES = {
   LOGIN: '/login',
-  REGISTER: '/register',
-  FORGOT_PASSWORD: '/forgot-password'
+  FORGOT_PASSWORD: '/forgot-password',
+  OTP: '/otp',
+  RESET_PASSWORD: '/reset-password'
 }
 
 export const PRIVATE_ROUTES = {

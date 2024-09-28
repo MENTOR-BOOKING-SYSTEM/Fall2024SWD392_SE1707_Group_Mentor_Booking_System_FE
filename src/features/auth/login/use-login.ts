@@ -6,7 +6,9 @@ import { toaster } from '@/components/ui/toaster'
 import { useForm } from 'react-hook-form'
 import { loginSchema } from '@/models/schemas/auth.schema'
 import { zodResolver } from '@hookform/resolvers/zod'
-import type { LoginFormValues } from './login-form.provider'
+import { z } from 'zod'
+
+export type LoginFormValues = z.infer<typeof loginSchema>
 
 export const useLogin = () => {
   const navigate = useNavigate()
@@ -22,7 +24,8 @@ export const useLogin = () => {
     },
     onError: () => {
       toaster.error({ title: 'Error', text: 'Invalid credentials' })
-      methods.resetField('password')
+      methods.reset()
+      methods.setError('password', { type: 'manual', message: 'Invalid credentials' })
     }
   })
 
