@@ -1,9 +1,10 @@
+import LoginFormProvider from '@/features/auth/login/login-form.provider'
 import AppLayout from '@/layouts/app.layout'
 import AuthLayout from '@/layouts/auth.layout'
-import GuardLayout from '@/layouts/guard.layout'
 import DefaultLayout from '@/layouts/default.layout'
-import Redirect from '@/pages/redirect'
+import GuardLayout from '@/layouts/guard.layout'
 import Backlog from '@/pages/backlog'
+import Redirect from '@/pages/redirect'
 
 import { createBrowserRouter } from 'react-router-dom'
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './routes'
@@ -18,7 +19,7 @@ export const routes = createBrowserRouter([
         children: [
           {
             path: PUBLIC_ROUTES.LOGIN,
-            element: <div>Login</div>
+            element: <LoginFormProvider />
           },
           {
             path: PUBLIC_ROUTES.REGISTER,

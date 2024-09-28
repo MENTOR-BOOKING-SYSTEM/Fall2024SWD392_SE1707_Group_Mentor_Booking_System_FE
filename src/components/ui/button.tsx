@@ -7,7 +7,7 @@ interface ButtonProps extends NextButtonProps {
 export default function Button(props: ButtonProps) {
   return (
     <NextButton {...props}>
-      <div className='font-bold'>{props.children}</div>
+      <div className='font-semibold'>{props.children}</div>
     </NextButton>
   )
 }

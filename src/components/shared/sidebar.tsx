@@ -2,7 +2,7 @@ import ViewCurrentProject from '@/features/projects/view-current-project/view-cu
 import { STUDENT_SIDEBAR_MENU_ITEMS } from '@/constants/menu-items'
 import { cn } from '@/utils'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { SidebarMenuItem } from '@/models/ui.model'
+import type { SidebarMenuItem } from '@/models/ui.model'
 
 interface SidebarItemProps {
   item: SidebarMenuItem

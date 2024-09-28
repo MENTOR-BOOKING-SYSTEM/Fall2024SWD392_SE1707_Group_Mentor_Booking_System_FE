@@ -17,6 +17,9 @@ export default {
       },
       strokeWidth: {
         1: 1.3
+      },
+      backgroundImage: {
+        'auth-bg': "url('/auth-background.jpg')"
       }
     }
   },
