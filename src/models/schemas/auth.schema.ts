@@ -1,4 +1,20 @@
+import { validatePasswordStrength } from '@/utils'
 import { z } from 'zod'
+
+export type PasswordSchema = {
+  password: string
+  confirmPassword: string
+}
+
+const passwordMatchRefinement = (schema: PasswordSchema, ctx: z.RefinementCtx) => {
+  if (schema.password !== schema.confirmPassword) {
+    ctx.addIssue({
+      code: 'custom',
+      message: 'mismatch_password',
+      path: ['confirmPassword']
+    })
+  }
+}
 
 export const loginSchema = z.object({
   email: z
@@ -19,6 +35,29 @@ export const loginSchema = z.object({
     })
 })
 
+export const passwordsSchema = z
+  .object({
+    password: z
+      .string()
+      .refine((val) => val.length !== 0, {
+        message: 'password_required'
+      })
+      .refine((val) => val.length >= 8 && val.length <= 50, {
+        message: 'password_length_invalid'
+      })
+      .refine((val) => validatePasswordStrength(val), {
+        message: 'password_complexity_invalid'
+      }),
+    confirmPassword: z.string()
+  })
+  .superRefine(passwordMatchRefinement)
+
 export const forgotPasswordSchema = z.object({
   email: z.string().email({ message: 'Email is invalid' })
 })
+
+export const otpSchema = z.object({
+  otp: z.string().length(6, { message: 'OTP must be in 6 characters' })
+})
+
+export const resetPwdSchema = passwordsSchema

@@ -43,3 +43,35 @@ export const USER_FORGOT_PASSWORD_FORM: UserFormType[] = [
     autoFocus: true
   }
 ]
+
+export const OTP_FORM: UserFormType[] = [
+  {
+    id: 1,
+    type: 'text',
+    inputType: 'input',
+    label: '',
+    placeholder: '',
+    name: 'otp',
+    autoFocus: true
+  }
+]
+
+export const USER_RESET_PASSWORD_FORM: UserFormType[] = [
+  {
+    id: 1,
+    type: 'password',
+    inputType: 'input',
+    label: 'Password',
+    placeholder: '',
+    name: 'password',
+    autoFocus: true
+  },
+  {
+    id: 2,
+    type: 'password',
+    inputType: 'input',
+    label: 'Confirm password',
+    placeholder: '',
+    name: 'confirmPassword'
+  }
+]

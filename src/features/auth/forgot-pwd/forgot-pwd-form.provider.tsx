@@ -29,7 +29,7 @@ export default function ForgotPwdFormProvider() {
             Send verification code
           </Button>
         </form>
-        <Link className='text-primary font-semibold underline' to={PUBLIC_ROUTES.LOGIN}>
+        <Link className='text-primary font-semibold' to={PUBLIC_ROUTES.LOGIN}>
           Back
         </Link>
       </div>

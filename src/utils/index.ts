@@ -1,5 +1,5 @@
-import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
+import { type ClassValue, clsx } from 'clsx'
 
 /**
  * Hàm giúp nối các className Tailwind lại với nhau
@@ -13,4 +13,36 @@ import { twMerge } from 'tailwind-merge'
  */
 export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs))
+}
+
+/**
+ * Hàm nhận vào email và trả về email đã censored
+ * @param inputs: email: string
+ * @example demo@gmail.com
+ * @returns demo****@gmail.com
+ * @author DanhYeuLapTrinh
+ * @version 1.0.1.0
+ */
+export const maskEmail = (email: string) => {
+  if (!email.includes('@')) return email
+  const [localPart, domain] = email.split('@')
+  const maskedLocalPart = localPart.substring(0, 4) + '****'
+  return `${maskedLocalPart}@${domain}`
+}
+
+/**
+ * Hàm nhận vào password và trả về true nếu password đủ mạnh, ngược lại trả về false
+ * @param inputs: password: string
+ * @example password
+ * @returns false
+ * @author DanhYeuLapTrinh
+ * @version 1.0.1.0
+ */
+export const validatePasswordStrength = (password: string) => {
+  const hasUppercase = /[A-Z]/.test(password)
+  const hasLowercase = /[a-z]/.test(password)
+  const hasNumber = /[0-9]/.test(password)
+  const hasSpecialChar = /[`!@#$%^&*()_\-+=[\]{};':"\\|,.<>/?~ ]/.test(password)
+
+  return hasUppercase && hasLowercase && hasNumber && hasSpecialChar
 }

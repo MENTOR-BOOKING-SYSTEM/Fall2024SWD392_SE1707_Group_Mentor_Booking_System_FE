@@ -17,6 +17,7 @@ type FormGeneratorProps = {
   defaultValue?: string
   autoFocus?: boolean
   optional?: boolean
+  className?: string
 }
 
 export default function FormGenerator({
@@ -31,7 +32,8 @@ export default function FormGenerator({
   form,
   defaultValue,
   autoFocus,
-  optional
+  optional,
+  className
 }: FormGeneratorProps) {
   const [isShowPassword, setIsShowPassword] = useState(true)
 
@@ -43,7 +45,7 @@ export default function FormGenerator({
     case 'checkbox':
       return (
         <label className='flex items-center gap-2' htmlFor={`select-${label}`}>
-          <Checkbox id={`select-${label}`} {...register(name)} />
+          <Checkbox className={className} id={`select-${label}`} {...register(name)} />
           {label}
         </label>
       )
@@ -51,7 +53,7 @@ export default function FormGenerator({
       return (
         <label htmlFor={`select-${label}`}>
           {label}
-          <Select>
+          <Select className={className}>
             {options
               ? options?.map((option) => (
                   <SelectItem key={option.id} value={option.value}>
@@ -76,7 +78,7 @@ export default function FormGenerator({
             placeholder={placeholder}
             form={form}
             defaultValue={defaultValue}
-            className='font-normal min-w-72'
+            className={className}
             autoFocus={autoFocus}
             endContent={
               type === 'password' ? (

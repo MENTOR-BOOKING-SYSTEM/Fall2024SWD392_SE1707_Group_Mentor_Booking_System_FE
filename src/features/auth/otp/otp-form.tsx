@@ -1,23 +1,23 @@
 import FormGenerator from '@/components/forms/form-generator'
+import { OTP_FORM } from '@/constants/forms'
 import { useFormContext } from 'react-hook-form'
-import { USER_LOGIN_FORM } from '@/constants/forms'
-import type { LoginFormValues } from './use-login'
+import type { OtpFormValues } from './use-otp'
 
-export default function LoginForm() {
+export default function OtpForm() {
   const {
     register,
     formState: { errors }
-  } = useFormContext<LoginFormValues>()
+  } = useFormContext<OtpFormValues>()
 
   return (
     <div className='flex flex-col gap-7 w-full'>
-      {USER_LOGIN_FORM.map((field) => {
+      {OTP_FORM.map((field) => {
         return (
           <FormGenerator
             key={field.id}
             register={register}
             errors={errors}
-            className='font-normal min-w-72'
+            className='min-w-72 text-center'
             {...field}
           />
         )
