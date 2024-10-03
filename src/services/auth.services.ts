@@ -8,7 +8,7 @@ class AuthService {
       email,
       password
     })
-    return response.data
+    return response.data.result
   }
 }
 

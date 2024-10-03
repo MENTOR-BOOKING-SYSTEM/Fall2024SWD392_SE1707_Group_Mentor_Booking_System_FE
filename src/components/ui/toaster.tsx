@@ -7,9 +7,9 @@ interface ToastMessageProps {
 
 function ToastMessage({ title, text }: ToastMessageProps) {
   return (
-    <div className='flex flex-col gap-0.5'>
-      <p className='font-semibold text-base'>{title}</p>
-      <p className='text-xs font-medium text-default-400'>{text}</p>
+    <div className='flex flex-col gap-1'>
+      <p className='font-semibold text-lg'>{title}</p>
+      <p className='text-lg font-medium text-default-400'>{text}</p>
     </div>
   )
 }
