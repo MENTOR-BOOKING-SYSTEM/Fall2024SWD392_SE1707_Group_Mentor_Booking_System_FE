@@ -1,16 +1,77 @@
 import { PRIVATE_ROUTES } from '@/routes/routes'
+import { CalendarDays, ChartBarBig, Columns3, Database, LogOut, Settings, User, Users } from 'lucide-react'
+import type { DropdownMenuItem, SidebarMenuItem } from '@/models/ui.model'
 
-export const STUDENT_SIDEBAR_MENU_ITEMS = [
+// Sidebar
+export const STUDENT_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = [
   {
+    id: 1,
     title: 'Timeline',
-    url: PRIVATE_ROUTES.TIMELINE
+    value: 'timeline',
+    url: PRIVATE_ROUTES.TIMELINE,
+    icon: (className?: string) => <ChartBarBig className={className} />
   },
   {
+    id: 2,
+    title: 'Backlog',
+    value: 'backlog',
+    url: PRIVATE_ROUTES.BACKLOG,
+    icon: (className?: string) => <Database className={className} />
+  },
+  {
+    id: 3,
     title: 'Boards',
-    url: PRIVATE_ROUTES.BOARDS
+    value: 'boards',
+    url: PRIVATE_ROUTES.BOARDS,
+    icon: (className?: string) => <Columns3 className={className} />
+  },
+  {
+    id: 4,
+    title: 'Calendar',
+    value: 'calendar',
+    url: PRIVATE_ROUTES.CALENDAR,
+    icon: (className?: string) => <CalendarDays className={className} />
+  },
+  {
+    id: 5,
+    title: 'Members',
+    value: 'members',
+    url: PRIVATE_ROUTES.MEMBERS,
+    icon: (className?: string) => <Users className={className} />
   }
 ]
 
-export const MENTOR_SIDEBAR_MENU_ITEMS = [{}]
-export const ADMIN_SIDEBAR_MENU_ITEMS = [{}]
-export const BUSINESS_SIDEBAR_MENU_ITEMS = [{}]
+export const MENTOR_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = []
+export const ADMIN_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = []
+export const BUSINESS_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = []
+
+// Dropdown
+export const PROFILE_DROPDOWN_MENU_ITEMS: DropdownMenuItem[] = [
+  {
+    label: 'Account',
+    key: 'account',
+    showDivider: true,
+    sections: [
+      {
+        label: 'Profile',
+        key: 'profile',
+        icon: (className?: string) => <User className={className} />,
+        iconPosition: 'start',
+        url: PRIVATE_ROUTES.ME
+      },
+      {
+        label: 'Settings',
+        key: 'settings',
+        icon: (className?: string) => <Settings className={className} />,
+        iconPosition: 'start'
+      }
+    ]
+  },
+  {
+    label: 'Logout',
+    key: 'logout',
+    icon: (className?: string) => <LogOut className={className} />,
+    iconPosition: 'start',
+    color: 'danger'
+  }
+]

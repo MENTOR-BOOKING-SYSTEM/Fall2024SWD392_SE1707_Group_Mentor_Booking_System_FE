@@ -1,11 +1,17 @@
 export const PUBLIC_ROUTES = {
   LOGIN: '/login',
-  REGISTER: '/register'
+  FORGOT_PASSWORD: '/forgot-password',
+  OTP: '/otp',
+  RESET_PASSWORD: '/reset-password'
 }
 
 export const PRIVATE_ROUTES = {
-  HOME: '/',
+  ROOT: '/',
   ME: '/me',
+  CURRENT_PROJECT: '/:projectId',
   TIMELINE: '/:projectId/timeline',
-  BOARDS: '/:projectId/boards'
+  BOARDS: '/:projectId/boards',
+  CALENDAR: '/:projectId/calendar',
+  BACKLOG: '/:projectId/backlog',
+  MEMBERS: '/:projectId/members'
 }

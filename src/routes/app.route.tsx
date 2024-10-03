@@ -1,9 +1,13 @@
+import LoginFormProvider from '@/features/auth/login/login-form.provider'
 import AppLayout from '@/layouts/app.layout'
 import AuthLayout from '@/layouts/auth.layout'
-import GuardLayout from '@/layouts/guard.layout'
 import DefaultLayout from '@/layouts/default.layout'
-
-import Home from '@/pages/home'
+import GuardLayout from '@/layouts/guard.layout'
+import Backlog from '@/pages/backlog'
+import Redirect from '@/pages/redirect'
+import ForgotPwdFormProvider from '@/features/auth/forgot-pwd/forgot-pwd-form.provider'
+import OtpFormProvider from '@/features/auth/otp/otp-form.provider'
+import ResetPwdFormProvider from '@/features/auth/reset-pwd/reset-pwd-form.provider'
 
 import { createBrowserRouter } from 'react-router-dom'
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './routes'
@@ -18,11 +22,19 @@ export const routes = createBrowserRouter([
         children: [
           {
             path: PUBLIC_ROUTES.LOGIN,
-            element: <div>Login</div>
+            element: <LoginFormProvider />
           },
           {
-            path: PUBLIC_ROUTES.REGISTER,
-            element: <div>Register</div>
+            path: PUBLIC_ROUTES.FORGOT_PASSWORD,
+            element: <ForgotPwdFormProvider />
+          },
+          {
+            path: PUBLIC_ROUTES.OTP,
+            element: <OtpFormProvider />
+          },
+          {
+            path: PUBLIC_ROUTES.RESET_PASSWORD,
+            element: <ResetPwdFormProvider />
           }
         ]
       },
@@ -34,12 +46,36 @@ export const routes = createBrowserRouter([
             element: <DefaultLayout />,
             children: [
               {
-                path: PRIVATE_ROUTES.HOME,
-                element: <Home />
+                path: PRIVATE_ROUTES.ROOT,
+                element: <Redirect />
+              },
+              {
+                path: PRIVATE_ROUTES.CURRENT_PROJECT,
+                element: <div>Current Project</div>
               },
               {
                 path: PRIVATE_ROUTES.ME,
                 element: <div>Me</div>
+              },
+              {
+                path: PRIVATE_ROUTES.TIMELINE,
+                element: <div>Timeline</div>
+              },
+              {
+                path: PRIVATE_ROUTES.BOARDS,
+                element: <div>Boards</div>
+              },
+              {
+                path: PRIVATE_ROUTES.CALENDAR,
+                element: <div>Calendar</div>
+              },
+              {
+                path: PRIVATE_ROUTES.BACKLOG,
+                element: <Backlog />
+              },
+              {
+                path: PRIVATE_ROUTES.MEMBERS,
+                element: <div>Members</div>
               }
             ]
           }
