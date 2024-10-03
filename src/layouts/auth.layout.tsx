@@ -1,12 +1,14 @@
 import WaveBg from '/wave-bg.jpg'
+import { useAuth } from '@/hooks/use-auth'
+import { PRIVATE_ROUTES } from '@/routes/routes'
 import { Card, CardBody } from '@nextui-org/card'
 import { Navigate, Outlet } from 'react-router-dom'
 
 export default function AuthLayout() {
-  const isAuth = false
+  const { isAuth } = useAuth()
 
   if (isAuth) {
-    return <Navigate to='/' replace />
+    return <Navigate to={PRIVATE_ROUTES.ROOT} replace />
   }
 
   return (

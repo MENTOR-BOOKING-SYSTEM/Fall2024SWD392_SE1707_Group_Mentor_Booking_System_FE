@@ -1,4 +1,7 @@
 export interface LoginAPIResponse {
-  accessToken: string
-  refreshToken: string
+  message: string
+  result: {
+    accessToken: string
+    refreshToken: string
+  }
 }

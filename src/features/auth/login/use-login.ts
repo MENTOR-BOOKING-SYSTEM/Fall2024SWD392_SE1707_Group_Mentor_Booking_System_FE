@@ -7,6 +7,8 @@ import { useForm } from 'react-hook-form'
 import { loginSchema } from '@/models/schemas/auth.schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { AuthModel } from '@/models/base.model'
+import { useLocalStorage } from 'usehooks-ts'
 
 export type LoginFormValues = z.infer<typeof loginSchema>
 
@@ -15,17 +17,22 @@ export const useLogin = () => {
   const methods = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema)
   })
+  const [_auth, setAuth] = useLocalStorage<AuthModel>('auth', { accessToken: '', refreshToken: '' })
 
   const loginMutation = useMutation({
     mutationFn: authService.login,
-    onSuccess: () => {
+    onSuccess: (response) => {
+      const { accessToken, refreshToken } = response
       navigate(PRIVATE_ROUTES.ROOT)
+      setAuth({ accessToken, refreshToken })
       methods.reset()
     },
     onError: () => {
-      toaster.error({ title: 'Error', text: 'Invalid credentials' })
       methods.reset()
-      methods.setError('password', { type: 'manual', message: 'Invalid credentials' })
+      toaster.error({
+        title: 'Error',
+        text: 'Invalid credentials'
+      })
     }
   })
 
