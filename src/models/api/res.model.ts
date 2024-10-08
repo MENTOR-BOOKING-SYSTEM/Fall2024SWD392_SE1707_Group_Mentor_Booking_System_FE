@@ -5,3 +5,15 @@ export interface LoginAPIResponse {
     refreshToken: string
   }
 }
+
+export interface ForgotPwdAPIResponse {
+  message: string
+}
+
+export interface VerifyCodeAPIResponse {
+  message: string
+}
+
+export interface ResetPwdAPIResponse {
+  message: string
+}

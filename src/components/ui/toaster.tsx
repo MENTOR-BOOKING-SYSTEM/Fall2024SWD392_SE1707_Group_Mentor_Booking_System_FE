@@ -1,8 +1,8 @@
 import { type Id, toast } from 'react-toastify'
 
 interface ToastMessageProps {
-  title: string
-  text: string
+  title?: string
+  text?: string
 }
 
 function ToastMessage({ title, text }: ToastMessageProps) {
@@ -19,11 +19,11 @@ export function toaster(myProps: ToastMessageProps, toastProps = {}): Id {
 }
 
 toaster.success = (myProps: ToastMessageProps, toastProps = {}) => {
-  return toast.success(<ToastMessage {...myProps} />, { ...toastProps })
+  return toast.success(<ToastMessage {...myProps} title='Success' />, { ...toastProps })
 }
 
 toaster.error = (myProps: ToastMessageProps, toastProps = {}) => {
-  return toast.error(<ToastMessage {...myProps} />, { ...toastProps })
+  return toast.error(<ToastMessage {...myProps} title='Something went wrong!' />, { ...toastProps })
 }
 
 toaster.warning = (myProps: ToastMessageProps, toastProps = {}) => {

@@ -30,7 +30,6 @@ export const useLogin = () => {
     onError: () => {
       methods.reset()
       toaster.error({
-        title: 'Error',
         text: 'Invalid credentials'
       })
     }
