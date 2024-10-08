@@ -1,14 +1,44 @@
 import axiosInstance from '@/lib/axios/axios'
-import type { LoginAPIRequest } from '@/models/api/req.model'
-import type { LoginAPIResponse } from '@/models/api/res.model'
+import type { ForgotPwdAPIRequest, LoginAPIRequest, ResetPasswordAPIRequest } from '@/models/api/req.model'
+import type {
+  ForgotPwdAPIResponse,
+  LoginAPIResponse,
+  ResetPwdAPIResponse,
+  VerifyCodeAPIResponse
+} from '@/models/api/res.model'
 
 class AuthService {
   async login({ email, password }: LoginAPIRequest) {
-    const response = await axiosInstance.post<LoginAPIResponse>('users/login', {
+    const { data } = await axiosInstance.post<LoginAPIResponse>('users/login', {
       email,
       password
     })
-    return response.data.result
+    return data.result
+  }
+
+  async forgotPwd({ email }: ForgotPwdAPIRequest) {
+    const { data } = await axiosInstance.post<ForgotPwdAPIResponse>('users/forgot-password', {
+      email
+    })
+    return data.message
+  }
+
+  async verifyCode(code: string) {
+    const { data } = await axiosInstance.get<VerifyCodeAPIResponse>('users/verify-code', {
+      params: {
+        code
+      }
+    })
+    return data
+  }
+
+  async resetPwd({ forgotPasswordToken, password, confirmPassword }: ResetPasswordAPIRequest) {
+    const { data } = await axiosInstance.post<ResetPwdAPIResponse>('users/reset-password', {
+      forgotPasswordToken,
+      password,
+      confirmPassword
+    })
+    return data
   }
 }
 

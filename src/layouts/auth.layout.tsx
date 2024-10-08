@@ -12,7 +12,7 @@ export default function AuthLayout() {
   }
 
   return (
-    <div className='flex min-h-screen  items-center justify-center'>
+    <div className='flex min-h-screen items-center justify-center'>
       <Card
         isBlurred
         className='border-none bg-background/60 max-w-screen-xl mx-4 md:mx-6 min-w-80 h-[620px] flex flex-col'

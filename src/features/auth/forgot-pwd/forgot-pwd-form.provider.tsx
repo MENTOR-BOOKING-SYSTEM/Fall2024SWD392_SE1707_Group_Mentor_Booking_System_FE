@@ -8,10 +8,9 @@ import { PUBLIC_ROUTES } from '@/routes/routes'
 
 export default function ForgotPwdFormProvider() {
   const { forgotPwdMutation, methods } = useForgotPwd()
-  // TODO: Call api to send verification code
+
   const onSubmit = (data: ForgotPasswordFormValues) => {
-    // forgotPwdMutation.mutate(data)
-    console.log(data)
+    forgotPwdMutation.mutate(data)
   }
 
   return (

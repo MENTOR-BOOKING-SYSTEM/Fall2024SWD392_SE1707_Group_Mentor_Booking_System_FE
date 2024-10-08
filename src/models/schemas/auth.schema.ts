@@ -30,8 +30,8 @@ export const loginSchema = z.object({
     .refine((val) => val.length !== 0, {
       message: 'Password is required'
     })
-    .refine((val) => val.length >= 8 && val.length <= 50, {
-      message: 'Password must be between 8 and 50 characters'
+    .refine((val) => val.length >= 6 && val.length <= 50, {
+      message: 'Password must be between 6 and 50 characters'
     })
 })
 
@@ -40,13 +40,14 @@ export const passwordsSchema = z
     password: z
       .string()
       .refine((val) => val.length !== 0, {
-        message: 'password_required'
+        message: 'Password is required'
       })
-      .refine((val) => val.length >= 8 && val.length <= 50, {
-        message: 'password_length_invalid'
+      .refine((val) => val.length >= 6 && val.length <= 50, {
+        message: 'Password must be between 6 and 50 characters'
       })
       .refine((val) => validatePasswordStrength(val), {
-        message: 'password_complexity_invalid'
+        message:
+          'Password must contain at least one uppercase letter, one lowercase letter, one number and one special character'
       }),
     confirmPassword: z.string()
   })
@@ -54,10 +55,6 @@ export const passwordsSchema = z
 
 export const forgotPasswordSchema = z.object({
   email: z.string().email({ message: 'Email is invalid' })
-})
-
-export const otpSchema = z.object({
-  otp: z.string().length(6, { message: 'OTP must be in 6 characters' })
 })
 
 export const resetPwdSchema = passwordsSchema

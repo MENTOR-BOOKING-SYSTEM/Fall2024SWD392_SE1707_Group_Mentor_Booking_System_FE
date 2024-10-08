@@ -1,7 +1,7 @@
 export const PUBLIC_ROUTES = {
   LOGIN: '/login',
   FORGOT_PASSWORD: '/forgot-password',
-  OTP: '/otp',
+  VERIFY_CODE: '/verify-code',
   RESET_PASSWORD: '/reset-password'
 }
 

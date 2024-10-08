@@ -1,13 +1,13 @@
+import ForgotPwdFormProvider from '@/features/auth/forgot-pwd/forgot-pwd-form.provider'
 import LoginFormProvider from '@/features/auth/login/login-form.provider'
+import ResetPwdFormProvider from '@/features/auth/reset-pwd/reset-pwd-form.provider'
 import AppLayout from '@/layouts/app.layout'
 import AuthLayout from '@/layouts/auth.layout'
 import DefaultLayout from '@/layouts/default.layout'
 import GuardLayout from '@/layouts/guard.layout'
 import Backlog from '@/pages/backlog'
 import Redirect from '@/pages/redirect'
-import ForgotPwdFormProvider from '@/features/auth/forgot-pwd/forgot-pwd-form.provider'
-import OtpFormProvider from '@/features/auth/otp/otp-form.provider'
-import ResetPwdFormProvider from '@/features/auth/reset-pwd/reset-pwd-form.provider'
+import VerifyCode from '@/features/auth/verify-code/verify-code'
 
 import { createBrowserRouter } from 'react-router-dom'
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './routes'
@@ -29,8 +29,8 @@ export const routes = createBrowserRouter([
             element: <ForgotPwdFormProvider />
           },
           {
-            path: PUBLIC_ROUTES.OTP,
-            element: <OtpFormProvider />
+            path: PUBLIC_ROUTES.VERIFY_CODE,
+            element: <VerifyCode />
           },
           {
             path: PUBLIC_ROUTES.RESET_PASSWORD,

@@ -4,6 +4,9 @@ import { useTokens } from './use-token'
 
 export const useAuth = () => {
   const [auth] = useLocalStorage<AuthModel>('auth', { accessToken: '', refreshToken: '' })
+
+  if (!auth || !auth.accessToken || !auth.refreshToken) return { isAuth: false, user: undefined }
+
   const tokens = useTokens([auth.accessToken, auth.refreshToken], true)
 
   if (tokens.length > 0 && tokens[0] && tokens[1]) {
