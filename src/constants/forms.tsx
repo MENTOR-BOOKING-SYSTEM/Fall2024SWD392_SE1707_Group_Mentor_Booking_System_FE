@@ -75,3 +75,15 @@ export const USER_RESET_PASSWORD_FORM: UserFormType[] = [
     name: 'confirmPassword'
   }
 ]
+
+export const INSERT_URL_FORM: UserFormType[] = [
+  {
+    id: 1,
+    type: 'text',
+    inputType: 'input',
+    label: 'Paste or type a link',
+    placeholder: 'https://example.com',
+    name: 'url',
+    autoFocus: true
+  }
+]

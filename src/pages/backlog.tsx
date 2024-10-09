@@ -1,3 +1,4 @@
+import RichTextEditor from '@/components/shared/tiptap/rich-text-editor'
 import Accordion from '@/components/ui/accordion'
 
 export default function Backlog() {
@@ -6,6 +7,7 @@ export default function Backlog() {
       <Accordion />
       <Accordion />
       <Accordion />
+      <RichTextEditor lsSectionName='project-idea' />
     </div>
   )
 }
