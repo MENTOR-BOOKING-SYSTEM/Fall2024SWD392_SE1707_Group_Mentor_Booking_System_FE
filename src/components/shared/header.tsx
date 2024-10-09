@@ -1,6 +1,7 @@
 import Dropdown from '../ui/dropdown'
 import Meetup from '/meetup.svg'
 import Modal from '../ui/modal'
+import Button from '../ui/button'
 import { Avatar } from '@nextui-org/avatar'
 import { Input } from '@nextui-org/input'
 import { Bell, Search } from 'lucide-react'
@@ -20,7 +21,9 @@ export default function Header() {
           </div>
         </Link>
         <div className='flex items-center gap-2'>
-          <Modal>Create</Modal>
+          <Modal body={<>This is body</>} onSubmit={() => {}}>
+            <Button color='primary'>Create</Button>
+          </Modal>
           <Input
             type='text'
             placeholder='you@example.com'

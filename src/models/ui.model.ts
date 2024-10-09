@@ -17,3 +17,9 @@ export interface DropdownMenuItem {
   showDivider?: boolean
   sections?: DropdownMenuItem[]
 }
+
+export interface SelectMenuItem {
+  key: string
+  label: string
+  onClick?: () => void
+}

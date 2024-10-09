@@ -3,15 +3,15 @@ import LoginForm from './login-form'
 import Button from '@/components/ui/button'
 import { Icons } from '@/components/ui/icons'
 import { PUBLIC_ROUTES } from '@/routes/routes'
-import { FormProvider } from 'react-hook-form'
+import { FormProvider, SubmitHandler } from 'react-hook-form'
 import { Link } from 'react-router-dom'
-import { LoginFormValues, useLogin } from './use-login'
 import { Divider } from '@nextui-org/divider'
+import { type LoginFormValues, useLogin } from './use-login'
 
 export default function LoginFormProvider() {
   const { loginMutation, methods } = useLogin()
 
-  const onSubmit = (data: LoginFormValues) => {
+  const onSubmit: SubmitHandler<LoginFormValues> = (data) => {
     loginMutation.mutate(data)
   }
 

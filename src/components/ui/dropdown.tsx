@@ -36,7 +36,7 @@ export default function Dropdown({ dropdownItems, children, backdrop }: Dropdown
                       if (section.url) navigate(section.url)
                     }}
                   >
-                    <polyline>{section.label}</polyline>
+                    <p>{section.label}</p>
                   </DropdownItem>
                 ))}
               </DropdownSection>
