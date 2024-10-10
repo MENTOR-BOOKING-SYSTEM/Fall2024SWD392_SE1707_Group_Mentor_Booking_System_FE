@@ -13,5 +13,6 @@ export const PRIVATE_ROUTES = {
   BOARDS: '/:projectId/boards',
   CALENDAR: '/:projectId/calendar',
   BACKLOG: '/:projectId/backlog',
-  MEMBERS: '/:projectId/members'
+  MEMBERS: '/:projectId/members',
+  SEMESTER: '/:semesterId/timestamp'
 }

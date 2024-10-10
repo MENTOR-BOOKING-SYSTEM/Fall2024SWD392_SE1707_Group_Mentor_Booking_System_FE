@@ -11,6 +11,7 @@ import VerifyCode from '@/features/auth/verify-code/verify-code'
 
 import { createBrowserRouter } from 'react-router-dom'
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './routes'
+import SetupTimeStamp from '@/pages/semester'
 
 export const routes = createBrowserRouter([
   {
@@ -76,6 +77,10 @@ export const routes = createBrowserRouter([
               {
                 path: PRIVATE_ROUTES.MEMBERS,
                 element: <div>Members</div>
+              },
+              {
+                path: PRIVATE_ROUTES.SEMESTER,
+                element: <SetupTimeStamp />
               }
             ]
           }

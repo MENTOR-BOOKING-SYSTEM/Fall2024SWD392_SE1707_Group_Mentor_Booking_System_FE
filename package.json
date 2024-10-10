@@ -12,7 +12,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
     "@hookform/resolvers": "^3.9.0",
+    "@mui/material": "^6.1.3",
+    "@mui/x-date-pickers": "^7.19.0",
     "@nextui-org/accordion": "^2.0.40",
     "@nextui-org/avatar": "^2.0.33",
     "@nextui-org/button": "^2.0.38",
@@ -20,6 +24,7 @@
     "@nextui-org/checkbox": "^2.1.5",
     "@nextui-org/chip": "^2.0.33",
     "@nextui-org/code": "^2.0.33",
+    "@nextui-org/date-picker": "^2.1.8",
     "@nextui-org/divider": "^2.0.32",
     "@nextui-org/dropdown": "^2.1.31",
     "@nextui-org/input": "^2.2.5",
@@ -32,6 +37,7 @@
     "@tanstack/react-query": "^5.56.2",
     "@tanstack/react-query-devtools": "^5.58.0",
     "axios": "^1.7.7",
+    "dayjs": "^1.11.13",
     "framer-motion": "^11.5.4",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.445.0",

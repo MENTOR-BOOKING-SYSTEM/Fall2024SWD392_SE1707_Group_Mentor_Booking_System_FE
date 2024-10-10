@@ -38,6 +38,13 @@ export const STUDENT_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = [
     value: 'members',
     url: PRIVATE_ROUTES.MEMBERS,
     icon: (className?: string) => <Users className={className} />
+  },
+  {
+    id: 6,
+    title: 'Se',
+    value: 'se',
+    url: PRIVATE_ROUTES.SEMESTER,
+    icon: (className?: string) => <Users className={className} />
   }
 ]
 
