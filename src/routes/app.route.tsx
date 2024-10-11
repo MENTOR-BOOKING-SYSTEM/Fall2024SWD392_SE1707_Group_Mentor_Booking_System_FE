@@ -11,6 +11,7 @@ import VerifyCode from '@/features/auth/verify-code/verify-code'
 
 import { createBrowserRouter } from 'react-router-dom'
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './routes'
+import ListPosts from '@/pages/list-posts'
 
 export const routes = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ export const routes = createBrowserRouter([
           {
             path: PUBLIC_ROUTES.RESET_PASSWORD,
             element: <ResetPwdFormProvider />
+          },
+          {
+            path: PRIVATE_ROUTES.LIST_POSTS,
+            element: <ListPosts />
           }
         ]
       },
