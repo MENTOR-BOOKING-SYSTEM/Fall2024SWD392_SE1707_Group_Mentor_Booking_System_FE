@@ -5,7 +5,7 @@ import type { ResetPwdFormValues } from './use-reset-pwd'
 
 export default function ResetPwdForm() {
   const {
-    register,
+    control,
     formState: { errors }
   } = useFormContext<ResetPwdFormValues>()
 
@@ -13,13 +13,7 @@ export default function ResetPwdForm() {
     <div className='flex flex-col gap-7 w-full'>
       {USER_RESET_PASSWORD_FORM.map((field) => {
         return (
-          <FormGenerator
-            key={field.id}
-            register={register}
-            errors={errors}
-            className='min-w-72 text-center'
-            {...field}
-          />
+          <FormGenerator key={field.id} control={control} errors={errors} className='min-w-72 text-center' {...field} />
         )
       })}
     </div>

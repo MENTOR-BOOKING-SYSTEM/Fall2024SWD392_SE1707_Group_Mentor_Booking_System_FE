@@ -8,7 +8,18 @@ const axiosInstance = axios.create({
   }
 })
 
-axiosInstance.interceptors.request.use()
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const auth = JSON.parse(localStorage.getItem('auth') || '{}')
+    if (auth && auth.accessToken) {
+      config.headers.Authorization = `Bearer ${auth.accessToken}`
+    }
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
+  }
+)
 axiosInstance.interceptors.response.use()
 
 export default axiosInstance

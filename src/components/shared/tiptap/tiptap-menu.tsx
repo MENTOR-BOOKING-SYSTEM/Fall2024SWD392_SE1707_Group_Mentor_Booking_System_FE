@@ -1,24 +1,23 @@
 import Button from '@/components/ui/button'
-import Modal from '@/components/ui/modal'
 import Select from '@/components/ui/select'
-import InputLinkForm from './input-link-form'
 import { urlSchema } from '@/models/schemas/auth.schema'
 import { SelectMenuItem } from '@/models/ui.model'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Card } from '@nextui-org/card'
 import { Divider } from '@nextui-org/divider'
 import { Editor } from '@tiptap/core'
-import { FloatingMenu as TiptapFloatingMenu, BubbleMenu as TiptapBubbleMenu } from '@tiptap/react'
-import { Bold, Image, Italic, Link2, List, ListOrdered, Underline, Youtube } from 'lucide-react'
+import { BubbleMenu as TiptapBubbleMenu, FloatingMenu as TiptapFloatingMenu } from '@tiptap/react'
+import { Bold, Images, Italic, Link2, List, ListOrdered, MonitorPlay, Underline } from 'lucide-react'
+import { useCallback } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 interface BubbleMenuProps {
   editor: Editor | null
-  type: 'floating' | 'bubble'
+  type: 'floating' | 'bubble' | 'menu'
 }
 
-interface EditorMenu {
+export interface EditorMenu {
   name: string
   icon: React.ReactNode
   onClick?: () => void
@@ -32,20 +31,6 @@ export default function TiptapMenu({ editor, type }: BubbleMenuProps) {
   const methods = useForm<UrlFormValues>({ resolver: zodResolver(urlSchema), defaultValues: { url: '' } })
 
   if (!editor) return null
-
-  const handleSubmitUrl: SubmitHandler<UrlFormValues> = ({ url }) => {
-    if (url === '') {
-      editor.chain().focus().extendMarkRange('link').unsetLink().run()
-      return
-    }
-
-    editor
-      .chain()
-      .focus()
-      .extendMarkRange('link')
-      .setLink({ href: url || '' })
-      .run()
-  }
 
   const handleSubmitImage = () => {
     const url = window.prompt('URL')
@@ -66,6 +51,23 @@ export default function TiptapMenu({ editor, type }: BubbleMenuProps) {
       })
     }
   }
+
+  const handleSetLink = useCallback(() => {
+    const previousUrl = editor.getAttributes('link').href
+    const url = window.prompt('URL', previousUrl)
+
+    if (!url) {
+      return
+    }
+
+    if (url === '') {
+      editor.chain().focus().extendMarkRange('link').unsetLink().run()
+
+      return
+    }
+
+    editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
+  }, [editor])
 
   const EDITOR_MENU: EditorMenu[] = [
     {
@@ -103,27 +105,23 @@ export default function TiptapMenu({ editor, type }: BubbleMenuProps) {
     {
       name: 'link',
       icon: (
-        <Modal<UrlFormValues>
-          className='bg-transparent text-zinc-500'
-          body={<InputLinkForm />}
-          methods={methods}
-          onSubmit={handleSubmitUrl}
-        >
-          <Link2 className='w-5 h-5' />
-        </Modal>
+        // <Modal<UrlFormValues> body={<InputLinkForm />} methods={methods} onSubmit={handleSubmitUrl}>
+        <Link2 className='w-5 h-5' />
+        // </Modal>
       ),
+      onClick: handleSetLink,
       isActive: editor.isActive('link'),
       showDivider: true
     },
     {
       name: 'image',
-      icon: <Image className='w-5 h-5' />,
+      icon: <Images className='w-5 h-5' />,
       onClick: handleSubmitImage,
       isActive: editor.isActive('image')
     },
     {
       name: 'video',
-      icon: <Youtube className='w-5 h-5' />,
+      icon: <MonitorPlay className='w-5 h-5' />,
       onClick: handleSubmitYTVideo,
       isActive: editor.isActive('video')
     }
@@ -143,6 +141,7 @@ export default function TiptapMenu({ editor, type }: BubbleMenuProps) {
           selectItems={TIPTAP_EDITOR_MENU_ITEMS}
           className='w-48'
           defaultSelectedKeys={[TIPTAP_EDITOR_MENU_ITEMS[0].key]}
+          disallowEmptySelection
         />
         {EDITOR_MENU.map((item) => (
           <div key={item.name} className='flex items-center gap-1'>
@@ -162,15 +161,49 @@ export default function TiptapMenu({ editor, type }: BubbleMenuProps) {
   )
 
   return (
-    <div id='parent'>
+    <div id='parent' className='w-full'>
       {type === 'bubble' ? (
         <TiptapBubbleMenu tippyOptions={{ appendTo: 'parent' }} editor={editor}>
           {content}
         </TiptapBubbleMenu>
-      ) : (
+      ) : type === 'floating' ? (
         <TiptapFloatingMenu tippyOptions={{ appendTo: 'parent' }} editor={editor}>
           {content}
         </TiptapFloatingMenu>
+      ) : (
+        <div className='flex items-center justify-between w-full'>
+          <div className='p-1.5 flex items-center gap-2'>
+            <Button onClick={handleSubmitImage} className='bg-success-50'>
+              <Images className='w-5 h-5 text-success-500' />
+            </Button>
+            <Button onClick={handleSubmitYTVideo} className='bg-warning-50'>
+              <MonitorPlay className='w-5 h-5 text-warning-500' />
+            </Button>
+            <Button onClick={handleSetLink} className='bg-purple-50'>
+              {/* <Modal<UrlFormValues> body={<InputLinkForm />} methods={methods} onSubmit={handleSubmitUrl}> */}
+              <Link2 className='w-5 h-5 text-purple-500 ' />
+              {/* </Modal> */}
+            </Button>
+          </div>
+          <div className='p-1.5 flex items-center gap-2'>
+            <Select
+              selectItems={TIPTAP_EDITOR_MENU_ITEMS}
+              className='w-48'
+              defaultSelectedKeys={[TIPTAP_EDITOR_MENU_ITEMS[0].key]}
+              disallowEmptySelection
+            />
+            {EDITOR_MENU.slice(0, 5).map((item) => (
+              <Button
+                key={item.name}
+                onClick={item.onClick ? item.onClick : undefined}
+                className={item.isActive ? 'bg-primary-100 text-primary' : 'bg-transparent text-zinc-500'}
+                isIconOnly
+              >
+                {item.icon}
+              </Button>
+            ))}
+          </div>
+        </div>
       )}
     </div>
   )

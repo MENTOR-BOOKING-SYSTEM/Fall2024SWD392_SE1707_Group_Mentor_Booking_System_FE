@@ -1,4 +1,5 @@
 import { twMerge } from 'tailwind-merge'
+import { Route } from '@/models/base.model'
 import { type ClassValue, clsx } from 'clsx'
 
 /**
@@ -45,4 +46,14 @@ export const validatePasswordStrength = (password: string) => {
   const hasSpecialChar = /[`!@#$%^&*()_\-+=[\]{};':"\\|,.<>/?~ ]/.test(password)
 
   return hasUppercase && hasLowercase && hasNumber && hasSpecialChar
+}
+
+export const generateBreadcrumbLabels = (routes: Route) => {
+  return Object.values(routes).reduce(
+    (acc, route) => {
+      acc[route.path] = route.bcLabel
+      return acc
+    },
+    {} as { [key: string]: string }
+  )
 }
