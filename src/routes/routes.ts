@@ -13,5 +13,8 @@ export const PRIVATE_ROUTES = {
   BOARDS: '/:projectId/boards',
   CALENDAR: '/:projectId/calendar',
   BACKLOG: '/:projectId/backlog',
-  MEMBERS: '/:projectId/members'
+  MEMBERS: '/:projectId/members',
+  EDIT_PROFILE: '/edit-profile',
+  EDIT_PROFILE_PASSWORD: '/edit-profile-password',
+  SELECT_UPDATE: '/select-update'
 }

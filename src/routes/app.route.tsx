@@ -11,6 +11,9 @@ import VerifyCode from '@/features/auth/verify-code/verify-code'
 
 import { createBrowserRouter } from 'react-router-dom'
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './routes'
+import EditProfile from '@/pages/edit-profile'
+import UpdatePassword from '@/pages/edit-profile-password'
+import SelectUpdate from '@/pages/select-update'
 
 export const routes = createBrowserRouter([
   {
@@ -35,6 +38,18 @@ export const routes = createBrowserRouter([
           {
             path: PUBLIC_ROUTES.RESET_PASSWORD,
             element: <ResetPwdFormProvider />
+          },
+          {
+            path: PRIVATE_ROUTES.EDIT_PROFILE,
+            element: <EditProfile />
+          },
+          {
+            path: PRIVATE_ROUTES.EDIT_PROFILE_PASSWORD,
+            element: <UpdatePassword />
+          },
+          {
+            path: PRIVATE_ROUTES.SELECT_UPDATE,
+            element: <SelectUpdate />
           }
         ]
       },
