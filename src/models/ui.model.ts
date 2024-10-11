@@ -12,6 +12,7 @@ export interface DropdownMenuItem {
   shortcut?: string
   color?: 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger'
   icon?: (className?: string) => JSX.Element
+  onClick?: (event: any) => void
   url?: string
   iconPosition?: 'start' | 'end'
   showDivider?: boolean

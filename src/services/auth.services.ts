@@ -3,6 +3,7 @@ import type { ForgotPwdAPIRequest, LoginAPIRequest, ResetPasswordAPIRequest } fr
 import type {
   ForgotPwdAPIResponse,
   LoginAPIResponse,
+  LogoutAPIResponse,
   ResetPwdAPIResponse,
   VerifyCodeAPIResponse
 } from '@/models/api/res.model'
@@ -14,6 +15,10 @@ class AuthService {
       password
     })
     return data.result
+  }
+
+  async logout(refreshToken: string) {
+    await axiosInstance.post<LogoutAPIResponse>('users/logout', { refreshToken })
   }
 
   async forgotPwd({ email }: ForgotPwdAPIRequest) {
