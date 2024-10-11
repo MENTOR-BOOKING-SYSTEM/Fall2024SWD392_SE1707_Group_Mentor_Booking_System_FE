@@ -6,6 +6,10 @@ export interface LoginAPIResponse {
   }
 }
 
+export interface LogoutAPIResponse {
+  message: string
+}
+
 export interface ForgotPwdAPIResponse {
   message: string
 }

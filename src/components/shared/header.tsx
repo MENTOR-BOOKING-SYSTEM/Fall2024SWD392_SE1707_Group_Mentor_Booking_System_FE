@@ -5,12 +5,15 @@ import Button from '../ui/button'
 import { Avatar } from '@nextui-org/avatar'
 import { Input } from '@nextui-org/input'
 import { Bell, CirclePlus, Search } from 'lucide-react'
-import { PROFILE_DROPDOWN_MENU_ITEMS } from '@/constants/menu-items'
+import { ProfileDropdownMenuItems } from '@/constants/menu-items'
 import { Divider } from '@nextui-org/divider'
 import { Link } from 'react-router-dom'
 import { PRIVATE_ROUTES } from '@/routes/routes'
+import { useLogout } from '@/features/auth/logout/use-logout'
 
 export default function Header() {
+  const { mutate: logout } = useLogout()
+
   return (
     <div className='flex flex-col'>
       <div className='flex justify-between items-center gap-3 px-3.5 h-16'>
@@ -36,7 +39,7 @@ export default function Header() {
           <Dropdown dropdownItems={[]}>
             <Bell className='text-default-400 cursor-pointer stroke-1' />
           </Dropdown>
-          <Dropdown dropdownItems={PROFILE_DROPDOWN_MENU_ITEMS}>
+          <Dropdown dropdownItems={ProfileDropdownMenuItems(logout)}>
             <Avatar
               className='cursor-pointer'
               isBordered

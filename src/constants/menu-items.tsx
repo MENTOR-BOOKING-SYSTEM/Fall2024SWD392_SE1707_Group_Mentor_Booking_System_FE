@@ -46,7 +46,7 @@ export const ADMIN_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = []
 export const BUSINESS_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = []
 
 // Dropdown
-export const PROFILE_DROPDOWN_MENU_ITEMS: DropdownMenuItem[] = [
+export const ProfileDropdownMenuItems = (logout: () => void): DropdownMenuItem[] => [
   {
     label: 'Account',
     key: 'account',
@@ -71,6 +71,7 @@ export const PROFILE_DROPDOWN_MENU_ITEMS: DropdownMenuItem[] = [
     label: 'Logout',
     key: 'logout',
     icon: (className?: string) => <LogOut className={className} />,
+    onClick: () => logout(),
     iconPosition: 'start',
     color: 'danger'
   }
