@@ -8,35 +8,35 @@ export const STUDENT_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = [
     id: 1,
     title: 'Timeline',
     value: 'timeline',
-    url: PRIVATE_ROUTES.TIMELINE,
+    url: PRIVATE_ROUTES.TIMELINE.path,
     icon: (className?: string) => <ChartBarBig className={className} />
   },
   {
     id: 2,
     title: 'Backlog',
     value: 'backlog',
-    url: PRIVATE_ROUTES.BACKLOG,
+    url: PRIVATE_ROUTES.BACKLOG.path,
     icon: (className?: string) => <Database className={className} />
   },
   {
     id: 3,
     title: 'Boards',
     value: 'boards',
-    url: PRIVATE_ROUTES.BOARDS,
+    url: PRIVATE_ROUTES.BOARDS.path,
     icon: (className?: string) => <Columns3 className={className} />
   },
   {
     id: 4,
     title: 'Calendar',
     value: 'calendar',
-    url: PRIVATE_ROUTES.CALENDAR,
+    url: PRIVATE_ROUTES.CALENDAR.path,
     icon: (className?: string) => <CalendarDays className={className} />
   },
   {
     id: 5,
     title: 'Members',
     value: 'members',
-    url: PRIVATE_ROUTES.MEMBERS,
+    url: PRIVATE_ROUTES.MEMBERS.path,
     icon: (className?: string) => <Users className={className} />
   }
 ]
@@ -57,7 +57,7 @@ export const PROFILE_DROPDOWN_MENU_ITEMS: DropdownMenuItem[] = [
         key: 'profile',
         icon: (className?: string) => <User className={className} />,
         iconPosition: 'start',
-        url: PRIVATE_ROUTES.ME
+        url: PRIVATE_ROUTES.ME.path
       },
       {
         label: 'Settings',

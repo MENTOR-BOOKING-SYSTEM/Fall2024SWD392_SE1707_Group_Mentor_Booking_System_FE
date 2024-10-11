@@ -1,9 +1,9 @@
 import { cn } from '@/utils'
-import type { FieldErrors } from 'react-hook-form'
+import type { FieldErrors, Path } from 'react-hook-form'
 
 interface FormErrorProps<T> {
   errors: FieldErrors
-  identifier: keyof T
+  identifier: Path<T>
   className?: string
 }
 

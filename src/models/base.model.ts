@@ -10,3 +10,10 @@ export interface CodeModel {
 export interface TiptapContentModel {
   [key: string]: string
 }
+
+export interface Route {
+  [key: string]: {
+    path: string
+    bcLabel: string
+  }
+}

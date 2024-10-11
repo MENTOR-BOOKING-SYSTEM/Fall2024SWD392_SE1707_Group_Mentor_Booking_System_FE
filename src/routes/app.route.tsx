@@ -8,6 +8,8 @@ import GuardLayout from '@/layouts/guard.layout'
 import Backlog from '@/pages/backlog'
 import Redirect from '@/pages/redirect'
 import VerifyCode from '@/features/auth/verify-code/verify-code'
+import NonSidebarLayout from '@/layouts/non-sidebar.layout'
+import ProjectSubmission from '@/pages/project-submission'
 
 import { createBrowserRouter } from 'react-router-dom'
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './routes'
@@ -46,36 +48,45 @@ export const routes = createBrowserRouter([
             element: <DefaultLayout />,
             children: [
               {
-                path: PRIVATE_ROUTES.ROOT,
+                path: PRIVATE_ROUTES.ROOT.path,
                 element: <Redirect />
               },
               {
-                path: PRIVATE_ROUTES.CURRENT_PROJECT,
+                path: PRIVATE_ROUTES.CURRENT_PROJECT.path,
                 element: <div>Current Project</div>
               },
               {
-                path: PRIVATE_ROUTES.ME,
+                path: PRIVATE_ROUTES.ME.path,
                 element: <div>Me</div>
               },
               {
-                path: PRIVATE_ROUTES.TIMELINE,
+                path: PRIVATE_ROUTES.TIMELINE.path,
                 element: <div>Timeline</div>
               },
               {
-                path: PRIVATE_ROUTES.BOARDS,
+                path: PRIVATE_ROUTES.BOARDS.path,
                 element: <div>Boards</div>
               },
               {
-                path: PRIVATE_ROUTES.CALENDAR,
+                path: PRIVATE_ROUTES.CALENDAR.path,
                 element: <div>Calendar</div>
               },
               {
-                path: PRIVATE_ROUTES.BACKLOG,
+                path: PRIVATE_ROUTES.BACKLOG.path,
                 element: <Backlog />
               },
               {
-                path: PRIVATE_ROUTES.MEMBERS,
+                path: PRIVATE_ROUTES.MEMBERS.path,
                 element: <div>Members</div>
+              }
+            ]
+          },
+          {
+            element: <NonSidebarLayout />,
+            children: [
+              {
+                path: PRIVATE_ROUTES.SUBMIT_PROJECT.path,
+                element: <ProjectSubmission />
               }
             ]
           }
