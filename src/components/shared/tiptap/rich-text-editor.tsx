@@ -41,12 +41,20 @@ interface RichTextEditorProps {
   className?: string
   editorTag: React.ReactNode
   onChange: (event: any) => void
+  defaultContent?: string
 }
 
-export default function RichTextEditor({ lsSectionName, editorTag, className, onChange }: RichTextEditorProps) {
+export default function RichTextEditor({
+  lsSectionName,
+  editorTag,
+  className,
+  defaultContent,
+  onChange
+}: RichTextEditorProps) {
   const [content, setContent, removeContent] = useLocalStorage<TiptapContentModel>(lsSectionName, {})
   const editor = useEditor({
     extensions,
+    content: content[lsSectionName] || defaultContent,
     onFocus: ({ editor }) => editor.commands.focus('end'),
     editorProps: {
       attributes: {
@@ -58,15 +66,12 @@ export default function RichTextEditor({ lsSectionName, editorTag, className, on
       setTimeout(() => {
         if (editor.getHTML() === '<p></p>') {
           removeContent()
-          onChange('')
+          onChange(null)
         } else {
           setContent({ [lsSectionName]: editor.getHTML() })
           onChange(editor.getHTML())
         }
       }, 5000)
-    },
-    onCreate({ editor }) {
-      editor.commands.setContent(content[lsSectionName] || '')
     }
   })
 
@@ -76,12 +81,12 @@ export default function RichTextEditor({ lsSectionName, editorTag, className, on
   const threshold = 100
 
   return (
-    <Card className={cn('flex flex-col h-96', className)}>
+    <Card className={cn('flex flex-col', className)}>
       <CardHeader>
         <TiptapMenu editor={editor} type='menu' />
       </CardHeader>
       <Divider />
-      <CardBody className='overflow-auto'>
+      <CardBody className='min-h-72'>
         <EditorContent editor={editor} autoFocus />
         {/* <TiptapMenu editor={editor} type='floating' /> */}
       </CardBody>

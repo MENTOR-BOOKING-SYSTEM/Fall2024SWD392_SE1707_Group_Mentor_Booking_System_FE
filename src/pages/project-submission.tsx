@@ -2,8 +2,8 @@ import SubmitProjectFormProvider from '@/features/projects/submit-project/submit
 
 export default function ProjectSubmission() {
   return (
-    <div>
+    <>
       <SubmitProjectFormProvider />
-    </div>
+    </>
   )
 }

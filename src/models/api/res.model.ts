@@ -1,3 +1,5 @@
+import { TechnologyModel } from '../ui.model'
+
 export interface LoginAPIResponse {
   message: string
   result: {
@@ -20,9 +22,5 @@ export interface ResetPwdAPIResponse {
 
 export interface GetAllTechsAPIResponse {
   message: string
-  result: {
-    techID: string
-    techName: string
-    parentID: string | null
-  }[]
+  result: TechnologyModel[]
 }

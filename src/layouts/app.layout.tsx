@@ -14,7 +14,7 @@ export default function AppLayout() {
     <QueryProvider>
       <Provider store={store}>
         <NextUIProvider>
-          <main className='text-foreground bg-background font-open text-base w-screen'>
+          <main className='text-foreground bg-background font-open text-base'>
             <Outlet />
             <ToastContainer stacked autoClose={3000} hideProgressBar icon={false} />
           </main>

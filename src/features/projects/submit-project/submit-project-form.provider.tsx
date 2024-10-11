@@ -13,7 +13,7 @@ export default function SubmitProjectFormProvider() {
   }
 
   return (
-    <div className='overflow-y-auto px-96 flex flex-col gap-3'>
+    <div className='overflow-y-auto xl:px-80 px-10 flex flex-col gap-3'>
       <FormProvider {...methods}>
         <form className='w-full flex flex-col gap-3' onSubmit={methods.handleSubmit(onSubmit)}>
           <SubmitProjectForm />

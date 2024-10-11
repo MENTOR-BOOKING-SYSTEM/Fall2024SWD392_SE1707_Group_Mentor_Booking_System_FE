@@ -7,7 +7,7 @@ interface ModalProps<T extends FieldValues> {
   body: React.ReactNode
   footer?: React.ReactNode
   children: React.ReactNode
-  onSubmit: SubmitHandler<T>
+  onSubmit?: SubmitHandler<T>
   methods?: UseFormReturn<T>
 }
 
@@ -34,7 +34,7 @@ export default function Modal<T extends FieldValues>({
 
   const content = methods ? (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>
+      <form onSubmit={onSubmit ? methods.handleSubmit(onSubmit) : undefined}>
         <ModalBody>{body}</ModalBody>
         <ModalFooter>
           {footer || (

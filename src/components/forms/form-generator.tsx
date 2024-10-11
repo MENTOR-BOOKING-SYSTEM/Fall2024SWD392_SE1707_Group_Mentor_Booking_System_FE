@@ -75,19 +75,19 @@ export default function FormGenerator<T extends FieldValues>({
       )
     case 'input':
       return (
-        <Controller
-          control={control}
-          name={name}
-          render={({ field: { onChange, ref } }) => (
-            <label className='flex flex-col gap-2 relative' htmlFor={`input-${label}`}>
-              <div className='flex items-center gap-2'>
-                <p className='font-semibold'>{label}</p>
-                {optional && <p className='text-xs font-normal text-muted-foreground'>optional</p>}
-              </div>
+        <label className='flex flex-col gap-2 relative' htmlFor={`input-${label}`}>
+          <div className='flex items-center gap-2'>
+            <p className='font-semibold'>{label}</p>
+            {optional && <p className='text-xs font-normal text-muted-foreground'>optional</p>}
+          </div>
+          <Controller
+            control={control}
+            name={name}
+            render={({ field: { onChange, ref, value } }) => (
               <Input
                 id={`input-${label}`}
                 ref={ref}
-                defaultValue={defaultValue}
+                value={value}
                 type={type === 'password' ? (isShowPassword ? 'password' : 'text') : type}
                 placeholder={placeholder}
                 className={className}
@@ -102,10 +102,10 @@ export default function FormGenerator<T extends FieldValues>({
                   ) : null
                 }
               />
-              <FormError errors={errors} identifier={name} />
-            </label>
-          )}
-        />
+            )}
+          />
+          <FormError errors={errors} identifier={name} />
+        </label>
       )
     // default:
     //   return (

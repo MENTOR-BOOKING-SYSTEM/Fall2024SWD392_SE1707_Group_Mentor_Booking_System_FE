@@ -21,5 +21,13 @@ export interface DropdownMenuItem {
 export interface SelectMenuItem {
   key: string
   label: string
+  sections?: SelectMenuItem[]
   onClick?: () => void
+}
+
+export interface TechnologyModel {
+  techID: string
+  techName: string
+  parentID: string | null
+  sections?: TechnologyModel[]
 }

@@ -141,7 +141,6 @@ export default function TiptapMenu({ editor, type }: BubbleMenuProps) {
           selectItems={TIPTAP_EDITOR_MENU_ITEMS}
           className='w-48'
           defaultSelectedKeys={[TIPTAP_EDITOR_MENU_ITEMS[0].key]}
-          disallowEmptySelection
         />
         {EDITOR_MENU.map((item) => (
           <div key={item.name} className='flex items-center gap-1'>
@@ -189,6 +188,8 @@ export default function TiptapMenu({ editor, type }: BubbleMenuProps) {
             <Select
               selectItems={TIPTAP_EDITOR_MENU_ITEMS}
               className='w-48'
+              variant='bordered'
+              size='sm'
               defaultSelectedKeys={[TIPTAP_EDITOR_MENU_ITEMS[0].key]}
               disallowEmptySelection
             />

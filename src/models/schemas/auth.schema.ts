@@ -10,7 +10,7 @@ const passwordMatchRefinement = (schema: PasswordSchema, ctx: z.RefinementCtx) =
   if (schema.password !== schema.confirmPassword) {
     ctx.addIssue({
       code: 'custom',
-      message: 'mismatch_password',
+      message: 'Passwords do not match',
       path: ['confirmPassword']
     })
   }

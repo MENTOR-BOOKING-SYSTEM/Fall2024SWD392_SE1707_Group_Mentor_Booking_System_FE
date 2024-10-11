@@ -26,9 +26,11 @@ export const useLogin = () => {
       navigate(PRIVATE_ROUTES.ROOT.path)
       setAuth({ accessToken, refreshToken })
       methods.reset()
+      methods.setValue('email', '')
+      methods.setValue('password', '')
     },
     onError: () => {
-      methods.reset()
+      methods.setValue('password', '')
       toaster.error({
         text: 'Invalid credentials'
       })
