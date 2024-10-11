@@ -12,6 +12,7 @@ import VerifyCode from '@/features/auth/verify-code/verify-code'
 import { createBrowserRouter } from 'react-router-dom'
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './routes'
 import ListPosts from '@/pages/list-posts'
+import PostDetail from '@/pages/post-detail'
 
 export const routes = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ export const routes = createBrowserRouter([
           {
             path: PRIVATE_ROUTES.LIST_POSTS,
             element: <ListPosts />
+          },
+          {
+            path: PRIVATE_ROUTES.POST_DETAIL,
+            element: <PostDetail />
           }
         ]
       },
