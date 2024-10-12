@@ -1,26 +1,26 @@
-import { DatePicker } from '@nextui-org/react'
-import { CalendarDate, parseDate, getLocalTimeZone, today } from '@internationalized/date'
-export default function App() {
+import { CalendarDate, getLocalTimeZone, today } from '@internationalized/date'
+import { useState } from 'react'
+import SeStartEnd from '@/features/semester/se-start-end'
+
+export default function SetupTimeStamp() {
+  const [semesterStart, setSemesterStart] = useState<CalendarDate | null>(today(getLocalTimeZone()) as CalendarDate)
+  const [semesterEnd, setSemesterEnd] = useState<CalendarDate | null>(
+    semesterStart ? semesterStart.add({ weeks: 14 }) : null
+  )
+
+  const handleSemesterStartChange = (date: CalendarDate) => {
+    setSemesterStart(date)
+    setSemesterEnd(date.add({ weeks: 14 }))
+  }
+
   return (
-    <div className='flex w-full flex-col gap-4'>
-      <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-        <DatePicker
-          label='Semester Start'
-          isRequired
-          placeholderValue={new CalendarDate(1995, 11, 6)}
-          labelPlacement='inside'
-          minValue={today(getLocalTimeZone()) as CalendarDate}
-          defaultValue={today(getLocalTimeZone()).subtract({ days: 0 }) as CalendarDate}
-        />
-        <DatePicker
-          label='Semester End'
-          isRequired
-          placeholderValue={new CalendarDate(1995, 11, 6)}
-          labelPlacement='inside'
-          minValue={today(getLocalTimeZone()) as CalendarDate}
-          defaultValue={today(getLocalTimeZone()).subtract({ days: 0 }) as CalendarDate}
-        />
-      </div>
+    <div>
+      <SeStartEnd
+        semesterStart={semesterStart}
+        semesterEnd={semesterEnd}
+        handleSemesterStartChange={handleSemesterStartChange}
+        setSemesterEnd={setSemesterEnd}
+      />
     </div>
   )
 }
