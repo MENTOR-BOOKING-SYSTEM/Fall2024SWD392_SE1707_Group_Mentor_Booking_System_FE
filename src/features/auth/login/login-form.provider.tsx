@@ -1,11 +1,12 @@
 import AuthHeader from '../components/auth-header'
+import OAuthGoogle from '../oauth-google/oauth-google'
 import LoginForm from './login-form'
 import Button from '@/components/ui/button'
-import { Icons } from '@/components/ui/icons'
 import { PUBLIC_ROUTES } from '@/routes/routes'
+import { Divider } from '@nextui-org/divider'
 import { FormProvider, SubmitHandler } from 'react-hook-form'
 import { Link } from 'react-router-dom'
-import { Divider } from '@nextui-org/divider'
+import { GoogleOAuthProvider } from '@react-oauth/google'
 import { type LoginFormValues, useLogin } from './use-login'
 
 export default function LoginFormProvider() {
@@ -29,12 +30,9 @@ export default function LoginFormProvider() {
             <p className='text-xs text-center text-gray-400 mx-2'>or</p>
             <Divider className='max-w-[45%]' />
           </div>
-          <Button className='w-full border-1 mb-8' variant='bordered'>
-            <div className='flex items-center w-full'>
-              <Icons.google className='w-6 h-6 mr-2' />
-              <label className='flex-1 cursor-pointer'>Continue with Google</label>
-            </div>
-          </Button>
+          <GoogleOAuthProvider clientId={import.meta.env.VITE_GCP_CLIENT_ID}>
+            <OAuthGoogle />
+          </GoogleOAuthProvider>
           <Link to={PUBLIC_ROUTES.FORGOT_PASSWORD}>
             <p className='text-xs font-medium text-center text-primary cursor-pointer'>Forgot password?</p>
           </Link>

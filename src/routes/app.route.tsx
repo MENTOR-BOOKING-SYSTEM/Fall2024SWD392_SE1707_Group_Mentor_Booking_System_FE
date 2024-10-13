@@ -10,6 +10,7 @@ import Redirect from '@/pages/redirect'
 import VerifyCode from '@/features/auth/verify-code/verify-code'
 import NonSidebarLayout from '@/layouts/non-sidebar.layout'
 import ProjectSubmission from '@/pages/project-submission'
+import AuthRedirect from '@/pages/auth-redirect'
 
 import { createBrowserRouter } from 'react-router-dom'
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './routes'
@@ -37,6 +38,10 @@ export const routes = createBrowserRouter([
           {
             path: PUBLIC_ROUTES.RESET_PASSWORD,
             element: <ResetPwdFormProvider />
+          },
+          {
+            path: PUBLIC_ROUTES.AUTH,
+            element: <AuthRedirect />
           }
         ]
       },
