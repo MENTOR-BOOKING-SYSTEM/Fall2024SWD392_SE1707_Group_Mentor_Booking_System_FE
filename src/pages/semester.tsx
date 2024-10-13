@@ -48,8 +48,7 @@ export default function SetupTimeStamp() {
       <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
         <DatePicker
           label='Before Semester Start'
-          isRequired
-          labelPlacement='inside'
+          labelPlacement='outside-left'
           minValue={beforeSemesterStart}
           maxValue={semesterStart}
           value={beforeSemesterStart}
@@ -58,8 +57,7 @@ export default function SetupTimeStamp() {
 
         <DatePicker
           label='Before Semester End'
-          isRequired
-          labelPlacement='inside'
+          labelPlacement='outside-left'
           minValue={beforeSemesterStart}
           maxValue={semesterStart}
           value={semesterStart}
@@ -69,8 +67,7 @@ export default function SetupTimeStamp() {
       <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
         <DatePicker
           label='In Semester Start'
-          isRequired
-          labelPlacement='inside'
+          labelPlacement='outside-left'
           minValue={semesterStart}
           value={semesterStart}
           onChange={(date) => handleSemesterStartChange(date as DateValue)}
@@ -78,8 +75,7 @@ export default function SetupTimeStamp() {
 
         <DatePicker
           label='In Semester End'
-          isRequired
-          labelPlacement='inside'
+          labelPlacement='outside-left'
           minValue={semesterStart}
           maxValue={inSemesterEnd}
           value={inSemesterEnd}
