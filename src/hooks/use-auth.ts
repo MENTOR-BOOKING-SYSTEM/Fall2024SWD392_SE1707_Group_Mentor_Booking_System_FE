@@ -1,6 +1,6 @@
 import { AuthModel } from '@/models/base.model'
 import { useLocalStorage } from 'usehooks-ts'
-import { Token, useTokens } from './use-token'
+import { Token, useTokens } from './use-tokens'
 
 export const useAuth = (): { isAuth: boolean; user: Token | undefined } => {
   const [auth] = useLocalStorage<AuthModel>('auth', { accessToken: '', refreshToken: '' })

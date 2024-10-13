@@ -4,7 +4,8 @@ export const PUBLIC_ROUTES = {
   LOGIN: '/login',
   FORGOT_PASSWORD: '/forgot-password',
   VERIFY_CODE: '/verify-code',
-  RESET_PASSWORD: '/reset-password'
+  RESET_PASSWORD: '/reset-password',
+  AUTH: '/auth'
 }
 
 export const PRIVATE_ROUTES: Route = {
