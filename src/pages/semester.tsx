@@ -1,26 +1,91 @@
-import { CalendarDate, getLocalTimeZone, today } from '@internationalized/date'
+import { CalendarDate, getLocalTimeZone, today, DateValue } from '@internationalized/date'
 import { useState } from 'react'
-import SeStartEnd from '@/features/semester/se-start-end'
+import { DatePicker } from '@nextui-org/date-picker'
 
 export default function SetupTimeStamp() {
-  const [semesterStart, setSemesterStart] = useState<CalendarDate | null>(today(getLocalTimeZone()) as CalendarDate)
-  const [semesterEnd, setSemesterEnd] = useState<CalendarDate | null>(
-    semesterStart ? semesterStart.add({ weeks: 14 }) : null
+  const [semesterStart, setSemesterStart] = useState<DateValue | undefined>(today(getLocalTimeZone()) as DateValue)
+  const [semesterEnd, setSemesterEnd] = useState<DateValue | undefined>(
+    semesterStart ? (semesterStart as CalendarDate).add({ weeks: 14 }) : undefined
   )
 
-  const handleSemesterStartChange = (date: CalendarDate) => {
+  const [beforeSemesterStart, setBeforeSemesterStart] = useState<DateValue | undefined>(
+    semesterStart ? (semesterStart as CalendarDate).subtract({ weeks: 4 }) : undefined
+  )
+
+  const [inSemesterEnd, setInSemesterEnd] = useState<DateValue | undefined>(
+    semesterStart ? (semesterStart as CalendarDate).add({ weeks: 10 }) : undefined
+  )
+
+  const handleSemesterStartChange = (date: DateValue) => {
     setSemesterStart(date)
-    setSemesterEnd(date.add({ weeks: 14 }))
+    setSemesterEnd((date as CalendarDate).add({ weeks: 14 }))
+    setBeforeSemesterStart((date as CalendarDate).subtract({ weeks: 4 }))
+    setInSemesterEnd((date as CalendarDate).add({ weeks: 10 }))
   }
 
   return (
     <div>
-      <SeStartEnd
-        semesterStart={semesterStart}
-        semesterEnd={semesterEnd}
-        handleSemesterStartChange={handleSemesterStartChange}
-        setSemesterEnd={setSemesterEnd}
-      />
+      <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
+        <DatePicker
+          label='Semester Start'
+          isRequired
+          labelPlacement='inside'
+          minValue={today(getLocalTimeZone()) as DateValue}
+          defaultValue={today(getLocalTimeZone()) as DateValue}
+          onChange={(date) => handleSemesterStartChange(date as DateValue)}
+        />
+
+        <DatePicker
+          label='Semester End'
+          isRequired
+          labelPlacement='inside'
+          minValue={semesterStart ? (semesterStart as CalendarDate).add({ weeks: 14 }) : today(getLocalTimeZone())}
+          value={semesterEnd}
+          onChange={(date) => setSemesterEnd(date as DateValue)}
+        />
+      </div>
+
+      <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
+        <DatePicker
+          label='Before Semester Start'
+          isRequired
+          labelPlacement='inside'
+          minValue={beforeSemesterStart}
+          maxValue={semesterStart}
+          value={beforeSemesterStart}
+          onChange={(date) => setBeforeSemesterStart(date as DateValue)}
+        />
+
+        <DatePicker
+          label='Before Semester End'
+          isRequired
+          labelPlacement='inside'
+          minValue={beforeSemesterStart}
+          maxValue={semesterStart}
+          value={semesterStart}
+        />
+      </div>
+
+      <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
+        <DatePicker
+          label='In Semester Start'
+          isRequired
+          labelPlacement='inside'
+          minValue={semesterStart}
+          value={semesterStart}
+          onChange={(date) => handleSemesterStartChange(date as DateValue)}
+        />
+
+        <DatePicker
+          label='In Semester End'
+          isRequired
+          labelPlacement='inside'
+          minValue={semesterStart}
+          maxValue={inSemesterEnd}
+          value={inSemesterEnd}
+          onChange={(date) => setInSemesterEnd(date as DateValue)}
+        />
+      </div>
     </div>
   )
 }

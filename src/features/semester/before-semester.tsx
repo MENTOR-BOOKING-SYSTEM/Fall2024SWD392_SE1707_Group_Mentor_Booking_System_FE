@@ -1,14 +1,14 @@
 import { DatePicker } from '@nextui-org/react'
 import { CalendarDate, getLocalTimeZone, today } from '@internationalized/date'
 
-interface SeStartEndProps {
+interface BeforeSemesterProps {
   semesterStart: CalendarDate | null
   semesterEnd: CalendarDate | null
   handleSemesterStartChange: (date: CalendarDate) => void
   setSemesterEnd: (date: CalendarDate) => void
 }
 
-const SeStartEnd: React.FC<SeStartEndProps> = ({
+const BeforeSemester: React.FC<BeforeSemesterProps> = ({
   semesterStart,
   semesterEnd,
   handleSemesterStartChange,
@@ -18,7 +18,7 @@ const SeStartEnd: React.FC<SeStartEndProps> = ({
     <div className='mb-3 flex w-full flex-col gap-4 '>
       <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
         <DatePicker
-          label='Semester Start'
+          label='Before Semester Start'
           isRequired
           placeholderValue={new CalendarDate(1995, 11, 6)}
           labelPlacement='inside'
@@ -28,7 +28,7 @@ const SeStartEnd: React.FC<SeStartEndProps> = ({
         />
 
         <DatePicker
-          label='Semester End'
+          label='Before Semester End'
           isRequired
           placeholderValue={new CalendarDate(1995, 11, 6)}
           labelPlacement='inside'
@@ -41,4 +41,4 @@ const SeStartEnd: React.FC<SeStartEndProps> = ({
   )
 }
 
-export default SeStartEnd
+export default BeforeSemester

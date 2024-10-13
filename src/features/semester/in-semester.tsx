@@ -1,14 +1,14 @@
 import { DatePicker } from '@nextui-org/react'
 import { CalendarDate, getLocalTimeZone, today } from '@internationalized/date'
 
-interface SeStartEndProps {
+interface InSemesterProps {
   semesterStart: CalendarDate | null
   semesterEnd: CalendarDate | null
   handleSemesterStartChange: (date: CalendarDate) => void
   setSemesterEnd: (date: CalendarDate) => void
 }
 
-const SeStartEnd: React.FC<SeStartEndProps> = ({
+const InSemester: React.FC<InSemesterProps> = ({
   semesterStart,
   semesterEnd,
   handleSemesterStartChange,
@@ -41,4 +41,4 @@ const SeStartEnd: React.FC<SeStartEndProps> = ({
   )
 }
 
-export default SeStartEnd
+export default InSemester
