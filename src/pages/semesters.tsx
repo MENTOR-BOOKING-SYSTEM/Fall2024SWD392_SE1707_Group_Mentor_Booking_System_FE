@@ -1,3 +1,4 @@
+import React, { useState } from 'react'
 import {
   Table,
   TableHeader,
@@ -5,22 +6,30 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  getKeyValue,
-  useDisclosure,
   ModalFooter,
   ModalBody,
   Button,
   ModalContent,
   Modal,
-  ModalHeader
+  ModalHeader,
+  Input,
+  getKeyValue
 } from '@nextui-org/react'
 
 const formatDate = (dateString: string) => {
   const [month, day, year] = dateString.split('/')
   return `${day}/${month}/${year}`
 }
+interface Semester {
+  id: number
+  key: string
+  semester: string
+  startDate: string
+  endDate: string
+  status: string
+}
 
-const rows = [
+const rows: Semester[] = [
   {
     id: 1,
     key: '1',
@@ -86,15 +95,39 @@ const columns = [
   }
 ]
 
-// Sử dụng hook useDisclosure cho NextUI
-const { isOpen, onOpen, onClose } = useDisclosure()
-
-// Chỉ định kích thước cố định là '3xl'
-const handleOpen = () => {
-  onOpen()
-}
-
 export default function Semesters() {
+  // Định nghĩa selectedItem là Semester hoặc null
+  const [selectedItem, setSelectedItem] = useState<Semester | null>(null)
+  const [isOpen, setIsOpen] = useState(false)
+  const [isEditMode, setIsEditMode] = useState(false)
+
+  const handleOpen = (item: Semester, editMode: boolean) => {
+    setSelectedItem(item)
+    setIsEditMode(editMode)
+    setIsOpen(true)
+  }
+
+  const handleClose = () => {
+    setIsOpen(false)
+    setSelectedItem(null)
+    setIsEditMode(false)
+  }
+
+  const handleSave = () => {
+    //lưu lại thông tin đã chỉnh sửa
+    console.log('Saved', selectedItem)
+    setIsOpen(false)
+  }
+
+  const handleInputChange = (key: keyof Semester, value: string) => {
+    if (selectedItem) {
+      setSelectedItem({
+        ...selectedItem,
+        [key]: value
+      })
+    }
+  }
+
   return (
     <div>
       <div className='Table'>
@@ -113,8 +146,18 @@ export default function Semesters() {
                   <TableCell className='px-4 py-2 border-b text-center'>
                     {columnKey === 'action' ? (
                       <div className='flex justify-center space-x-2'>
-                        <span className='text-blue-500 cursor-pointer hover:underline'>View</span>
-                        <span className='text-green-500 cursor-pointer hover:underline'>Edit</span>
+                        <span
+                          className='text-blue-500 cursor-pointer hover:underline'
+                          onClick={() => handleOpen(item, false)}
+                        >
+                          View
+                        </span>
+                        <span
+                          className='text-green-500 cursor-pointer hover:underline'
+                          onClick={() => handleOpen(item, true)}
+                        >
+                          Edit
+                        </span>
                       </div>
                     ) : columnKey === 'startDate' ? (
                       formatDate(item.startDate)
@@ -135,40 +178,67 @@ export default function Semesters() {
         </Table>
       </div>
 
-      <div className='flex flex-wrap gap-3'>
-        <Button onPress={handleOpen}>Open 3xl</Button>
-      </div>
-
-      <Modal size='3xl' isOpen={isOpen} onClose={onClose}>
+      {/* Modal hiển thị thông tin chi tiết */}
+      <Modal size='3xl' isOpen={isOpen} onClose={handleClose}>
         <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className='flex flex-col gap-1'>Modal Title</ModalHeader>
-              <ModalBody>
+          <ModalHeader className='flex flex-col gap-1'>{isEditMode ? 'Edit Semester' : 'Semester Details'}</ModalHeader>
+          <ModalBody>
+            {selectedItem && (
+              <>
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam pulvinar risus non risus hendrerit
-                  venenatis. Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                  <strong>Semester:</strong>{' '}
+                  {isEditMode ? (
+                    <Input
+                      value={selectedItem.semester}
+                      onChange={(e) => handleInputChange('semester', e.target.value)}
+                    />
+                  ) : (
+                    selectedItem.semester
+                  )}
                 </p>
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam pulvinar risus non risus hendrerit
-                  venenatis. Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                  <strong>Start Date:</strong>{' '}
+                  {isEditMode ? (
+                    <Input
+                      value={selectedItem.startDate}
+                      onChange={(e) => handleInputChange('startDate', e.target.value)}
+                    />
+                  ) : (
+                    formatDate(selectedItem.startDate)
+                  )}
                 </p>
                 <p>
-                  Magna exercitation reprehenderit magna aute tempor cupidatat consequat elit dolor adipisicing. Mollit
-                  dolor eiusmod sunt ex incididunt cillum quis. Velit duis sit officia eiusmod Lorem aliqua enim laboris
-                  do dolor eiusmod.
+                  <strong>End Date:</strong>{' '}
+                  {isEditMode ? (
+                    <Input
+                      value={selectedItem.endDate}
+                      onChange={(e) => handleInputChange('endDate', e.target.value)}
+                    />
+                  ) : (
+                    formatDate(selectedItem.endDate)
+                  )}
                 </p>
-              </ModalBody>
-              <ModalFooter>
-                <Button color='danger' variant='light' onPress={onClose}>
-                  Close
-                </Button>
-                <Button color='primary' onPress={onClose}>
-                  Action
-                </Button>
-              </ModalFooter>
-            </>
-          )}
+                <p>
+                  <strong>Status:</strong>{' '}
+                  {isEditMode ? (
+                    <Input value={selectedItem.status} onChange={(e) => handleInputChange('status', e.target.value)} />
+                  ) : (
+                    selectedItem.status
+                  )}
+                </p>
+              </>
+            )}
+          </ModalBody>
+          <ModalFooter>
+            <Button color='danger' variant='light' onPress={handleClose}>
+              Close
+            </Button>
+            {isEditMode && (
+              <Button color='primary' onPress={handleSave}>
+                Save
+              </Button>
+            )}
+          </ModalFooter>
         </ModalContent>
       </Modal>
     </div>
