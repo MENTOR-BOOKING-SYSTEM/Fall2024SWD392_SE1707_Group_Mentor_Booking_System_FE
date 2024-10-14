@@ -139,6 +139,7 @@ export default function Semesters() {
               </TableColumn>
             )}
           </TableHeader>
+
           <TableBody items={rows}>
             {(item) => (
               <TableRow key={item.key} className='hover:bg-gray-50 transition duration-200 text-center'>
@@ -229,10 +230,12 @@ export default function Semesters() {
               </>
             )}
           </ModalBody>
+
           <ModalFooter>
             <Button color='danger' variant='light' onPress={handleClose}>
               Close
             </Button>
+
             {isEditMode && (
               <Button color='primary' onPress={handleSave}>
                 Save
