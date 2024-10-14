@@ -41,8 +41,8 @@ export const STUDENT_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = [
   },
   {
     id: 6,
-    title: 'Se',
-    value: 'se',
+    title: 'Semester',
+    value: 'semester',
     url: PRIVATE_ROUTES.SEMESTER,
     icon: (className?: string) => <Users className={className} />
   }

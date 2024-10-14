@@ -14,5 +14,5 @@ export const PRIVATE_ROUTES = {
   CALENDAR: '/:projectId/calendar',
   BACKLOG: '/:projectId/backlog',
   MEMBERS: '/:projectId/members',
-  SEMESTER: '/:semesterId/timestamp'
+  SEMESTER: '/semesters'
 }
