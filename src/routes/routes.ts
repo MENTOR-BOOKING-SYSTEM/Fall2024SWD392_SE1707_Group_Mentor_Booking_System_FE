@@ -44,5 +44,9 @@ export const PRIVATE_ROUTES: Route = {
   SUBMIT_PROJECT: {
     path: '/submit-project',
     bcLabel: 'Submit project'
+  },
+  SEMESTERS: {
+    path: '/semesters',
+    bcLabel: 'semesters'
   }
 }

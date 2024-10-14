@@ -14,6 +14,7 @@ import AuthRedirect from '@/pages/auth-redirect'
 
 import { createBrowserRouter } from 'react-router-dom'
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './routes'
+import Semesters from '@/pages/semesters'
 
 export const routes = createBrowserRouter([
   {
@@ -83,6 +84,14 @@ export const routes = createBrowserRouter([
               {
                 path: PRIVATE_ROUTES.MEMBERS.path,
                 element: <div>Members</div>
+              },
+              {
+                path: PRIVATE_ROUTES.MEMBERS.path,
+                element: <div>Members</div>
+              },
+              {
+                path: PRIVATE_ROUTES.SEMESTERS.path,
+                element: <Semesters />
               }
             ]
           },
