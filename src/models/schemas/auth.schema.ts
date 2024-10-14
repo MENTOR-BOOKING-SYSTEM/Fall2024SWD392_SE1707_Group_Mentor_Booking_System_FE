@@ -57,4 +57,8 @@ export const forgotPasswordSchema = z.object({
   email: z.string().email({ message: 'Email is invalid' })
 })
 
+export const urlSchema = z.object({
+  url: z.union([z.string().url({ message: 'URL is invalid' }), z.string().length(0)]).optional()
+})
+
 export const resetPwdSchema = passwordsSchema

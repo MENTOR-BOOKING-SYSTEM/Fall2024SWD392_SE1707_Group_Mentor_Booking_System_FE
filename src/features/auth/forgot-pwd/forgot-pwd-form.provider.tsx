@@ -1,15 +1,15 @@
 import AuthIcons from '../components/auth-icons'
 import ForgotPwdForm from './forgot-pwd-form'
 import Button from '@/components/ui/button'
-import { FormProvider } from 'react-hook-form'
-import { ForgotPasswordFormValues, useForgotPwd } from './use-forgot-pwd'
+import { FormProvider, SubmitHandler } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { PUBLIC_ROUTES } from '@/routes/routes'
+import { type ForgotPasswordFormValues, useForgotPwd } from './use-forgot-pwd'
 
 export default function ForgotPwdFormProvider() {
   const { forgotPwdMutation, methods } = useForgotPwd()
 
-  const onSubmit = (data: ForgotPasswordFormValues) => {
+  const onSubmit: SubmitHandler<ForgotPasswordFormValues> = (data) => {
     forgotPwdMutation.mutate(data)
   }
 

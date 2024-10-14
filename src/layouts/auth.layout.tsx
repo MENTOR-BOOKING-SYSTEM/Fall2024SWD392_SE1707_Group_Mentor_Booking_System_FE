@@ -8,7 +8,7 @@ export default function AuthLayout() {
   const { isAuth } = useAuth()
 
   if (isAuth) {
-    return <Navigate to={PRIVATE_ROUTES.ROOT} replace />
+    return <Navigate to={PRIVATE_ROUTES.ROOT.path} replace />
   }
 
   return (

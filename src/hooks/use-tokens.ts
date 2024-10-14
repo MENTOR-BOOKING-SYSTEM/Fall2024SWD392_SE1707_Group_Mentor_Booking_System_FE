@@ -1,18 +1,24 @@
 import { jwtDecode, JwtPayload } from 'jwt-decode'
 
-export const useTokens = (tokens: string[], isReturnPayload?: boolean) => {
+export interface Token extends JwtPayload {
+  user_id: string
+  token_type: number
+  email: string
+}
+
+export const useTokens = (tokens: string[], isReturnPayload?: boolean): (undefined | Token)[] => {
   try {
-    const result: (boolean | JwtPayload)[] = []
+    const result: (undefined | Token)[] = []
     tokens.forEach((token) => {
-      const decodedToken = jwtDecode(token)
+      const decodedToken = jwtDecode<Token>(token)
       const currentTime = Date.now() / 1000
       if (decodedToken && decodedToken?.exp && decodedToken?.exp < currentTime) {
-        result.push(false)
+        result.push(undefined)
       } else {
         if (isReturnPayload) {
           result.push(decodedToken)
         } else {
-          result.push(true)
+          result.push(undefined)
         }
       }
     })

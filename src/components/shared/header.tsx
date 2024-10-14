@@ -1,26 +1,34 @@
 import Dropdown from '../ui/dropdown'
 import Meetup from '/meetup.svg'
 import Modal from '../ui/modal'
+import Button from '../ui/button'
 import { Avatar } from '@nextui-org/avatar'
 import { Input } from '@nextui-org/input'
-import { Bell, Search } from 'lucide-react'
-import { PROFILE_DROPDOWN_MENU_ITEMS } from '@/constants/menu-items'
+import { Bell, CirclePlus, Search } from 'lucide-react'
+import { ProfileDropdownMenuItems } from '@/constants/menu-items'
 import { Divider } from '@nextui-org/divider'
 import { Link } from 'react-router-dom'
 import { PRIVATE_ROUTES } from '@/routes/routes'
+import { useLogout } from '@/features/auth/logout/use-logout'
 
 export default function Header() {
+  const { mutate: logout } = useLogout()
+
   return (
     <div className='flex flex-col'>
       <div className='flex justify-between items-center gap-3 px-3.5 h-16'>
-        <Link to={PRIVATE_ROUTES.ROOT}>
+        <Link to={PRIVATE_ROUTES.ROOT.path}>
           <div className='flex items-center gap-1.5'>
             <img src={Meetup} alt='Meetup' className='w-12 h-12' />
             <p className='font-squada font-semibold text-2xl tracking-wider text-default-800'>Meetup</p>
           </div>
         </Link>
         <div className='flex items-center gap-2'>
-          <Modal>Create</Modal>
+          <Modal body={<>This is body</>} onSubmit={() => {}}>
+            <Button color='primary' startContent={<CirclePlus className='w-4 h-4' />}>
+              Create
+            </Button>
+          </Modal>
           <Input
             type='text'
             placeholder='you@example.com'
@@ -31,7 +39,7 @@ export default function Header() {
           <Dropdown dropdownItems={[]}>
             <Bell className='text-default-400 cursor-pointer stroke-1' />
           </Dropdown>
-          <Dropdown dropdownItems={PROFILE_DROPDOWN_MENU_ITEMS}>
+          <Dropdown dropdownItems={ProfileDropdownMenuItems(logout)}>
             <Avatar
               className='cursor-pointer'
               isBordered

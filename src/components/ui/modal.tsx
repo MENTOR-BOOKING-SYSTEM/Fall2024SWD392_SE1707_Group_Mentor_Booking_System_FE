@@ -1,55 +1,83 @@
 import Button from './button'
-import {
-  Modal as NextModal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  useDisclosure,
-  Checkbox,
-  Input,
-  Link
-} from '@nextui-org/react'
+import { ModalBody, ModalContent, ModalFooter, ModalHeader, Modal as NextModal, useDisclosure } from '@nextui-org/react'
+import { FieldValues, FormProvider, SubmitHandler, UseFormReturn } from 'react-hook-form'
 
-export default function Modal({ children }: { children: React.ReactNode }) {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure()
+interface ModalProps<T extends FieldValues> {
+  header?: string
+  body: React.ReactNode
+  footer?: React.ReactNode
+  children: React.ReactNode
+  onSubmit: SubmitHandler<T>
+  methods?: UseFormReturn<T>
+}
+
+export interface ModalRef {
+  onClose: () => void
+}
+
+export default function Modal<T extends FieldValues>({
+  header,
+  body,
+  footer,
+  children,
+  methods,
+  onSubmit
+}: ModalProps<T>) {
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
+
+  const handleClose = () => {
+    onClose()
+    if (methods) {
+      methods.reset()
+    }
+  }
+
+  const content = methods ? (
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(onSubmit)}>
+        <ModalBody>{body}</ModalBody>
+        <ModalFooter>
+          {footer || (
+            <>
+              <Button color='danger' variant='flat' onPress={handleClose}>
+                Close
+              </Button>
+              <Button color='primary' type='submit'>
+                Save
+              </Button>
+            </>
+          )}
+        </ModalFooter>
+      </form>
+    </FormProvider>
+  ) : (
+    <>
+      <ModalBody>{body}</ModalBody>
+      <ModalFooter>
+        {footer || (
+          <Button color='primary' onPress={onClose}>
+            Close
+          </Button>
+        )}
+      </ModalFooter>
+    </>
+  )
 
   return (
     <>
-      <Button onPress={onOpen} color='primary'>
-        {children}
-      </Button>
-      <NextModal backdrop='blur' isOpen={isOpen} onOpenChange={onOpenChange} placement='top-center'>
+      <div onClick={onOpen}>{children}</div>
+      <NextModal
+        className='modal-dialog'
+        backdrop='blur'
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        placement='top-center'
+      >
         <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className='flex flex-col gap-1'>Log in</ModalHeader>
-              <ModalBody>
-                <Input autoFocus label='Email' placeholder='Enter your email' variant='bordered' />
-                <Input label='Password' placeholder='Enter your password' type='password' variant='bordered' />
-                <div className='flex py-2 px-1 justify-between'>
-                  <Checkbox
-                    classNames={{
-                      label: 'text-small'
-                    }}
-                  >
-                    Remember me
-                  </Checkbox>
-                  <Link color='primary' href='#' size='sm'>
-                    Forgot password?
-                  </Link>
-                </div>
-              </ModalBody>
-              <ModalFooter>
-                <Button color='danger' variant='flat' onPress={onClose}>
-                  Close
-                </Button>
-                <Button color='primary' onPress={onClose}>
-                  Sign in
-                </Button>
-              </ModalFooter>
-            </>
-          )}
+          <>
+            <ModalHeader className='flex flex-col gap-1'>{header}</ModalHeader>
+            {content}
+          </>
         </ModalContent>
       </NextModal>
     </>

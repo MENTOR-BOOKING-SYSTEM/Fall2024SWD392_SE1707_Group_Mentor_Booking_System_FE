@@ -1,40 +1,41 @@
 import FormError from './form-error'
-import { Checkbox, Input, Select, SelectItem } from '@nextui-org/react'
+import { Checkbox, Input } from '@nextui-org/react'
 import { EyeIcon, EyeOff } from 'lucide-react'
-import { useState } from 'react'
-import type { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form'
+import { ComponentProps, ElementType, useState } from 'react'
+import { Control, Controller, Path, type FieldErrors, type FieldValues } from 'react-hook-form'
 
-type FormGeneratorProps = {
+interface FormGeneratorProps<T extends FieldValues> {
   type: 'text' | 'password' | 'email'
-  inputType: 'input' | 'select' | 'textarea' | 'checkbox'
-  options?: { value: string; label: string; id: string }[]
+  inputType: 'input' | 'textarea' | 'checkbox' | 'select' | 'custom'
   label?: string
-  placeholder: string
-  register: UseFormRegister<any>
-  name: string
-  errors: FieldErrors<FieldValues>
-  form?: string
+  placeholder?: string
+  control: Control<T>
+  name: Path<T>
+  errors: FieldErrors<T>
   defaultValue?: string
   autoFocus?: boolean
   optional?: boolean
   className?: string
+  isDisabled?: boolean
+  component?: ComponentProps<ElementType>
 }
 
-export default function FormGenerator({
+export default function FormGenerator<T extends FieldValues>({
   type,
   inputType,
-  options,
   label,
   placeholder,
-  register,
   name,
   errors,
-  form,
   defaultValue,
   autoFocus,
   optional,
-  className
-}: FormGeneratorProps) {
+  className,
+  isDisabled,
+  control,
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  component: Component = Input
+}: FormGeneratorProps<T>) {
   const [isShowPassword, setIsShowPassword] = useState(true)
 
   const handleTogglePassword = () => {
@@ -45,52 +46,78 @@ export default function FormGenerator({
     case 'checkbox':
       return (
         <label className='flex items-center gap-2' htmlFor={`select-${label}`}>
-          <Checkbox className={className} id={`select-${label}`} {...register(name)} />
-          {label}
+          <Controller
+            control={control}
+            name={name}
+            render={({ field: { onChange, ref } }) => (
+              <>
+                <Checkbox className={className} id={`select-${label}`} onChange={onChange} ref={ref} />
+                {label}
+              </>
+            )}
+          />
         </label>
       )
     case 'select':
       return (
-        <label htmlFor={`select-${label}`}>
-          {label}
-          <Select className={className}>
-            {options
-              ? options?.map((option) => (
-                  <SelectItem key={option.id} value={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))
-              : []}
-          </Select>
-          <FormError errors={errors} identifier={name} />
-        </label>
-      )
-    default:
-      return (
-        <label className='flex flex-col gap-2 relative' htmlFor={`input-${label}`}>
-          <div className='flex items-center gap-2'>
-            <p className='font-semibold'>{label}</p>
-            {optional && <p className='text-xs font-normal text-muted-foreground'>optional</p>}
-          </div>
-          <Input
-            id={`input-${label}`}
-            type={type === 'password' ? (isShowPassword ? 'password' : 'text') : type}
-            placeholder={placeholder}
-            form={form}
-            defaultValue={defaultValue}
-            className={className}
-            autoFocus={autoFocus}
-            endContent={
-              type === 'password' ? (
-                <button type='button' onClick={handleTogglePassword}>
-                  {isShowPassword ? <EyeOff className='w-5 h-5' /> : <EyeIcon className='w-5 h-5' />}
-                </button>
-              ) : null
-            }
-            {...register(name)}
+        <label className='flex items-center gap-2' htmlFor={`select-${label}`}>
+          <Controller
+            control={control}
+            name={name}
+            render={({ field: { onChange, ref } }) => (
+              <>
+                <Checkbox className={className} id={`select-${label}`} onChange={onChange} ref={ref} />
+                {label}
+              </>
+            )}
           />
-          <FormError errors={errors} identifier={name} />
         </label>
       )
+    case 'input':
+      return (
+        <Controller
+          control={control}
+          name={name}
+          render={({ field: { onChange, ref } }) => (
+            <label className='flex flex-col gap-2 relative' htmlFor={`input-${label}`}>
+              <div className='flex items-center gap-2'>
+                <p className='font-semibold'>{label}</p>
+                {optional && <p className='text-xs font-normal text-muted-foreground'>optional</p>}
+              </div>
+              <Input
+                id={`input-${label}`}
+                ref={ref}
+                defaultValue={defaultValue}
+                type={type === 'password' ? (isShowPassword ? 'password' : 'text') : type}
+                placeholder={placeholder}
+                className={className}
+                autoFocus={autoFocus}
+                isDisabled={isDisabled}
+                onChange={onChange}
+                endContent={
+                  type === 'password' ? (
+                    <button type='button' onClick={handleTogglePassword}>
+                      {isShowPassword ? <EyeOff className='w-5 h-5' /> : <EyeIcon className='w-5 h-5' />}
+                    </button>
+                  ) : null
+                }
+              />
+              <FormError errors={errors} identifier={name} />
+            </label>
+          )}
+        />
+      )
+    // default:
+    //   return (
+    //     <Controller
+    //       control={control}
+    //       name={name}
+    //       render={({ field: { onChange, ref } }) => (
+    //         <div>
+    //           <Component ref={ref} onChange={onChange} />
+    //         </div>
+    //       )}
+    //     />
+    //   )
   }
 }
