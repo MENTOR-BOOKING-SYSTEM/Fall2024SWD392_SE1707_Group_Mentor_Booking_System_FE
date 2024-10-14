@@ -17,16 +17,17 @@ import {
 } from '@nextui-org/react'
 
 const formatDate = (dateString: string) => {
-  const [month, day, year] = dateString.split('/')
+  const [year, month, day] = dateString.split('/')
   return `${day}/${month}/${year}`
 }
+
 interface Semester {
   id: number
   key: string
   semester: string
   startDate: string
   endDate: string
-  status: string
+  status?: string // status calculated dynamically
 }
 
 const rows: Semester[] = [
@@ -34,38 +35,44 @@ const rows: Semester[] = [
     id: 1,
     key: '1',
     semester: 'Semester 1',
-    startDate: '10/01/2024',
-    endDate: '10/10/2024',
-    status: 'Finished'
+    startDate: '2024/01/01',
+    endDate: '2024/04/15'
   },
   {
     id: 2,
     key: '2',
     semester: 'Semester 2',
-    startDate: '10/11/2024',
-    endDate: '10/20/2024',
-    status: 'Current'
+    startDate: '2024/05/01',
+    endDate: '2024/08/31'
   },
   {
     id: 3,
     key: '3',
     semester: 'Semester 3',
-    startDate: '10/21/2025',
-    endDate: '10/25/2023',
-    status: 'Upcoming'
+    startDate: '2025/01/01',
+    endDate: '2025/04/15'
   },
   {
     id: 4,
     key: '4',
     semester: 'Semester 4',
-    startDate: '01/01/2026',
-    endDate: '01/12/2026',
-    status: 'Upcoming'
+    startDate: '2026/01/01',
+    endDate: '2026/04/15'
   }
 ]
 
-const validateDates = (startDate: string | number | Date, endDate: string | number | Date) => {
-  return new Date(endDate) > new Date(startDate)
+const calculateStatus = (startDate: string, endDate: string) => {
+  const today = new Date()
+  const start = new Date(startDate)
+  const end = new Date(endDate)
+
+  if (today < start) {
+    return 'Upcoming'
+  } else if (today > end) {
+    return 'Finished'
+  } else {
+    return 'Current'
+  }
 }
 
 const columns = [
@@ -96,7 +103,6 @@ const columns = [
 ]
 
 export default function Semesters() {
-  // Định nghĩa selectedItem là Semester hoặc null
   const [selectedItem, setSelectedItem] = useState<Semester | null>(null)
   const [isOpen, setIsOpen] = useState(false)
   const [isEditMode, setIsEditMode] = useState(false)
@@ -114,7 +120,6 @@ export default function Semesters() {
   }
 
   const handleSave = () => {
-    //lưu lại thông tin đã chỉnh sửa
     console.log('Saved', selectedItem)
     setIsOpen(false)
   }
@@ -148,12 +153,6 @@ export default function Semesters() {
                     {columnKey === 'action' ? (
                       <div className='flex justify-center space-x-2'>
                         <span
-                          className='text-blue-500 cursor-pointer hover:underline'
-                          onClick={() => handleOpen(item, false)}
-                        >
-                          View
-                        </span>
-                        <span
                           className='text-green-500 cursor-pointer hover:underline'
                           onClick={() => handleOpen(item, true)}
                         >
@@ -163,11 +162,9 @@ export default function Semesters() {
                     ) : columnKey === 'startDate' ? (
                       formatDate(item.startDate)
                     ) : columnKey === 'endDate' ? (
-                      !validateDates(item.startDate, item.endDate) ? (
-                        <span className='text-red-500'>Invalid Date</span>
-                      ) : (
-                        formatDate(item.endDate)
-                      )
+                      formatDate(item.endDate)
+                    ) : columnKey === 'status' ? (
+                      calculateStatus(item.startDate, item.endDate)
                     ) : (
                       getKeyValue(item, columnKey)
                     )}
@@ -220,12 +217,7 @@ export default function Semesters() {
                   )}
                 </p>
                 <p>
-                  <strong>Status:</strong>{' '}
-                  {isEditMode ? (
-                    <Input value={selectedItem.status} onChange={(e) => handleInputChange('status', e.target.value)} />
-                  ) : (
-                    selectedItem.status
-                  )}
+                  <strong>Status:</strong> {calculateStatus(selectedItem.startDate, selectedItem.endDate)}
                 </p>
               </>
             )}

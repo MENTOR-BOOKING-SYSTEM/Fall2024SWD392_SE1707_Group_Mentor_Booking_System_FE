@@ -30,3 +30,14 @@ export interface GetAllTechsAPIResponse {
     parentID: string | null
   }[]
 }
+
+export interface GetAllSemesterResponse {
+  message: string
+  result: {
+    semesterID: string
+    semesterName: string
+    startDate: string
+    endDate: string
+    desc: string
+  }[]
+}
