@@ -1,7 +1,7 @@
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip } from '@nextui-org/react'
 import { format } from 'date-fns'
-import { EyeIcon } from 'lucide-react'
-
+import { EyeIcon } from '@/components/icon/eye-icon'
+import { EditIcon } from '@/components/icon/edit-icon'
 interface ISemester {
   semesterID: number
   semesterName: string
@@ -16,14 +16,14 @@ const semesters: ISemester[] = [
     semesterName: 'SPRING2024',
     startDate: '2023-12-31T17:00:00.000Z',
     endDate: '2024-04-21T17:00:00.000Z',
-    description: null
+    description: 'This is a very long description for testing purposes.'
   },
   {
     semesterID: 42,
     semesterName: 'SUMMER2024',
     startDate: '2024-04-22T17:00:00.000Z',
     endDate: '2024-08-12T17:00:00.000Z',
-    description: null
+    description: 'Short desc'
   },
   {
     semesterID: 43,
@@ -65,16 +65,21 @@ const formatDate = (dateString: string | number | Date) => {
   return format(new Date(dateString), 'dd/MM/yyyy')
 }
 
+const truncateText = (text: string, maxLength: number) => {
+  return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text
+}
+
 export default function App() {
   return (
     <Table aria-label='Semester Table'>
       <TableHeader>
-        <TableColumn className='text-center'>ID</TableColumn>
+        <TableColumn className='text-left'>ID</TableColumn>
         <TableColumn className='text-center'>Semester</TableColumn>
         <TableColumn className='text-center'>Start Date</TableColumn>
         <TableColumn className='text-center'>End Date</TableColumn>
         <TableColumn className='text-center'>Description</TableColumn>
         <TableColumn className='text-center'>Status</TableColumn>
+        <TableColumn className='text-center'>Actions</TableColumn>
       </TableHeader>
       <TableBody>
         {semesters.map((semester) => {
@@ -82,22 +87,31 @@ export default function App() {
           const color = getColor(status)
 
           return (
-            <TableRow key={semester.semesterID} className='hover:bg-gray-100 '>
-              <TableCell className='text-center'>{semester.semesterID}</TableCell>
-              <TableCell className='text-center'>{semester.semesterName}</TableCell>
-              <TableCell className='text-center'>{formatDate(semester.startDate)}</TableCell>
-              <TableCell className='text-center'>{formatDate(semester.endDate)}</TableCell>
-              <TableCell className='text-center'>{semester.description ? semester.description : '_'}</TableCell>
-              <TableCell className='text-center'>
+            <TableRow key={semester.semesterID}>
+              <TableCell className='text-left hover:bg-gray-100 hover:rounded-lg'>{semester.semesterID}</TableCell>
+              <TableCell className='text-center hover:bg-gray-100 hover:rounded-lg'>{semester.semesterName}</TableCell>
+              <TableCell className='text-center hover:bg-gray-100 hover:rounded-lg'>
+                {formatDate(semester.startDate)}
+              </TableCell>
+              <TableCell className='text-center hover:bg-gray-100 hover:rounded-lg'>
+                {formatDate(semester.endDate)}
+              </TableCell>
+              <TableCell className='text-center hover:bg-gray-100 hover:rounded-lg'>
+                {semester.description ? truncateText(semester.description, 10) : '_'}
+              </TableCell>
+              <TableCell className='text-center hover:bg-gray-100 hover:rounded-lg'>
                 <Chip color={color} variant='flat' className='capitalize'>
                   {status}
                 </Chip>
               </TableCell>
-              {/* <TableCell>
-                <span>
+              <TableCell className='text-center'>
+                <button className='mx-2'>
                   <EyeIcon />
-                </span>
-              </TableCell> */}
+                </button>
+                <button className='mx-2'>
+                  <EditIcon />
+                </button>
+              </TableCell>
             </TableRow>
           )
         })}
