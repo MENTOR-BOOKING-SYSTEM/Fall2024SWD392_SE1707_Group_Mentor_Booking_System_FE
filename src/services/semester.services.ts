@@ -1,9 +1,9 @@
 import axiosInstance from '@/lib/axios/axios'
-import { GetAllSemesterResponse, GetAllTechsAPIResponse } from '@/models/api/res.model'
+import { GetAllSemestersResponse } from '@/models/api/res.model'
 
 class SemesterService {
-  async getAllSemester() {
-    const { data } = await axiosInstance.get<GetAllSemesterResponse>('semester')
+  async getAllSemesters() {
+    const { data } = await axiosInstance.get<GetAllSemestersResponse>('semester')
     return data.result
   }
 }

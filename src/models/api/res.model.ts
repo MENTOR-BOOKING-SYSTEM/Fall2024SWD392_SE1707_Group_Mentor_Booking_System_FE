@@ -31,7 +31,7 @@ export interface GetAllTechsAPIResponse {
   }[]
 }
 
-export interface GetAllSemesterResponse {
+export interface GetAllSemestersResponse {
   message: string
   result: {
     semesterID: string

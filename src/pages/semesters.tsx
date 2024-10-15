@@ -1,6 +1,5 @@
-// Semesters.tsx
 import React, { useState } from 'react'
-import SemesterTable from '@/features/semester/semester-table'
+import SemesterTable from '@/features/semester/get-all-semester/semester-table'
 import SemesterModal from '@/features/semester/semester-modal'
 
 const formatDate = (dateString: string) => {
