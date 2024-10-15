@@ -1,9 +1,12 @@
 import { AuthModel } from '@/models/base.model'
 import { useLocalStorage } from 'usehooks-ts'
-import { useTokens } from './use-token'
+import { Token, useTokens } from './use-tokens'
 
-export const useAuth = () => {
+export const useAuth = (): { isAuth: boolean; user: Token | undefined } => {
   const [auth] = useLocalStorage<AuthModel>('auth', { accessToken: '', refreshToken: '' })
+
+  if (!auth.accessToken && !auth.refreshToken) return { isAuth: false, user: undefined }
+
   const tokens = useTokens([auth.accessToken, auth.refreshToken], true)
 
   if (tokens.length > 0 && tokens[0] && tokens[1]) {

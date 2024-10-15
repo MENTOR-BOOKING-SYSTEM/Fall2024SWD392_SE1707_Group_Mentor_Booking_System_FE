@@ -5,3 +5,28 @@ export interface LoginAPIResponse {
     refreshToken: string
   }
 }
+
+export interface LogoutAPIResponse {
+  message: string
+}
+
+export interface ForgotPwdAPIResponse {
+  message: string
+}
+
+export interface VerifyCodeAPIResponse {
+  message: string
+}
+
+export interface ResetPwdAPIResponse {
+  message: string
+}
+
+export interface GetAllTechsAPIResponse {
+  message: string
+  result: {
+    techID: string
+    techName: string
+    parentID: string | null
+  }[]
+}

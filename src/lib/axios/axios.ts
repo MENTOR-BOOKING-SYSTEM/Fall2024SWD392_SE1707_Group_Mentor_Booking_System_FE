@@ -51,7 +51,6 @@ export class Http {
     this.instance.interceptors.response.use(
       (response) => {
         const { url } = response.config
-
         if (url === URL_LOGIN || url === URL_REGISTER) {
           const data = response.data as AuthResponse
           this.accessToken = data.result.accessToken
@@ -119,7 +118,6 @@ export class Http {
       throw error;
     }
   }
-
 }
 const http = new Http().instance
 export default http
