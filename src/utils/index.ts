@@ -1,6 +1,7 @@
 import { twMerge } from 'tailwind-merge'
 import { Route } from '@/models/base.model'
 import { type ClassValue, clsx } from 'clsx'
+import { Token } from '@/hooks/use-tokens'
 
 /**
  * Hàm giúp nối các className Tailwind lại với nhau
@@ -57,3 +58,6 @@ export const generateBreadcrumbLabels = (routes: Route) => {
     {} as { [key: string]: string }
   )
 }
+
+export const isAllowRoles = (roles: string[], user: Token | undefined) =>
+  user?.role.some((role) => roles.includes(role))

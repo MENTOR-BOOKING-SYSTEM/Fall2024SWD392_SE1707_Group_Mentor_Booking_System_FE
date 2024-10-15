@@ -1,9 +1,9 @@
 import { PRIVATE_ROUTES } from '@/routes/routes'
-import { CalendarDays, ChartBarBig, Columns3, Database, LogOut, Settings, User, Users } from 'lucide-react'
+import { CalendarDays, ChartBarBig, Clock, Columns3, Database, LogOut, Settings, User, Users } from 'lucide-react'
 import type { DropdownMenuItem, SidebarMenuItem } from '@/models/ui.model'
 
 // Sidebar
-export const STUDENT_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = [
+export const IS_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = [
   {
     id: 1,
     title: 'Timeline',
@@ -41,9 +41,15 @@ export const STUDENT_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = [
   }
 ]
 
-export const MENTOR_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = []
-export const ADMIN_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = []
-export const BUSINESS_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = []
+export const BS_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = [
+  {
+    id: 1,
+    title: 'Submission',
+    value: 'submission',
+    url: PRIVATE_ROUTES.SUBMISSION.path,
+    icon: (className?: string) => <Clock className={className} />
+  }
+]
 
 // Dropdown
 export const ProfileDropdownMenuItems = (logout: () => void): DropdownMenuItem[] => [

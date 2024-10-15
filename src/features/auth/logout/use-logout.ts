@@ -8,7 +8,7 @@ import { useLocalStorage } from 'usehooks-ts'
 
 export const useLogout = () => {
   const navigate = useNavigate()
-  const [auth, _setAuth, removeAuth] = useLocalStorage<AuthModel>('auth', { accessToken: '', refreshToken: '' })
+  const [auth] = useLocalStorage<AuthModel>('auth', { accessToken: '', refreshToken: '' })
 
   return useMutation({
     mutationFn: () => authService.logout(auth.refreshToken),
@@ -16,7 +16,7 @@ export const useLogout = () => {
       toaster.success({
         text: 'Logged out successfully'
       })
-      removeAuth()
+      localStorage.clear()
       navigate(PUBLIC_ROUTES.LOGIN)
     },
     onError: () => {
