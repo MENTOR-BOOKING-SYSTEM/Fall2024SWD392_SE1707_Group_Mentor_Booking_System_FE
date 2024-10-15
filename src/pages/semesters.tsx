@@ -1,125 +1,107 @@
-import React, { useState } from 'react'
-import SemesterTable from '@/features/semester/get-all-semester/semester-table'
-import SemesterModal from '@/features/semester/semester-modal'
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip } from '@nextui-org/react'
+import { format } from 'date-fns'
+import { EyeIcon } from 'lucide-react'
 
-const formatDate = (dateString: string) => {
-  const [year, month, day] = dateString.split('/')
-  return `${day}/${month}/${year}`
-}
-
-interface Semester {
-  id: number
-  key: string
-  semester: string
+interface ISemester {
+  semesterID: number
+  semesterName: string
   startDate: string
   endDate: string
-  desc: string
+  description: string | null
 }
 
-const rows: Semester[] = [
+const semesters: ISemester[] = [
   {
-    id: 1,
-    key: '1',
-    semester: 'Spring2024',
-    startDate: '2024/01/01',
-    endDate: '2024/04/15',
-    desc: 'Test semester'
+    semesterID: 1,
+    semesterName: 'SPRING2024',
+    startDate: '2023-12-31T17:00:00.000Z',
+    endDate: '2024-04-21T17:00:00.000Z',
+    description: null
   },
   {
-    id: 2,
-    key: '2',
-    semester: 'Summer2024',
-    startDate: '2024/05/01',
-    endDate: '2024/08/31',
-    desc: 'Test semester'
+    semesterID: 42,
+    semesterName: 'SUMMER2024',
+    startDate: '2024-04-22T17:00:00.000Z',
+    endDate: '2024-08-12T17:00:00.000Z',
+    description: null
   },
   {
-    id: 3,
-    key: '3',
-    semester: 'Spring2025',
-    startDate: '2025/01/01',
-    endDate: '2025/04/15',
-    desc: 'Test semester'
+    semesterID: 43,
+    semesterName: 'FALL2024',
+    startDate: '2024-08-13T17:00:00.000Z',
+    endDate: '2024-12-03T17:00:00.000Z',
+    description: null
   }
 ]
 
-const columns = [
-  {
-    key: 'id',
-    label: 'ID'
-  },
-  {
-    key: 'semester',
-    label: 'SEMESTER'
-  },
-  {
-    key: 'startDate',
-    label: 'START DATE'
-  },
-  {
-    key: 'endDate',
-    label: 'END DATE'
-  },
-  {
-    key: 'desc',
-    label: 'DESCRIPTION'
-  },
-  {
-    key: 'action',
-    label: 'ACTIONS'
+const getStatus = (startDate: string | number | Date, endDate: string | number | Date) => {
+  const now = new Date()
+  const start = new Date(startDate)
+  const end = new Date(endDate)
+
+  if (now < start) {
+    return 'Upcoming'
+  } else if (now > end) {
+    return 'Finished'
+  } else {
+    return 'Current'
   }
-]
+}
 
-export default function Semesters() {
-  const [selectedItem, setSelectedItem] = useState<Semester | null>(null)
-  const [isOpen, setIsOpen] = useState(false)
-  const [isEditMode, setIsEditMode] = useState(false)
-
-  const handleOpen = (item: Semester, editMode: boolean) => {
-    setSelectedItem(item)
-    setIsEditMode(editMode)
-    setIsOpen(true)
+const getColor = (status: string) => {
+  switch (status) {
+    case 'Current':
+      return 'success'
+    case 'Finished':
+      return 'warning'
+    case 'Upcoming':
+      return 'primary'
+    default:
+      return 'default'
   }
+}
 
-  const handleClose = () => {
-    setIsOpen(false)
-    setSelectedItem(null)
-    setIsEditMode(false)
-  }
+const formatDate = (dateString: string | number | Date) => {
+  return format(new Date(dateString), 'dd/MM/yyyy')
+}
 
-  const handleSave = () => {
-    console.log('Saved', selectedItem)
-    setIsOpen(false)
-  }
-
-  const handleInputChange = (key: keyof Semester, value: string) => {
-    if (selectedItem) {
-      setSelectedItem({
-        ...selectedItem,
-        [key]: value
-      })
-    }
-  }
-
+export default function App() {
   return (
-    <div>
-      <SemesterTable
-        rows={rows}
-        columns={columns}
-        handleOpen={handleOpen}
-        formatDate={formatDate}
-        calculateStatus={() => 'Current'} // Dummy calculateStatus function
-      />
+    <Table aria-label='Semester Table'>
+      <TableHeader>
+        <TableColumn className='text-center'>ID</TableColumn>
+        <TableColumn className='text-center'>Semester</TableColumn>
+        <TableColumn className='text-center'>Start Date</TableColumn>
+        <TableColumn className='text-center'>End Date</TableColumn>
+        <TableColumn className='text-center'>Description</TableColumn>
+        <TableColumn className='text-center'>Status</TableColumn>
+      </TableHeader>
+      <TableBody>
+        {semesters.map((semester) => {
+          const status = getStatus(semester.startDate, semester.endDate)
+          const color = getColor(status)
 
-      <SemesterModal
-        isOpen={isOpen}
-        isEditMode={isEditMode}
-        selectedItem={selectedItem}
-        handleClose={handleClose}
-        handleSave={handleSave}
-        handleInputChange={handleInputChange}
-        formatDate={formatDate}
-      />
-    </div>
+          return (
+            <TableRow key={semester.semesterID} className='hover:bg-gray-100 '>
+              <TableCell className='text-center'>{semester.semesterID}</TableCell>
+              <TableCell className='text-center'>{semester.semesterName}</TableCell>
+              <TableCell className='text-center'>{formatDate(semester.startDate)}</TableCell>
+              <TableCell className='text-center'>{formatDate(semester.endDate)}</TableCell>
+              <TableCell className='text-center'>{semester.description ? semester.description : '_'}</TableCell>
+              <TableCell className='text-center'>
+                <Chip color={color} variant='flat' className='capitalize'>
+                  {status}
+                </Chip>
+              </TableCell>
+              {/* <TableCell>
+                <span>
+                  <EyeIcon />
+                </span>
+              </TableCell> */}
+            </TableRow>
+          )
+        })}
+      </TableBody>
+    </Table>
   )
 }
