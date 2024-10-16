@@ -4,7 +4,7 @@ import { CreateSemestersResponse, GetAllSemestersResponse, GetCurrentPhaseAPIRes
 
 class SemesterService {
   async getAllSemesters() {
-    const { data } = await axiosInstance.get<GetAllSemestersResponse>('semesters/all')
+    const { data } = await axiosInstance.get<GetAllSemestersResponse>('/semesters/all')
     console.log(data)
     return data.result
   }
@@ -15,7 +15,7 @@ class SemesterService {
     endDate: string
     description: string | null
   }) {
-    const { data } = await axiosInstance.post<CreateSemestersResponse>('semesters/create', {
+    const { data } = await axiosInstance.post<CreateSemestersResponse>('/semesters/create', {
       semesterName: semesterData.semesterName,
       desc: semesterData.description,
       startDate: semesterData.startDate,

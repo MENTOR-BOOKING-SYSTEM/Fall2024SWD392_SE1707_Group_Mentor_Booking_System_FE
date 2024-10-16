@@ -46,7 +46,7 @@ const CreateSemesters: React.FC = () => {
         },
         onError: (error) => {
           console.error('Create Semester Error:', error)
-          alert('Can not Crate Semester. Try again')
+          alert('Can not Create Semester. Try again')
         }
       })
     } else {
