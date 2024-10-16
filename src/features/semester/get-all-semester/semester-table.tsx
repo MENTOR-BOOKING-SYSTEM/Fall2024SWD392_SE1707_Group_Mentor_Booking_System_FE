@@ -1,6 +1,6 @@
 // components/SemesterTable.tsx
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip } from '@nextui-org/react'
-import { ISemester } from './type'
+import { ISemester } from './type-semester'
 import { EyeIcon } from '@/components/icon/eye-icon'
 import { EditIcon } from '@/components/icon/edit-icon'
 import { formatDate, truncateText, getStatus, getColor } from './utils-semester'

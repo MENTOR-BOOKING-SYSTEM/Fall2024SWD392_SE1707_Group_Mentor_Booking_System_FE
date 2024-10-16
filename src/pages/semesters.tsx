@@ -1,6 +1,6 @@
 import { useGetAllSemesters } from '@/features/semester/get-all-semester/use-get-all-semester'
-import SemesterTable from '@/features/semester/semester-table'
-import { ISemester } from '@/features/semester/type'
+import SemesterTable from '@/features/semester/get-all-semester/semester-table'
+import { ISemester } from '@/features/semester/get-all-semester/type-semester'
 import { useEffect, useState } from 'react'
 
 export default function Semesters() {

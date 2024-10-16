@@ -1,5 +1,15 @@
 import { PRIVATE_ROUTES } from '@/routes/routes'
-import { CalendarDays, ChartBarBig, Columns3, Database, LogOut, Settings, User, Users } from 'lucide-react'
+import {
+  CalendarClock,
+  CalendarDays,
+  ChartBarBig,
+  Columns3,
+  Database,
+  LogOut,
+  Settings,
+  User,
+  Users
+} from 'lucide-react'
 import type { DropdownMenuItem, SidebarMenuItem } from '@/models/ui.model'
 
 // Sidebar
@@ -44,7 +54,7 @@ export const STUDENT_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = [
     title: 'Semesters',
     value: 'semesters',
     url: PRIVATE_ROUTES.SEMESTERS.path,
-    icon: (className?: string) => <Users className={className} />
+    icon: (className?: string) => <CalendarClock className={className} />
   }
 ]
 
