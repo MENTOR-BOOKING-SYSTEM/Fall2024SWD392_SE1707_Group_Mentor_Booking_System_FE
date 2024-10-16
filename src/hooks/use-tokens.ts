@@ -4,6 +4,7 @@ export interface Token extends JwtPayload {
   user_id: string
   token_type: number
   email: string
+  role: string[]
 }
 
 export const useTokens = (tokens: string[], isReturnPayload?: boolean): (undefined | Token)[] => {
