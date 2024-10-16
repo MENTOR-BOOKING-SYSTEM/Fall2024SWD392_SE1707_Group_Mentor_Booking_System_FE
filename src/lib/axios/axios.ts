@@ -1,15 +1,13 @@
-import axios, { AxiosError, AxiosResponse, type AxiosInstance } from 'axios'
-
-import { toast } from 'react-toastify'
-
-
-import HttpStatusCode from '@/constants/httpStatusCode.enum'
-import { clearLS, getAccessTokenFromLS, getRefreshTokenFromLS, setAccessTokenToLS, setRefreshTokenToLS } from '@/utils/auth'
 import config from '@/constants/config'
+import HttpStatusCode from '@/constants/httpStatusCode.enum'
+import { getAuthFromLS } from '@/utils/auth'
+import { ErrorResponse } from '@/types/utils.type'
 import { URL_LOGIN, URL_LOGOUT, URL_REFRESH_TOKEN, URL_REGISTER } from '@/services/auth.services'
 import { AuthResponse, RefreshTokenReponse } from '@/types/auth.type'
 import { isAxiosExpiredTokenError, isAxiosUnauthorizedError } from '@/utils/utils'
-import { ErrorResponse } from '@/types/utils.type'
+import { toaster } from '@/components/ui/toaster'
+import { AuthModel } from '@/models/base.model'
+import axios, { AxiosError, type AxiosInstance } from 'axios'
 
 // Purchase: 1 - 3
 // Me: 2 - 5
@@ -24,14 +22,14 @@ export class Http {
   private refreshToken: string
   private refreshTokenRequest: Promise<string> | null
   constructor() {
-    this.accessToken = getAccessTokenFromLS()
-    this.refreshToken = getRefreshTokenFromLS()
+    this.accessToken = getAuthFromLS()['accessToken']
+    this.refreshToken = getAuthFromLS()['refreshToken']
     this.refreshTokenRequest = null
     this.instance = axios.create({
       baseURL: config.baseUrl,
       timeout: 10000,
       headers: {
-        'Authorization': `Bearer ${this.accessToken}`,
+        Authorization: `Bearer ${this.accessToken}`,
         'Content-Type': 'application/json'
       }
     })
@@ -55,12 +53,15 @@ export class Http {
           const data = response.data as AuthResponse
           this.accessToken = data.result.accessToken
           this.refreshToken = data.result.refreshToken
-          setAccessTokenToLS(this.accessToken)
-          setRefreshTokenToLS(this.refreshToken)
+          const auth: AuthModel = {
+            accessToken: this.accessToken,
+            refreshToken: this.refreshToken
+          }
+          localStorage.setItem('auth', JSON.stringify(auth))
         } else if (url === URL_LOGOUT) {
           this.accessToken = ''
           this.refreshToken = ''
-          clearLS()
+          localStorage.removeItem('auth')
         }
         return response
       },
@@ -70,31 +71,34 @@ export class Http {
         ) {
           const data: any | undefined = error.response?.data
           const message = data?.message || error.message
-          toast.error(message)
+          toaster.error({ text: message })
         }
 
         //  401
         if (isAxiosUnauthorizedError<ErrorResponse<{ name: string; message: string }>>(error)) {
-
           const config = error.response?.config || { headers: {}, url: '' }
           const { url } = config
           if (isAxiosExpiredTokenError(error) && url !== URL_REFRESH_TOKEN) {
             this.refreshTokenRequest = this.refreshTokenRequest
               ? this.refreshTokenRequest
               : this.handleRefreshToken().finally(() => {
-                setTimeout(() => {
-                  this.refreshTokenRequest = null
-                }, 10000)
+                  setTimeout(() => {
+                    this.refreshTokenRequest = null
+                  }, 10000)
+                })
+            return this.refreshTokenRequest.then((accessToken) => {
+              return this.instance({
+                ...config,
+                headers: { ...config.headers, Authorization: `Bearer ${accessToken}` }
               })
-            return this.refreshTokenRequest.then((access_token) => {
-              return this.instance({ ...config, headers: { ...config.headers, Authorization: `Bearer ${access_token}` } })
             })
           }
-
-          clearLS()
+          localStorage.removeItem('auth')
           this.accessToken = ''
           this.refreshToken = ''
-          toast.error(error.response?.data.data?.message || error.response?.data.message)
+          toaster.error({
+            text: error.response?.data.data?.message || error.response?.data.message || 'An error occurred'
+          })
         }
         return Promise.reject(error)
       }
@@ -104,20 +108,23 @@ export class Http {
     try {
       const res = await this.instance.post<RefreshTokenReponse>(URL_REFRESH_TOKEN, {
         refreshToken: this.refreshToken
-      });
-      const { access_token, refresh_token } = res.data.result;
-      setAccessTokenToLS(access_token);
-      setRefreshTokenToLS(refresh_token);
-      this.accessToken = access_token;
-      this.refreshToken = refresh_token;
-      return access_token;
+      })
+      const { access_token, refresh_token } = res.data.result
+      const auth: AuthModel = {
+        accessToken: access_token,
+        refreshToken: refresh_token
+      }
+      localStorage.setItem('auth', JSON.stringify(auth))
+      this.accessToken = access_token
+      this.refreshToken = refresh_token
+      return access_token
     } catch (error) {
-      clearLS();
-      this.accessToken = '';
-      this.refreshToken = '';
-      throw error;
+      localStorage.removeItem('auth')
+      this.accessToken = ''
+      this.refreshToken = ''
+      throw error
     }
   }
 }
-const http = new Http().instance
-export default http
+const httpInstance = new Http().instance
+export default httpInstance

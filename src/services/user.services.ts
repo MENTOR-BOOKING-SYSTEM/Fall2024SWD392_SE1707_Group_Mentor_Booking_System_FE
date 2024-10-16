@@ -1,9 +1,9 @@
-import axiosInstance from '@/lib/axios/axios'
+import httpInstance from '@/lib/axios/axios'
 import { GetCurrentUserInfoAPIResponse } from '@/models/api/res.model'
 
 class UserService {
   async getCurrentUserInfo() {
-    const { data } = await axiosInstance.get<GetCurrentUserInfoAPIResponse>('/users/info')
+    const { data } = await httpInstance.get<GetCurrentUserInfoAPIResponse>('/users/info')
     return data.result
   }
 }
