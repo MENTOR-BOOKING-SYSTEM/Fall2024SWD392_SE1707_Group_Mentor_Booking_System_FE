@@ -41,3 +41,14 @@ export interface GetAllSemestersResponse {
     desc: string
   }[]
 }
+
+export interface CreateSemestersResponse {
+  message: string
+  result: {
+    semesterID: string
+    semesterName: string
+    startDate: string
+    endDate: string
+    desc: string
+  }[]
+}
