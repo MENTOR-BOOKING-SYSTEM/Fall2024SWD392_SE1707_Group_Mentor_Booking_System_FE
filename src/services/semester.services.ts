@@ -1,5 +1,6 @@
+import httpInstance from '@/lib/axios/axios'
 import axiosInstance from '@/lib/axios/axios'
-import { CreateSemestersResponse, GetAllSemestersResponse } from '@/models/api/res.model'
+import { CreateSemestersResponse, GetAllSemestersResponse, GetCurrentPhaseAPIResponse } from '@/models/api/res.model'
 
 class SemesterService {
   async getAllSemesters() {
@@ -22,6 +23,11 @@ class SemesterService {
     })
     console.log(data)
     return data.message
+  }
+
+  async getCurrentPhase() {
+    const { data } = await httpInstance.get<GetCurrentPhaseAPIResponse>('/semesters/current-phase')
+    return data.result
   }
 }
 
