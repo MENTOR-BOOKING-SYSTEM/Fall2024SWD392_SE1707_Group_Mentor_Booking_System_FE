@@ -14,7 +14,12 @@ class SemesterService {
     endDate: string
     description: string | null
   }) {
-    const { data } = await axiosInstance.post<CreateSemestersResponse>('semesters/create', semesterData)
+    const { data } = await axiosInstance.post<CreateSemestersResponse>('semesters/create', {
+      semesterName: semesterData.semesterName,
+      desc: semesterData.description,
+      startDate: semesterData.startDate,
+      endDate: semesterData.endDate
+    })
     console.log(data)
     return data.message
   }

@@ -23,21 +23,21 @@ const CreateSemesters: React.FC = () => {
 
   const handleCreate = () => {
     if (!semesterName) {
-      alert('Need Semester Name')
+      alert('Need Name Semester')
       return
     }
 
     if (startDate && endDate) {
       const semesterData = {
         semesterName,
-        startDate: startDate.toDate('UTC').toISOString(),
-        endDate: endDate.toDate('UTC').toISOString(),
+        startDate: startDate.toDate('UTC').toISOString().split('T')[0], // Chỉ lấy phần ngày
+        endDate: endDate.toDate('UTC').toISOString().split('T')[0], // Chỉ lấy phần ngày
         description: description || null
       }
 
       createSemesterMutation.mutate(semesterData, {
         onSuccess: () => {
-          console.log('Semester Create Success!')
+          console.log('Create Success')
           onOpenChange()
           setSemesterName('')
           setStartDate(null)
@@ -45,12 +45,12 @@ const CreateSemesters: React.FC = () => {
           setDescription('')
         },
         onError: (error) => {
-          console.error('Create error:', error)
-          alert('Can not create semester')
+          console.error('Create Semester Error:', error)
+          alert('Can not Crate Semester. Try again')
         }
       })
     } else {
-      alert('Must have start date and end date')
+      alert('Must have Start Date and End Date semester')
     }
   }
 
