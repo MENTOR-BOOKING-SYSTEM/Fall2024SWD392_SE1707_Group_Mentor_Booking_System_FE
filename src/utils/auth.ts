@@ -1,1 +1,1 @@
-export const getAuthFromLS = () => JSON.parse(localStorage.getItem('auth') || '')
+export const getAuthFromLS = () => JSON.parse(localStorage.getItem('auth') || '{}')

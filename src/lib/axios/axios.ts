@@ -1,4 +1,3 @@
-import config from '@/constants/config'
 import HttpStatusCode from '@/constants/httpStatusCode.enum'
 import { getAuthFromLS } from '@/utils/auth'
 import { ErrorResponse } from '@/types/utils.type'
@@ -7,6 +6,7 @@ import { AuthResponse, RefreshTokenReponse } from '@/types/auth.type'
 import { isAxiosExpiredTokenError, isAxiosUnauthorizedError } from '@/utils/utils'
 import { toaster } from '@/components/ui/toaster'
 import { AuthModel } from '@/models/base.model'
+import { envConfig } from '@/constants/env'
 import axios, { AxiosError, type AxiosInstance } from 'axios'
 
 // Purchase: 1 - 3
@@ -26,7 +26,7 @@ export class Http {
     this.refreshToken = getAuthFromLS()['refreshToken']
     this.refreshTokenRequest = null
     this.instance = axios.create({
-      baseURL: config.baseUrl,
+      baseURL: envConfig.BASE_URL,
       timeout: 10000,
       headers: {
         Authorization: `Bearer ${this.accessToken}`,
