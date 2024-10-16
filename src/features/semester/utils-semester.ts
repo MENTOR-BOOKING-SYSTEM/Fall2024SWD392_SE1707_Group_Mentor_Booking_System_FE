@@ -23,7 +23,7 @@ export const getColor = (status: string): 'primary' | 'warning' | 'success' => {
     case 'Upcoming':
       return 'primary'
     default:
-      return 'primary' // Defaulting to 'primary' if status is not recognized
+      return 'primary'
   }
 }
 
