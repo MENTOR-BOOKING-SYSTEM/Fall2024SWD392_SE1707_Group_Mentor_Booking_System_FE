@@ -1,3 +1,4 @@
+import { Criteria } from '../criteria.model'
 import { Semester } from '../semester.model'
 import { UserInfo } from '../user.model'
 
@@ -52,6 +53,7 @@ export interface CreateSemesterAPIResponse {
   message: string
 }
 
+
 export interface GetGroupMembersAPIResponse {
   message: string
   result: {
@@ -60,4 +62,9 @@ export interface GetGroupMembersAPIResponse {
     email: string
     avatarUrl: string
   }[]
+}
+
+export interface GetAllCriteriasAPIResponse {
+  message: string
+  result: Criteria[]
 }
