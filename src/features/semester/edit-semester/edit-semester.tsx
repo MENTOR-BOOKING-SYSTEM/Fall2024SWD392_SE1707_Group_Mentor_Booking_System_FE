@@ -11,7 +11,6 @@ import {
   Link
 } from '@nextui-org/react'
 import { EditIcon, MailIcon } from 'lucide-react'
-import { LockIcon } from 'lucide-react'
 
 export default function EditSemester() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()

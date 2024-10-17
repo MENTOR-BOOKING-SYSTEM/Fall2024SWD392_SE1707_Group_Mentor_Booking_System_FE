@@ -15,7 +15,6 @@ import { Semester } from '@/models/semester.model'
 import { getColor, getStatus } from './utils/semester.util'
 import { EditIcon, EyeIcon } from 'lucide-react'
 import { format } from 'date-fns'
-import App from '../edit-semester/edit-semester'
 import EditSemester from '../edit-semester/edit-semester'
 
 const dateFormat = 'dd/MM/yyyy'
