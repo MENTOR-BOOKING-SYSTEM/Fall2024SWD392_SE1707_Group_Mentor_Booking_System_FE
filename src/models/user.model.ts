@@ -7,3 +7,12 @@ export interface UserInfo {
   projectID: number | null
   position: string | null
 }
+
+export interface User {
+  userID: number
+  username: string
+  email: string
+  avatarUrl: string | null
+  firstName: string
+  lastName: string
+}

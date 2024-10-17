@@ -1,5 +1,9 @@
 import httpInstance from '@/lib/axios/axios'
-import { GetCurrentUserInfoAPIResponse, GetGroupMembersAPIResponse } from '@/models/api/res.model'
+import {
+  GetCurrentUserInfoAPIResponse,
+  GetGroupMembersAPIResponse,
+  GetUsersByRoleAPIResponse
+} from '@/models/api/res.model'
 
 class UserService {
   async getCurrentUserInfo() {
@@ -9,6 +13,11 @@ class UserService {
 
   async getGroupMembers() {
     const { data } = await httpInstance.get<GetGroupMembersAPIResponse>('/users/same-group-students')
+    return data.result
+  }
+
+  async getUsersByRole(role: number[]) {
+    const { data } = await httpInstance.get<GetUsersByRoleAPIResponse>('/users/role?role=' + `[${role}]`)
     return data.result
   }
 }

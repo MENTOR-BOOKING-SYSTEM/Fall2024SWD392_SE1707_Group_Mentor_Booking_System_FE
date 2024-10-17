@@ -4,7 +4,7 @@ import GetAllTechnologies from '@/features/technologies/get-all-techonologies/ge
 import GetStudentsByGroup from '@/features/users/students/get-students-by-group/get-students-by-group'
 import GetAllMentors from '@/features/users/mentors/get-all-mentors/get-all-mentors'
 import FormError from '@/components/forms/form-error'
-import { TOOLTIP, TRANSPARENT_INPUT_CLASS_NAME } from '@/constants'
+import { ROLES, TOOLTIP, TRANSPARENT_INPUT_CLASS_NAME } from '@/constants'
 import { useAuth } from '@/hooks/use-auth'
 import { Code } from '@nextui-org/code'
 import { Input } from '@nextui-org/input'
@@ -35,7 +35,13 @@ export default function SubmitProjectForm() {
           <Controller
             control={control}
             name='collaborators'
-            render={({ field: { onChange } }) => <GetStudentsByGroup onChange={onChange} />}
+            render={({ field: { onChange } }) => {
+              if (user?.role.includes(ROLES.MENTOR)) {
+                return <GetAllMentors onChange={onChange} isMultiline isForMentor />
+              } else {
+                return <GetStudentsByGroup onChange={onChange} />
+              }
+            }}
           />
         )}
         {!user?.role.includes('Mentor') && (

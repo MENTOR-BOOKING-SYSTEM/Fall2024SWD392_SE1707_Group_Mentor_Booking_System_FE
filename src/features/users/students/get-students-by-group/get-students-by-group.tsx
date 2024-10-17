@@ -19,7 +19,7 @@ export default function GetStudentsByGroup({ onChange }: GetStudentsByGroupProps
         <div className='h-12 w-full rounded-lg bg-default-300'></div>
       </Skeleton>
     )
-  } else if (data && data.length > 0) {
+  } else if (data) {
     return (
       <Select
         items={data}
