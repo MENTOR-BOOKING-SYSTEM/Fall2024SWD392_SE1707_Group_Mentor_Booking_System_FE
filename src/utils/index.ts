@@ -1,8 +1,10 @@
 import { twMerge } from 'tailwind-merge'
 import { Route } from '@/models/base.model'
-import { type ClassValue, clsx } from 'clsx'
 import { Token } from '@/hooks/use-tokens'
 import { FieldErrors, FieldValues } from 'react-hook-form'
+import { ROLES } from '@/constants'
+import { BS_SIDEBAR_MENU_ITEMS } from '@/constants/menu-items'
+import { type ClassValue, clsx } from 'clsx'
 
 /**
  * Hàm giúp nối các className Tailwind lại với nhau
@@ -65,4 +67,23 @@ export const isAllowRoles = (roles: string[], user: Token | undefined) =>
 
 export const getErrorState = <T extends FieldValues>(errors: FieldErrors<T>, fieldName: keyof T) => {
   return errors[fieldName]
+}
+
+export const getBSSidebar = (user: Token | undefined) => {
+  const menuItems = []
+  if (isAllowRoles([ROLES.STUDENT], user)) {
+    menuItems.push(...BS_SIDEBAR_MENU_ITEMS.GENERAL, ...BS_SIDEBAR_MENU_ITEMS.STUDENT)
+  } else if (isAllowRoles([ROLES.MENTOR], user)) {
+    menuItems.push(...BS_SIDEBAR_MENU_ITEMS.GENERAL, ...BS_SIDEBAR_MENU_ITEMS.MENTOR)
+    if (isAllowRoles([ROLES.REVIEWER], user)) {
+      menuItems.push(...BS_SIDEBAR_MENU_ITEMS.REVIEWER)
+      if (isAllowRoles([ROLES.MANAGER], user)) {
+        menuItems.push(...BS_SIDEBAR_MENU_ITEMS.MANAGER)
+      }
+    }
+  } else {
+    menuItems.push(...BS_SIDEBAR_MENU_ITEMS.GENERAL)
+  }
+
+  return menuItems
 }

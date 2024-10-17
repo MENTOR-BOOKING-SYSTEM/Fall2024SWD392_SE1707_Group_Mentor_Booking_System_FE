@@ -12,6 +12,7 @@ export default function Submission() {
       <Button
         color='primary'
         startContent={<CirclePlus className='w-4 h-4' />}
+        className='ml-auto'
         onClick={() => navigate(PRIVATE_ROUTES.SUBMIT_PROJECT.path)}
       >
         Submit project

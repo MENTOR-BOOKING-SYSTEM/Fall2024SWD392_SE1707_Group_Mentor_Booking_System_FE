@@ -1,5 +1,6 @@
-import Dropdown from '../../ui/dropdown'
+import Dropdown from '../ui/dropdown'
 import Meetup from '/meetup.svg'
+import PageLoader from './page-loader'
 import { ProfileDropdownMenuItems } from '@/constants/menu-items'
 import { useLogout } from '@/features/auth/logout/use-logout'
 import { UserInfo } from '@/models/user.model'
@@ -10,8 +11,8 @@ import { Bell } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useLocalStorage } from 'usehooks-ts'
 
-export default function ADHeader() {
-  const { mutate: logout } = useLogout()
+export default function Header() {
+  const { mutate: logout, isPending } = useLogout()
   const [currentUserInfo] = useLocalStorage<UserInfo>('userInfo', {
     email: '',
     firstName: '',
@@ -21,6 +22,10 @@ export default function ADHeader() {
     projectID: null,
     position: null
   })
+
+  if (isPending) {
+    return <PageLoader />
+  }
 
   if (currentUserInfo) {
     return (
