@@ -27,7 +27,7 @@ export default function EditSemester() {
                 <Input type='text' label='Semester' labelPlacement='outside' defaultValue='' />
               </ModalBody>
               <ModalFooter>
-                <Button color='danger' variant='flat' onPress={onClose}>
+                <Button color='danger' variant='light' onPress={onClose}>
                   Close
                 </Button>
                 <Button color='primary' onPress={onClose}>

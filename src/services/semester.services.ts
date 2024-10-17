@@ -1,5 +1,10 @@
 import httpInstance from '@/lib/axios/axios'
-import { GetAllSemestersResponse, GetCurrentPhaseAPIResponse } from '@/models/api/res.model'
+import type { CreateSemesterFormValues } from '@/features/semester/create-semester/use-create-semester'
+import type {
+  CreateSemesterAPIResponse,
+  GetAllSemestersResponse,
+  GetCurrentPhaseAPIResponse
+} from '@/models/api/res.model'
 
 class SemesterService {
   async getAllSemesters() {
@@ -9,8 +14,12 @@ class SemesterService {
 
   async getCurrentPhase() {
     const { data } = await httpInstance.get<GetCurrentPhaseAPIResponse>('/semesters/current-phase')
-
     return data.result
+  }
+
+  async createSemester(semester: CreateSemesterFormValues) {
+    const { data } = await httpInstance.post<CreateSemesterAPIResponse>('/semesters/create', semester)
+    return data.message
   }
 }
 
