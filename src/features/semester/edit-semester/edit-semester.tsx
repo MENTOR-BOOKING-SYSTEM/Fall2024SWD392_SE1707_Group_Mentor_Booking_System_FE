@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import {
   Modal,
   ModalContent,
@@ -6,32 +7,84 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
-  Checkbox,
   Input,
-  Link
+  Textarea,
+  DatePicker
 } from '@nextui-org/react'
-import { EditIcon, MailIcon } from 'lucide-react'
+import { EditIcon } from 'lucide-react'
+import { useEditSemester } from './use-edit-semester'
+import { Semester } from '@/models/semester.model'
 
-export default function EditSemester() {
+import { DateValue, parseDate } from '@internationalized/date'
+
+interface EditSemesterProps {
+  semester: Semester
+}
+
+export default function EditSemester({ semester }: EditSemesterProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const [semesterName, setSemesterName] = useState(semester.semesterName)
+  const [startDate, setStartDate] = useState<DateValue>(parseDate(semester.startDate.split('T')[0]))
+  const [endDate, setEndDate] = useState<DateValue>(parseDate(semester.endDate.split('T')[0]))
+  const [description, setDescription] = useState(semester.description || '')
+
+  const { editSemesterMutation } = useEditSemester()
+
+  const handleEdit = () => {
+    const updatedFields: Partial<Semester> = {}
+
+    if (semesterName !== semester.semesterName) {
+      updatedFields.semesterName = semesterName
+    }
+    if (startDate.toString() !== semester.startDate.split('T')[0]) {
+      updatedFields.startDate = startDate.toString() + 'T00:00:00.000Z'
+    }
+    if (endDate.toString() !== semester.endDate.split('T')[0]) {
+      updatedFields.endDate = endDate.toString() + 'T00:00:00.000Z'
+    }
+    if (description !== semester.description) {
+      updatedFields.description = description
+    }
+
+    if (Object.keys(updatedFields).length > 0) {
+      editSemesterMutation.mutate(
+        { semesterID: semester.semesterID, ...updatedFields },
+        {
+          onSuccess: () => {
+            onOpenChange()
+          }
+        }
+      )
+    } else {
+      onOpenChange()
+    }
+  }
 
   return (
     <>
       <EditIcon onClick={onOpen} className='w-5 h-5 stroke-1 cursor-pointer' />
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement='top-center'>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} className='modal-dialog'>
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className='flex flex-col gap-1'></ModalHeader>
+              <ModalHeader className='flex flex-col gap-1'>Edit Semester</ModalHeader>
               <ModalBody>
-                <Input type='text' label='Semester' labelPlacement='outside' defaultValue='' />
+                <Input
+                  type='text'
+                  label='Semester Name'
+                  value={semesterName}
+                  onChange={(e) => setSemesterName(e.target.value)}
+                />
+                <DatePicker label='End Date' value={startDate} onChange={(date) => setStartDate(date)} />
+                <DatePicker label='Start Date' value={endDate} onChange={(date) => setEndDate(date)} />
+                <Textarea label='Description' value={description} onChange={(e) => setDescription(e.target.value)} />
               </ModalBody>
               <ModalFooter>
                 <Button color='danger' variant='light' onPress={onClose}>
                   Close
                 </Button>
-                <Button color='primary' onPress={onClose}>
-                  Sign in
+                <Button color='primary' onPress={handleEdit} isLoading={editSemesterMutation.isPending}>
+                  Edit
                 </Button>
               </ModalFooter>
             </>

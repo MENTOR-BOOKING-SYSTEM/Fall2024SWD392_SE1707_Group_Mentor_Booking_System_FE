@@ -5,6 +5,7 @@ import type {
   GetAllSemestersResponse,
   GetCurrentPhaseAPIResponse
 } from '@/models/api/res.model'
+import type { Semester } from '@/models/semester.model'
 
 class SemesterService {
   async getAllSemesters() {
@@ -19,6 +20,11 @@ class SemesterService {
 
   async createSemester(semester: CreateSemesterFormValues) {
     const { data } = await httpInstance.post<CreateSemesterAPIResponse>('/semesters/create', semester)
+    return data.message
+  }
+
+  async updateSemester(semester: Partial<Semester> & { semesterID: number }) {
+    const { data } = await httpInstance.patch<CreateSemesterAPIResponse>(`/semesters/${semester.semesterID}`, semester)
     return data.message
   }
 }

@@ -91,7 +91,7 @@ const transformData = (semesters: Semester[]) => {
             <Modal body={<>Hello</>} onSubmit={() => {}}>
               <EyeIcon className='w-5 h-5 stroke-1 cursor-pointer' />
             </Modal>
-            <EditSemester />
+            <EditSemester semester={semester} />
           </div>
         ) : (
           <div className='flex items-center justify-center gap-2'>
