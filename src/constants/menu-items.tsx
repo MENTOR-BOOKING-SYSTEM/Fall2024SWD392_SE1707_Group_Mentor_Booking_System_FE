@@ -1,5 +1,18 @@
 import { PRIVATE_ROUTES } from '@/routes/routes'
-import { CalendarDays, ChartBarBig, Clock, Columns3, Database, LogOut, Settings, User, Users } from 'lucide-react'
+import {
+  CalendarClock,
+  CalendarDays,
+  ChartBarBig,
+  Clock,
+  Columns3,
+  Database,
+  LogOut,
+  Settings,
+  User,
+  UserCogIcon,
+  Users
+} from 'lucide-react'
+
 import type { DropdownMenuItem, SidebarMenuItem } from '@/models/ui.model'
 
 // Sidebar
@@ -38,6 +51,13 @@ export const IS_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = [
     value: 'members',
     url: PRIVATE_ROUTES.MEMBERS.path,
     icon: (className?: string) => <Users className={className} />
+  },
+  {
+    id: 6,
+    title: 'Semesters',
+    value: 'semesters',
+    url: PRIVATE_ROUTES.SEMESTERS.path,
+    icon: (className?: string) => <CalendarClock className={className} />
   }
 ]
 
@@ -48,6 +68,30 @@ export const BS_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = [
     value: 'submission',
     url: PRIVATE_ROUTES.SUBMISSION.path,
     icon: (className?: string) => <Clock className={className} />
+  }
+]
+
+export const ADMIN_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = [
+  {
+    id: 1,
+    title: 'Dashboard',
+    value: 'dashboard',
+    url: PRIVATE_ROUTES.DASHBOARD.path,
+    icon: (className?: string) => <ChartBarBig className={className} />
+  },
+  {
+    id: 2,
+    title: 'Accounts',
+    value: 'accounts',
+    url: PRIVATE_ROUTES.ACCOUNT.path,
+    icon: (className?: string) => <UserCogIcon className={className} />
+  },
+  {
+    id: 2,
+    title: 'Semesters',
+    value: 'semesters',
+    url: PRIVATE_ROUTES.SEMESTERS.path,
+    icon: (className?: string) => <CalendarClock className={className} />
   }
 ]
 

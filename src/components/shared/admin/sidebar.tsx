@@ -1,8 +1,5 @@
-import ViewCurrentProject from '@/features/projects/view-current-project/view-current-project'
-import { cn, isAllowRoles } from '@/utils'
+import { cn } from '@/utils'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { useAuth } from '@/hooks/use-auth'
-import { ROLES } from '@/constants'
 import type { SidebarMenuItem } from '@/models/ui.model'
 
 interface SidebarItemProps {
@@ -14,13 +11,11 @@ interface BSSidebarProps {
   items: SidebarMenuItem[]
 }
 
-export default function BSSidebar({ items }: BSSidebarProps) {
+export default function ADSidebar({ items }: BSSidebarProps) {
   const { pathname } = useLocation()
-  const { user } = useAuth()
 
   return (
     <div className='flex flex-col gap-2 min-w-60'>
-      {isAllowRoles([ROLES.STUDENT], user) ? <ViewCurrentProject /> : null}
       {items.map((item) => {
         const isCurrentPath = pathname.split('/')[1] === item.value
         return <SidebarItem key={item.id} item={item} isCurrentPath={isCurrentPath} />

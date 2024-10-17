@@ -16,6 +16,8 @@ import ProjectSubmission from '@/pages/project-submission'
 import AuthRedirect from '@/pages/redirect/auth-redirect'
 import Redirect from '@/pages/redirect/redirect'
 import Submission from '@/pages/submission'
+import Semesters from '@/pages/semesters'
+import AdminLayout from '@/layouts/admin.layout'
 
 import { PHASES, ROLES } from '@/constants'
 import { createBrowserRouter } from 'react-router-dom'
@@ -67,8 +69,21 @@ export const routes = createBrowserRouter([
             element: <RoleLayout allowRoles={[ROLES.ADMIN]} />,
             children: [
               {
-                path: PRIVATE_ROUTES.DASHBOARD.path,
-                element: <div>Dashboard</div>
+                element: <AdminLayout />,
+                children: [
+                  {
+                    path: PRIVATE_ROUTES.DASHBOARD.path,
+                    element: <div>Dashboard</div>
+                  },
+                  {
+                    path: PRIVATE_ROUTES.ACCOUNT.path,
+                    element: <div>Account</div>
+                  },
+                  {
+                    path: PRIVATE_ROUTES.SEMESTERS.path,
+                    element: <Semesters />
+                  }
+                ]
               }
             ]
           },

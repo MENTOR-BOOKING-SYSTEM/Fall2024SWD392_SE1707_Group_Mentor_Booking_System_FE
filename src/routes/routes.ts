@@ -45,6 +45,10 @@ export const PRIVATE_ROUTES: Route = {
     path: '/submit-project',
     bcLabel: 'Submit project'
   },
+  SEMESTERS: {
+    path: '/semesters',
+    bcLabel: 'semesters'
+  },
   DASHBOARD: {
     path: '/dashboard',
     bcLabel: 'Dashboard'
@@ -64,5 +68,9 @@ export const PRIVATE_ROUTES: Route = {
   GROUP: {
     path: '/group',
     bcLabel: 'Group'
+  },
+  ACCOUNT: {
+    path: '/accounts',
+    bcLabel: 'Accounts'
   }
 }
