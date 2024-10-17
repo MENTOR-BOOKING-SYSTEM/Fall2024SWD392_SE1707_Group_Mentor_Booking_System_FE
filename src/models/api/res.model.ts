@@ -47,3 +47,7 @@ export interface GetCurrentUserInfoAPIResponse {
   message: string
   result: UserInfo
 }
+
+export interface CreateSemesterAPIResponse {
+  message: string
+}
