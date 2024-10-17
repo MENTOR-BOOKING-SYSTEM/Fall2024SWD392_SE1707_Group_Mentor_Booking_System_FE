@@ -1,4 +1,4 @@
-export interface ISemester {
+export interface Semester {
   semesterID: number
   semesterName: string
   startDate: string

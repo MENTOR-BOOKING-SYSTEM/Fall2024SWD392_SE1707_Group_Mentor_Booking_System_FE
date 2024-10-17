@@ -1,3 +1,4 @@
+import { Semester } from '../semester.model'
 import { UserInfo } from '../user.model'
 
 export interface LoginAPIResponse {
@@ -35,13 +36,7 @@ export interface GetAllTechsAPIResponse {
 
 export interface GetAllSemestersResponse {
   message: string
-  result: {
-    semesterID: string
-    semesterName: string
-    startDate: string
-    endDate: string
-    desc: string
-  }[]
+  result: Semester[]
 }
 export interface GetCurrentPhaseAPIResponse {
   message: string

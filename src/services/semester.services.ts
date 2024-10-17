@@ -1,11 +1,10 @@
 import httpInstance from '@/lib/axios/axios'
-import axiosInstance from '@/lib/axios/axios'
 import { GetAllSemestersResponse, GetCurrentPhaseAPIResponse } from '@/models/api/res.model'
 
 class SemesterService {
   async getAllSemesters() {
-    const { data } = await axiosInstance.get<GetAllSemestersResponse>('semesters/all')
-    console.log(data)
+    const { data } = await httpInstance.get<GetAllSemestersResponse>('/semesters/all')
+    return data.result
   }
 
   async getCurrentPhase() {

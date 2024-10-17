@@ -1,5 +1,3 @@
-import { format } from 'date-fns'
-
 export const getStatus = (startDate: string | number | Date, endDate: string | number | Date): string => {
   const now = new Date()
   const start = new Date(startDate)
@@ -25,12 +23,4 @@ export const getColor = (status: string): 'primary' | 'warning' | 'success' => {
     default:
       return 'primary'
   }
-}
-
-export const formatDate = (dateString: string | number | Date): string => {
-  return format(new Date(dateString), 'dd/MM/yyyy')
-}
-
-export const truncateText = (text: string, maxLength: number): string => {
-  return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text
 }

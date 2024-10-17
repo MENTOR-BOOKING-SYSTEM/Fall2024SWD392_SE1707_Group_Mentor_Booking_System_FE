@@ -1,24 +1,9 @@
-import { useGetAllSemesters } from '@/features/semester/get-all-semester/use-get-all-semester'
-import SemesterTable from '@/features/semester/get-all-semester/semester-table'
-import { ISemester } from '@/features/semester/get-all-semester/type-semester'
-import { useEffect, useState } from 'react'
+import ViewSemesters from '@/features/semester/view-semesters/view-semesters'
 
 export default function Semesters() {
-  const { data } = useGetAllSemesters()
-  const [semesters, setSemesters] = useState<ISemester[]>([])
-
-  useEffect(() => {
-    if (data) {
-      const formattedData: ISemester[] = data.map((item: any) => ({
-        semesterID: item.semesterID,
-        semesterName: item.semesterName,
-        startDate: item.startDate,
-        endDate: item.endDate,
-        description: item.description || null
-      }))
-      setSemesters(formattedData)
-    }
-  }, [data])
-
-  return <SemesterTable semesters={semesters} />
+  return (
+    <>
+      <ViewSemesters />
+    </>
+  )
 }
