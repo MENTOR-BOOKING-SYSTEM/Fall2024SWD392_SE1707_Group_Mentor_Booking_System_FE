@@ -58,13 +58,6 @@ export const IS_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = [
     value: 'semesters',
     url: PRIVATE_ROUTES.SEMESTERS.path,
     icon: (className?: string) => <CalendarClock className={className} />
-  },
-  {
-    id: 7,
-    title: 'Create Semesters',
-    value: 'create semesters',
-    url: PRIVATE_ROUTES.CREATE_SEMESTERS.path,
-    icon: (className?: string) => <CalendarClock className={className} />
   }
 ]
 
