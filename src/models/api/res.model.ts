@@ -1,3 +1,4 @@
+import { Criteria } from '../criteria.model'
 import { Semester } from '../semester.model'
 import { UserInfo } from '../user.model'
 
@@ -50,4 +51,9 @@ export interface GetCurrentUserInfoAPIResponse {
 
 export interface CreateSemesterAPIResponse {
   message: string
+}
+
+export interface GetAllCriteriasAPIResponse {
+  message: string
+  result: Criteria[]
 }
