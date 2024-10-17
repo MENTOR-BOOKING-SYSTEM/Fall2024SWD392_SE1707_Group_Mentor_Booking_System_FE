@@ -36,24 +36,7 @@ export interface GetAllTechsAPIResponse {
 
 export interface GetAllSemestersResponse {
   message: string
-  result: {
-    semesterID: string
-    semesterName: string
-    startDate: string
-    endDate: string
-    desc: string
-  }[]
-}
-
-export interface CreateSemestersResponse {
-  message: string
-  result: {
-    semesterID: string
-    semesterName: string
-    startDate: string
-    endDate: string
-    desc: string
-  }[]
+  result: Semester[]
 }
 export interface GetCurrentPhaseAPIResponse {
   message: string
@@ -63,4 +46,8 @@ export interface GetCurrentPhaseAPIResponse {
 export interface GetCurrentUserInfoAPIResponse {
   message: string
   result: UserInfo
+}
+
+export interface CreateSemesterAPIResponse {
+  message: string
 }

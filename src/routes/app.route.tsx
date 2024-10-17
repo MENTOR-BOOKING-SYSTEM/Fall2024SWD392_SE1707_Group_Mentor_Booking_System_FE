@@ -62,7 +62,11 @@ export const routes = createBrowserRouter([
         element: <GuardLayout />,
         children: [
           {
-            element: <DefaultLayout />,
+            path: PRIVATE_ROUTES.ROOT.path,
+            element: <Redirect />
+          },
+          {
+            element: <RoleLayout allowRoles={[ROLES.ADMIN]} />,
             children: [
               {
                 element: <AdminLayout />,

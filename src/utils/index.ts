@@ -2,6 +2,7 @@ import { twMerge } from 'tailwind-merge'
 import { Route } from '@/models/base.model'
 import { type ClassValue, clsx } from 'clsx'
 import { Token } from '@/hooks/use-tokens'
+import { FieldErrors, FieldValues } from 'react-hook-form'
 
 /**
  * Hàm giúp nối các className Tailwind lại với nhau
@@ -61,3 +62,7 @@ export const generateBreadcrumbLabels = (routes: Route) => {
 
 export const isAllowRoles = (roles: string[], user: Token | undefined) =>
   user?.role.some((role) => roles.includes(role))
+
+export const getErrorState = <T extends FieldValues>(errors: FieldErrors<T>, fieldName: keyof T) => {
+  return errors[fieldName]
+}
