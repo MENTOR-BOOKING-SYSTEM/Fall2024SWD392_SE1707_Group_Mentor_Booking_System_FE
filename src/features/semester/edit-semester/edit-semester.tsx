@@ -22,12 +22,12 @@ interface EditSemesterProps {
   allSemesters: Semester[] // Add allSemesters prop to check for date overlap
 }
 
-// Helper function to convert DateValue to JavaScript Date object
+//  convert DateValue to JavaScript Date object
 const dateValueToDate = (dateValue: DateValue): Date => {
   return new Date(dateValue.year, dateValue.month - 1, dateValue.day)
 }
 
-// Helper function to compare if two date ranges overlap
+//  compare if two date ranges overlap
 const isDateOverlap = (start: DateValue, end: DateValue, allSemesters: Semester[]) => {
   return allSemesters.some((sem) => {
     const semStart = dateValueToDate(parseDate(sem.startDate.split('T')[0]))
