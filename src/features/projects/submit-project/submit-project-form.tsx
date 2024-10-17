@@ -1,6 +1,9 @@
 import RichTextEditor from '@/components/shared/tiptap/rich-text-editor'
 import Tooltip from '@/components/shared/tooltip'
 import GetAllTechnologies from '@/features/technologies/get-all-techonologies/get-all-technologies'
+import GetStudentsByGroup from '@/features/users/students/get-students-by-group/get-students-by-group'
+import GetAllMentors from '@/features/users/mentors/get-all-mentors/get-all-mentors'
+import FormError from '@/components/forms/form-error'
 import { TOOLTIP, TRANSPARENT_INPUT_CLASS_NAME } from '@/constants'
 import { useAuth } from '@/hooks/use-auth'
 import { Code } from '@nextui-org/code'
@@ -21,11 +24,31 @@ export default function SubmitProjectForm() {
 
   return (
     <>
-      <Controller
-        control={control}
-        name='technologies'
-        render={({ field: { onChange } }) => <GetAllTechnologies onChange={onChange} />}
-      />
+      <div className='flex items-center gap-4 mb-8 h-32'>
+        <Controller
+          control={control}
+          name='technologies'
+          render={({ field: { onChange } }) => <GetAllTechnologies onChange={onChange} />}
+        />
+        <FormError<SubmitProjectFormValues> identifier='technologies' errors={errors} />
+        {!user?.role.includes('Business') && (
+          <Controller
+            control={control}
+            name='collaborators'
+            render={({ field: { onChange } }) => <GetStudentsByGroup onChange={onChange} />}
+          />
+        )}
+        {!user?.role.includes('Mentor') && (
+          <div className='flex flex-col gap-2 relative w-full'>
+            <Controller
+              control={control}
+              name='mentorID'
+              render={({ field: { onChange } }) => <GetAllMentors onChange={onChange} />}
+            />
+            <FormError<SubmitProjectFormValues> errors={errors} identifier='mentorID' className='absolute -bottom-5' />
+          </div>
+        )}
+      </div>
       <Controller
         control={control}
         name='projectName'
@@ -34,11 +57,12 @@ export default function SubmitProjectForm() {
             ref={ref}
             onChange={onChange}
             autoFocus
+            spellCheck={false}
             placeholder='Enter your project name here...'
             className='mb-5'
             classNames={{
               inputWrapper: TRANSPARENT_INPUT_CLASS_NAME,
-              input: 'text-5xl font-bold p-0 h-full w-full'
+              input: 'text-6xl font-bold p-0 h-full w-full'
             }}
           />
         )}
@@ -52,14 +76,14 @@ export default function SubmitProjectForm() {
               lsSectionName={`${user?.user_id}-ctx`}
               onChange={onChange}
               editorTag={
-                <Tooltip content={TOOLTIP.CONTEXT}>
+                <Tooltip className='w-96' content={TOOLTIP.CONTEXT}>
                   <Code color='primary'>CONTEXT</Code>
                 </Tooltip>
               }
             />
           )}
         />
-        {/* <Controller
+        <Controller
           control={control}
           name='problems'
           render={({ field: { onChange } }) => (
@@ -67,7 +91,7 @@ export default function SubmitProjectForm() {
               lsSectionName={`${user?.user_id}-prb`}
               onChange={onChange}
               editorTag={
-                <Tooltip content={TOOLTIP.PROBLEMS}>
+                <Tooltip className='w-96' content={TOOLTIP.PROBLEMS}>
                   <Code color='primary'>PROBLEMS</Code>
                 </Tooltip>
               }
@@ -80,12 +104,13 @@ export default function SubmitProjectForm() {
           render={({ field: { onChange } }) => (
             <RichTextEditor
               lsSectionName={`${user?.user_id}-act`}
+              className={getErrorState('actors') ? 'border-2 border-danger-300' : ''}
               onChange={onChange}
               editorTag={
                 getErrorState('actors') ? (
                   <Code color='danger'>ACTORS IS REQUIRED</Code>
                 ) : (
-                  <Tooltip content={TOOLTIP.ACTORS}>
+                  <Tooltip className='w-96' content={TOOLTIP.ACTORS}>
                     <Code color='primary'>ACTORS</Code>
                   </Tooltip>
                 )
@@ -99,12 +124,13 @@ export default function SubmitProjectForm() {
           render={({ field: { onChange } }) => (
             <RichTextEditor
               lsSectionName={`${user?.user_id}-fr`}
+              className={getErrorState('funcRequirements') ? 'border-2 border-danger-300' : ''}
               onChange={onChange}
               editorTag={
                 getErrorState('funcRequirements') ? (
                   <Code color='danger'>FUNCTIONAL REQUIREMENTS IS REQUIRED</Code>
                 ) : (
-                  <Tooltip content={TOOLTIP.FUNCTIONAL_REQUIREMENTS}>
+                  <Tooltip className='w-96' content={TOOLTIP.FUNCTIONAL_REQUIREMENTS}>
                     <Code color='primary'>FUNCTIONAL REQUIREMENTS</Code>
                   </Tooltip>
                 )
@@ -120,13 +146,13 @@ export default function SubmitProjectForm() {
               lsSectionName={`${user?.user_id}-nfr`}
               onChange={onChange}
               editorTag={
-                <Tooltip content={TOOLTIP.NON_FUNCTIONAL_REQUIREMENTS}>
+                <Tooltip className='w-96' content={TOOLTIP.NON_FUNCTIONAL_REQUIREMENTS}>
                   <Code color='primary'>NON-FUNCTIONAL REQUIREMENTS</Code>
                 </Tooltip>
               }
             />
           )}
-        /> */}
+        />
       </div>
     </>
   )

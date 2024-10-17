@@ -45,7 +45,7 @@ export default function FormGenerator<T extends FieldValues>({
   switch (inputType) {
     case 'checkbox':
       return (
-        <label className='flex items-center gap-2' htmlFor={`select-${label}`}>
+        <label className='flex items-center gap-2 relative' htmlFor={`select-${label}`}>
           <Controller
             control={control}
             name={name}
@@ -56,11 +56,12 @@ export default function FormGenerator<T extends FieldValues>({
               </>
             )}
           />
+          <FormError errors={errors} identifier={name} className='absolute -bottom-5' />
         </label>
       )
     case 'select':
       return (
-        <label className='flex items-center gap-2' htmlFor={`select-${label}`}>
+        <label className='flex items-center gap-2 relative' htmlFor={`select-${label}`}>
           <Controller
             control={control}
             name={name}
@@ -71,6 +72,7 @@ export default function FormGenerator<T extends FieldValues>({
               </>
             )}
           />
+          <FormError errors={errors} identifier={name} className='absolute -bottom-5' />
         </label>
       )
     case 'input':
@@ -102,7 +104,7 @@ export default function FormGenerator<T extends FieldValues>({
                   ) : null
                 }
               />
-              <FormError errors={errors} identifier={name} />
+              <FormError errors={errors} identifier={name} className='absolute -bottom-5' />
             </label>
           )}
         />

@@ -51,3 +51,13 @@ export interface GetCurrentUserInfoAPIResponse {
 export interface CreateSemesterAPIResponse {
   message: string
 }
+
+export interface GetGroupMembersAPIResponse {
+  message: string
+  result: {
+    userID: number
+    username: string
+    email: string
+    avatarUrl: string
+  }[]
+}
