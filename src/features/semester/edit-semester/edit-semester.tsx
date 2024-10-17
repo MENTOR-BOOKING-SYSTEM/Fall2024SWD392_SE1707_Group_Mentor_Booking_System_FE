@@ -75,12 +75,12 @@ export default function EditSemester({ semester }: EditSemesterProps) {
                   value={semesterName}
                   onChange={(e) => setSemesterName(e.target.value)}
                 />
-                <Textarea label='Description' value={description} onChange={(e) => setDescription(e.target.value)} />
                 <div className='flex items-center gap-3'>
                   <DatePicker label='Start Date' value={startDate} onChange={(date) => setStartDate(date)} />
                   <p className='text-sm mx-2'>to</p>
                   <DatePicker label='End Date' value={endDate} onChange={(date) => setEndDate(date)} />
                 </div>
+                <Textarea label='Description' value={description} onChange={(e) => setDescription(e.target.value)} />
               </ModalBody>
               <ModalFooter>
                 <Button

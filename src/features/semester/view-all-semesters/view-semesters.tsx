@@ -19,6 +19,7 @@ import { EyeIcon } from 'lucide-react'
 import { format } from 'date-fns'
 import EditSemester from '../edit-semester/edit-semester'
 import { DATE_FORMAT } from '@/constants'
+import ViewDetailSemester from '../view-detail-semester/view-detai-semester'
 
 const columns = [
   {
@@ -86,17 +87,13 @@ const transformData = (semesters: Semester[]) => {
       actions:
         status === 'Upcoming' ? (
           <div className='flex items-center justify-center gap-2'>
-            <Modal body={<>Hello</>} onSubmit={() => {}}>
-              <EyeIcon className='w-5 h-5 stroke-1 cursor-pointer' />
-            </Modal>
+            <ViewDetailSemester semester={semester} />
             {/* Edit Pop-up */}
             <EditSemester semester={semester} />
           </div>
         ) : (
           <div className='flex items-center justify-center gap-2'>
-            <Modal body={<>Hello</>} onSubmit={() => {}}>
-              <EyeIcon className='w-5 h-5 stroke-1 cursor-pointer' />
-            </Modal>
+            <ViewDetailSemester semester={semester} />
           </div>
         )
     }
