@@ -1,7 +1,7 @@
 import semesterService from '@/services/semester.services'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 
-export const useGetAllSemesters = () => {
+export const useViewSemesters = () => {
   return useQuery({
     queryKey: ['semesters'],
     queryFn: semesterService.getAllSemesters

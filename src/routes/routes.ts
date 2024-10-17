@@ -49,6 +49,7 @@ export const PRIVATE_ROUTES: Route = {
     path: '/semesters',
     bcLabel: 'semesters'
   },
+  },
   CREATE_SEMESTERS: {
     path: '/create-semesters',
     bcLabel: 'Create semesters'
@@ -72,5 +73,9 @@ export const PRIVATE_ROUTES: Route = {
   GROUP: {
     path: '/group',
     bcLabel: 'Group'
+  },
+  ACCOUNT: {
+    path: '/accounts',
+    bcLabel: 'Accounts'
   }
 }

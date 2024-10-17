@@ -1,5 +1,4 @@
 import { PRIVATE_ROUTES } from '@/routes/routes'
-
 import {
   CalendarClock,
   CalendarDays,
@@ -10,6 +9,7 @@ import {
   LogOut,
   Settings,
   User,
+  UserCogIcon,
   Users
 } from 'lucide-react'
 
@@ -75,6 +75,30 @@ export const BS_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = [
     value: 'submission',
     url: PRIVATE_ROUTES.SUBMISSION.path,
     icon: (className?: string) => <Clock className={className} />
+  }
+]
+
+export const ADMIN_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = [
+  {
+    id: 1,
+    title: 'Dashboard',
+    value: 'dashboard',
+    url: PRIVATE_ROUTES.DASHBOARD.path,
+    icon: (className?: string) => <ChartBarBig className={className} />
+  },
+  {
+    id: 2,
+    title: 'Accounts',
+    value: 'accounts',
+    url: PRIVATE_ROUTES.ACCOUNT.path,
+    icon: (className?: string) => <UserCogIcon className={className} />
+  },
+  {
+    id: 2,
+    title: 'Semesters',
+    value: 'semesters',
+    url: PRIVATE_ROUTES.SEMESTERS.path,
+    icon: (className?: string) => <CalendarClock className={className} />
   }
 ]
 

@@ -1,3 +1,4 @@
+import { Semester } from '../semester.model'
 import { UserInfo } from '../user.model'
 
 export interface LoginAPIResponse {
