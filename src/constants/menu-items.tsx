@@ -87,7 +87,7 @@ export const ADMIN_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = [
     icon: (className?: string) => <UserCogIcon className={className} />
   },
   {
-    id: 2,
+    id: 3,
     title: 'Semesters',
     value: 'semesters',
     url: PRIVATE_ROUTES.SEMESTERS.path,

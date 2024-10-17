@@ -36,3 +36,8 @@ export const ROLES = {
   MANAGER: 'Manager',
   BUSINESS: 'Business'
 }
+
+export const DATE_FORMAT = {
+  DEFAULT: 'dd-MM-yyyy',
+  DATABASE: 'yyyy-MM-dd HH:mm:ss'
+}
