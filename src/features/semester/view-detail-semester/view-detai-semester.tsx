@@ -42,7 +42,7 @@ export default function ViewDetailSemester({ semester }: ViewDetailSemesterProps
                 <Textarea label='Description' value={semester.description || ''} isReadOnly />
               </ModalBody>
               <ModalFooter>
-                <Button color='primary' onPress={onClose}>
+                <Button color='danger' variant='light' onPress={onClose}>
                   Close
                 </Button>
               </ModalFooter>

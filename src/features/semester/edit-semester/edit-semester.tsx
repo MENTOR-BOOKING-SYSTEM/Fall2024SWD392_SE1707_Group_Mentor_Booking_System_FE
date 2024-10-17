@@ -19,25 +19,12 @@ import { addDays } from 'date-fns'
 
 interface EditSemesterProps {
   semester: Semester
-  allSemesters: Semester[] // Add allSemesters prop to check for date overlap
+  allSemesters: Semester[]
 }
 
 //  convert DateValue to JavaScript Date object
 const dateValueToDate = (dateValue: DateValue): Date => {
-  return new Date(dateValue.year, dateValue.month - 1, dateValue.day)
-}
-
-//  compare if two date ranges overlap
-const isDateOverlap = (start: DateValue, end: DateValue, allSemesters: Semester[]) => {
-  return allSemesters.some((sem) => {
-    const semStart = dateValueToDate(parseDate(sem.startDate.split('T')[0]))
-    const semEnd = dateValueToDate(parseDate(sem.endDate.split('T')[0]))
-    const startDate = dateValueToDate(start)
-    const endDate = dateValueToDate(end)
-
-    // Check if the start or end dates overlap
-    return startDate <= semEnd && endDate >= semStart
-  })
+  return new Date(dateValue.year, dateValue.month, dateValue.day)
 }
 
 export default function EditSemester({ semester, allSemesters }: EditSemesterProps) {
@@ -49,9 +36,42 @@ export default function EditSemester({ semester, allSemesters }: EditSemesterPro
 
   const { editSemesterMutation } = useEditSemester()
 
+  // Function to handle changes in startDate and automatically adjust endDate
+  const handleStartDateChange = (newStartDate: DateValue) => {
+    const previousSemester = allSemesters
+      .filter((sem) => sem.semesterID !== semester.semesterID)
+      .reduce((prev, current) => (prev.endDate > current.endDate ? prev : current), allSemesters[0])
+
+    // Convert previous semester's end date to JavaScript Date object
+    const prevSemesterEndDate = dateValueToDate(parseDate(previousSemester.endDate.split('T')[0]))
+
+    // Ensure new startDate is greater than the previous semester's end date
+    if (dateValueToDate(newStartDate) <= prevSemesterEndDate) {
+      alert(`Start date must be after the end date of the previous semester (${previousSemester.endDate}).`)
+      return
+    }
+
+    setStartDate(newStartDate)
+
+    // Automatically set endDate to be 16 weeks after startDate
+    const newEndDate = addDays(dateValueToDate(newStartDate), 16 * 7)
+    setEndDate(parseDate(newEndDate.toISOString().split('T')[0])) // Update endDate to 16 weeks later
+  }
+
   const handleEdit = () => {
     const updatedFields: Partial<Semester> = {}
 
+    // Ensure semester name is unique
+    const isSemesterNameUnique = !allSemesters.some(
+      (sem) => sem.semesterName === semesterName && String(sem.semesterID) !== String(semester.semesterID)
+    )
+
+    if (!isSemesterNameUnique) {
+      alert('The semester name already exists! Please choose a different name.')
+      return
+    }
+
+    // Update semester fields
     if (semesterName !== semester.semesterName) {
       updatedFields.semesterName = semesterName
     }
@@ -65,6 +85,7 @@ export default function EditSemester({ semester, allSemesters }: EditSemesterPro
       updatedFields.description = description
     }
 
+    // Trigger update mutation if there are changes
     if (Object.keys(updatedFields).length > 0) {
       editSemesterMutation.mutate(
         { semesterID: semester.semesterID, ...updatedFields },
@@ -95,11 +116,12 @@ export default function EditSemester({ semester, allSemesters }: EditSemesterPro
                   onChange={(e) => setSemesterName(e.target.value)}
                 />
                 <div className='flex items-center gap-3'>
-                  <DatePicker label='Start Date' value={startDate} onChange={(date) => setStartDate(date)} />
+                  <DatePicker label='Start Date' value={startDate} onChange={(date) => handleStartDateChange(date)} />
                   <p className='text-sm mx-2'>to</p>
                   <DatePicker
                     label='End Date'
                     value={endDate}
+                    // Restrict selection of endDate to be at least 16 weeks after startDate
                     minValue={
                       new CalendarDate(
                         addDays(new Date(startDate.year, startDate.month - 1, startDate.day), 16 * 7).getFullYear(),
@@ -107,14 +129,7 @@ export default function EditSemester({ semester, allSemesters }: EditSemesterPro
                         addDays(new Date(startDate.year, startDate.month - 1, startDate.day), 16 * 7).getDate()
                       )
                     }
-                    onChange={(date) => {
-                      if (!isDateOverlap(startDate, date, allSemesters)) {
-                        // Check for overlapping dates
-                        setEndDate(date)
-                      } else {
-                        alert('The selected date range overlaps with another semester!')
-                      }
-                    }}
+                    onChange={(date) => setEndDate(date)}
                   />
                 </div>
                 <Textarea label='Description' value={description} onChange={(e) => setDescription(e.target.value)} />
