@@ -37,10 +37,10 @@ export default function EditSemester({ semester }: EditSemesterProps) {
       updatedFields.semesterName = semesterName
     }
     if (startDate.toString() !== semester.startDate.split('T')[0]) {
-      updatedFields.startDate = startDate.toString() + 'T00:00:00.000Z'
+      updatedFields.startDate = startDate.toString()
     }
     if (endDate.toString() !== semester.endDate.split('T')[0]) {
-      updatedFields.endDate = endDate.toString() + 'T00:00:00.000Z'
+      updatedFields.endDate = endDate.toString()
     }
     if (description !== semester.description) {
       updatedFields.description = description
@@ -63,7 +63,7 @@ export default function EditSemester({ semester }: EditSemesterProps) {
   return (
     <>
       <EditIcon onClick={onOpen} className='w-5 h-5 stroke-1 cursor-pointer' />
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} className='modal-dialog'>
+      <Modal isDismissable={false} isOpen={isOpen} onOpenChange={onOpenChange} className='modal-dialog'>
         <ModalContent>
           {(onClose) => (
             <>
@@ -75,15 +75,25 @@ export default function EditSemester({ semester }: EditSemesterProps) {
                   value={semesterName}
                   onChange={(e) => setSemesterName(e.target.value)}
                 />
-                <DatePicker label='End Date' value={startDate} onChange={(date) => setStartDate(date)} />
-                <DatePicker label='Start Date' value={endDate} onChange={(date) => setEndDate(date)} />
                 <Textarea label='Description' value={description} onChange={(e) => setDescription(e.target.value)} />
+                <div className='flex items-center gap-3'>
+                  <DatePicker label='Start Date' value={startDate} onChange={(date) => setStartDate(date)} />
+                  <p className='text-sm mx-2'>to</p>
+                  <DatePicker label='End Date' value={endDate} onChange={(date) => setEndDate(date)} />
+                </div>
               </ModalBody>
               <ModalFooter>
-                <Button color='danger' variant='light' onPress={onClose}>
+                <Button
+                  color='danger'
+                  variant='light'
+                  onPress={() => {
+                    setDescription('')
+                    onClose()
+                  }}
+                >
                   Close
                 </Button>
-                <Button color='primary' onPress={handleEdit} isLoading={editSemesterMutation.isPending}>
+                <Button color='primary' onPress={handleEdit}>
                   Edit
                 </Button>
               </ModalFooter>

@@ -15,12 +15,10 @@ import {
 } from '@nextui-org/react'
 import { useViewSemesters } from './use-view-semesters'
 import { getColor, getStatus } from './utils/semester.util'
-import { EditIcon, EyeIcon } from 'lucide-react'
+import { EyeIcon } from 'lucide-react'
 import { format } from 'date-fns'
 import EditSemester from '../edit-semester/edit-semester'
 import { DATE_FORMAT } from '@/constants'
-
-const dateFormat = 'dd/MM/yyyy'
 
 const columns = [
   {
@@ -91,6 +89,7 @@ const transformData = (semesters: Semester[]) => {
             <Modal body={<>Hello</>} onSubmit={() => {}}>
               <EyeIcon className='w-5 h-5 stroke-1 cursor-pointer' />
             </Modal>
+            {/* Edit Pop-up */}
             <EditSemester semester={semester} />
           </div>
         ) : (
