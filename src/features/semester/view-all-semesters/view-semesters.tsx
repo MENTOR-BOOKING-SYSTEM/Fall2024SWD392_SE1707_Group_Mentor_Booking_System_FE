@@ -1,4 +1,3 @@
-import Modal from '@/components/ui/modal'
 import FilterSemester from '../filter-semester/filter-semester'
 import CreateSemester from '../create-semester/create-semester-form.provider'
 import { Semester } from '@/models/semester.model'
@@ -15,7 +14,6 @@ import {
 } from '@nextui-org/react'
 import { useViewSemesters } from './use-view-semesters'
 import { getColor, getStatus } from './utils/semester.util'
-import { EyeIcon } from 'lucide-react'
 import { format } from 'date-fns'
 import EditSemester from '../edit-semester/edit-semester'
 import { DATE_FORMAT } from '@/constants'
@@ -88,8 +86,7 @@ const transformData = (semesters: Semester[]) => {
         status === 'Upcoming' ? (
           <div className='flex items-center justify-center gap-2'>
             <ViewDetailSemester semester={semester} />
-            {/* Edit Pop-up */}
-            <EditSemester semester={semester} />
+            <EditSemester semester={semester} allSemesters={semesters} />
           </div>
         ) : (
           <div className='flex items-center justify-center gap-2'>

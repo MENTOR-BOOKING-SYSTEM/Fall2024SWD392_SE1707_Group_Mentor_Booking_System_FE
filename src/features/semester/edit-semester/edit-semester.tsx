@@ -14,14 +14,33 @@ import {
 import { EditIcon } from 'lucide-react'
 import { useEditSemester } from './use-edit-semester'
 import { Semester } from '@/models/semester.model'
-
-import { DateValue, parseDate } from '@internationalized/date'
+import { DateValue, parseDate, CalendarDate } from '@internationalized/date'
+import { addDays } from 'date-fns'
 
 interface EditSemesterProps {
   semester: Semester
+  allSemesters: Semester[] // Add allSemesters prop to check for date overlap
 }
 
-export default function EditSemester({ semester }: EditSemesterProps) {
+// Helper function to convert DateValue to JavaScript Date object
+const dateValueToDate = (dateValue: DateValue): Date => {
+  return new Date(dateValue.year, dateValue.month - 1, dateValue.day)
+}
+
+// Helper function to compare if two date ranges overlap
+const isDateOverlap = (start: DateValue, end: DateValue, allSemesters: Semester[]) => {
+  return allSemesters.some((sem) => {
+    const semStart = dateValueToDate(parseDate(sem.startDate.split('T')[0]))
+    const semEnd = dateValueToDate(parseDate(sem.endDate.split('T')[0]))
+    const startDate = dateValueToDate(start)
+    const endDate = dateValueToDate(end)
+
+    // Check if the start or end dates overlap
+    return startDate <= semEnd && endDate >= semStart
+  })
+}
+
+export default function EditSemester({ semester, allSemesters }: EditSemesterProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const [semesterName, setSemesterName] = useState(semester.semesterName)
   const [startDate, setStartDate] = useState<DateValue>(parseDate(semester.startDate.split('T')[0]))
@@ -78,7 +97,25 @@ export default function EditSemester({ semester }: EditSemesterProps) {
                 <div className='flex items-center gap-3'>
                   <DatePicker label='Start Date' value={startDate} onChange={(date) => setStartDate(date)} />
                   <p className='text-sm mx-2'>to</p>
-                  <DatePicker label='End Date' value={endDate} onChange={(date) => setEndDate(date)} />
+                  <DatePicker
+                    label='End Date'
+                    value={endDate}
+                    minValue={
+                      new CalendarDate(
+                        addDays(new Date(startDate.year, startDate.month - 1, startDate.day), 16 * 7).getFullYear(),
+                        addDays(new Date(startDate.year, startDate.month - 1, startDate.day), 16 * 7).getMonth() + 1,
+                        addDays(new Date(startDate.year, startDate.month - 1, startDate.day), 16 * 7).getDate()
+                      )
+                    }
+                    onChange={(date) => {
+                      if (!isDateOverlap(startDate, date, allSemesters)) {
+                        // Check for overlapping dates
+                        setEndDate(date)
+                      } else {
+                        alert('The selected date range overlaps with another semester!')
+                      }
+                    }}
+                  />
                 </div>
                 <Textarea label='Description' value={description} onChange={(e) => setDescription(e.target.value)} />
               </ModalBody>
