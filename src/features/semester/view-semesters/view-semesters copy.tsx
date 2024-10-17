@@ -15,8 +15,6 @@ import { Semester } from '@/models/semester.model'
 import { getColor, getStatus } from './utils/semester.util'
 import { EditIcon, EyeIcon } from 'lucide-react'
 import { format } from 'date-fns'
-import App from '../edit-semester/edit-semester'
-import EditSemester from '../edit-semester/edit-semester'
 
 const dateFormat = 'dd/MM/yyyy'
 
@@ -89,7 +87,9 @@ const transformData = (semesters: Semester[]) => {
             <Modal body={<>Hello</>} onSubmit={() => {}}>
               <EyeIcon className='w-5 h-5 stroke-1 cursor-pointer' />
             </Modal>
-            <EditSemester />
+            <Modal body={<>Hello</>} onSubmit={() => {}}>
+              <EditIcon className='w-5 h-5 stroke-1 cursor-pointer' />
+            </Modal>
           </div>
         ) : (
           <Modal body={<>Hello</>} onSubmit={() => {}}>
