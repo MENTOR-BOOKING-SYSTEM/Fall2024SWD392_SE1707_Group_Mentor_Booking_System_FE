@@ -1,72 +1,96 @@
-import { Controller, useFormContext } from 'react-hook-form'
+import { useState, useEffect } from 'react'
+import { useDisclosure, Input, Textarea } from '@nextui-org/react'
+import { useFormContext, Controller } from 'react-hook-form'
 import { CreateSemesterFormValues } from './use-create-semester'
-import { Input, Textarea } from '@nextui-org/input'
 import { DatePicker } from '@nextui-org/react'
-import { addDays } from 'date-fns'
 import { CalendarDate, DateValue } from '@internationalized/date'
+import { addDays } from 'date-fns'
 import { Semester } from '@/models/semester.model'
-import { getErrorState } from '@/utils'
-import FormError from '@/components/forms/form-error'
+
+const toCalendarDate = (value: DateValue): CalendarDate => {
+  if ('hour' in value) {
+    return new CalendarDate(value.year, value.month, value.day)
+  }
+  return value as CalendarDate
+}
+
+const calendarDateToString = (date: CalendarDate): string => {
+  return `${date.year}-${date.month.toString().padStart(2, '0')}-${date.day.toString().padStart(2, '0')}`
+}
 
 interface CreateSemesterFormProps {
   latestSemester: Semester | null
-}
-
-//   DateValue is of type CalendarDate
-const toCalendarDate = (value: DateValue): CalendarDate => {
-  if ('hour' in value) {
-    // If it has 'hour', it's a CalendarDateTime, so we take only the date part
-    return new CalendarDate(value.year, value.month, value.day)
-  }
-  return value as CalendarDate // Cast to CalendarDate if it's already a CalendarDate
-}
-
-//  convert string to CalendarDate
-const stringToCalendarDate = (dateString: string): CalendarDate => {
-  const date = new Date(dateString)
-  return new CalendarDate(date.getFullYear(), date.getMonth() + 1, date.getDate())
-}
-
-// convert CalendarDate to string
-const calendarDateToString = (date: CalendarDate): string => {
-  return `${date.year}-${date.month.toString().padStart(2, '0')}-${date.day.toString().padStart(2, '0')}`
 }
 
 export default function CreateSemesterForm({ latestSemester }: CreateSemesterFormProps) {
   const {
     control,
     setValue,
-    getValues,
+    reset,
     formState: { errors }
   } = useFormContext<CreateSemesterFormValues>()
+  const { isOpen } = useDisclosure()
 
-  // calculate 16 weeks from the start date
+  const [semesterName, setSemesterName] = useState<string>('')
+  const [description, setDescription] = useState<string>('')
+  const [startDate, setStartDate] = useState<CalendarDate | null>(null)
+  const [endDate, setEndDate] = useState<CalendarDate | null>(null)
+
   const calculateEndDateMinValue = (startDate: CalendarDate): CalendarDate => {
     const startJSDate = new Date(startDate.year, startDate.month - 1, startDate.day)
-    const minEndDate = addDays(startJSDate, 16 * 7) // 16 weeks later
+    const minEndDate = addDays(startJSDate, 16 * 7)
     return new CalendarDate(minEndDate.getFullYear(), minEndDate.getMonth() + 1, minEndDate.getDate())
+  }
+
+  useEffect(() => {
+    if (isOpen) {
+      setSemesterName('')
+      setDescription('')
+      setStartDate(null)
+      setEndDate(null)
+      reset({
+        semesterName: '',
+        description: '',
+        startDate: '',
+        endDate: ''
+      })
+    }
+  }, [isOpen, reset])
+
+  const handleStartDateChange = (e: DateValue) => {
+    const calendarDate = toCalendarDate(e)
+    setStartDate(calendarDate)
+
+    const calculatedEndDate = calculateEndDateMinValue(calendarDate)
+    setEndDate(calculatedEndDate)
+    setValue('endDate', calendarDateToString(calculatedEndDate))
   }
 
   return (
     <div className='flex flex-col gap-3'>
+      {/* Semester Name Input */}
       <Controller
         control={control}
         name='semesterName'
-        render={({ field: { onChange, value } }) => (
+        render={({ field: { onChange } }) => (
           <Input
-            onChange={onChange}
-            value={value}
+            onChange={(e) => {
+              onChange(e)
+              setSemesterName(e.target.value)
+            }}
+            value={semesterName}
             label='Semester name'
             placeholder='Enter semester name'
             autoFocus
-            errorMessage={getErrorState(errors, 'semesterName')?.message}
-            isInvalid={!!getErrorState(errors, 'semesterName')}
+            errorMessage={errors.semesterName?.message}
+            isInvalid={!!errors.semesterName}
             className='relative'
           />
         )}
       />
-      <FormError identifier='semesterName' errors={errors} />
+
       <div className='flex items-center gap-3'>
+        {/* Start Date Picker */}
         <Controller
           control={control}
           name='startDate'
@@ -82,52 +106,48 @@ export default function CreateSemesterForm({ latestSemester }: CreateSemesterFor
                   : undefined
               }
               onChange={(e: DateValue) => {
-                const calendarDate = toCalendarDate(e)
-                onChange(calendarDate) // Update startDate
-
-                // Calculate endDate (16 weeks later)
-                const endDate = calculateEndDateMinValue(calendarDate)
-                setValue('endDate', calendarDateToString(endDate)) // Convert CalendarDate to string for form
+                onChange(e)
+                handleStartDateChange(e)
               }}
+              value={startDate || undefined}
               label='Start date'
             />
           )}
         />
         <p className='text-sm mx-2'>to</p>
+
+        {/* End Date Picker */}
         <Controller
           control={control}
           name='endDate'
-          render={({ field: { onChange, value } }) => (
+          render={({ field: { onChange } }) => (
             <DatePicker
-              isDisabled={!getValues('startDate')} // Disable if no startDate
-              value={
-                value
-                  ? stringToCalendarDate(value) // Convert string to CalendarDate
-                  : undefined
-              }
-              // Set the minimum value for endDate to be 16 weeks after startDate
-              minValue={
-                getValues('startDate')
-                  ? calculateEndDateMinValue(stringToCalendarDate(getValues('startDate'))) // Ensure startDate is converted correctly
-                  : undefined
-              }
+              isDisabled={!startDate}
+              value={endDate || undefined}
+              minValue={startDate ? calculateEndDateMinValue(startDate) : undefined}
               onChange={(e: DateValue) => {
-                const calendarDate = toCalendarDate(e) // Ensure it's CalendarDate
-                onChange(calendarDateToString(calendarDate)) // Convert CalendarDate to string for form
+                const calendarDate = toCalendarDate(e)
+                setEndDate(calendarDate)
+                onChange(calendarDateToString(calendarDate))
               }}
               label='End date'
             />
           )}
         />
       </div>
+
+      {/* Description Input */}
       <Controller
         control={control}
         name='description'
-        render={({ field: { onChange, value } }) => (
+        render={({ field: { onChange } }) => (
           <Textarea
-            value={value ?? ''}
+            value={description}
             label='Description'
-            onChange={onChange}
+            onChange={(e) => {
+              onChange(e)
+              setDescription(e.target.value)
+            }}
             placeholder='Enter description'
             disableAnimation
             disableAutosize
