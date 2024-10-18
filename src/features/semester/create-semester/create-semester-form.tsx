@@ -101,7 +101,7 @@ export default function CreateSemesterForm({ latestSemester }: CreateSemesterFor
                   ? new CalendarDate(
                       new Date(latestSemester.endDate).getFullYear(),
                       new Date(latestSemester.endDate).getMonth() + 1,
-                      new Date(latestSemester.endDate).getDate() + 2
+                      new Date(latestSemester.endDate).getDate() + 1
                     )
                   : undefined
               }

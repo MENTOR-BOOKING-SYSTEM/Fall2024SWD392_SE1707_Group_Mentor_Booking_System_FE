@@ -1,5 +1,3 @@
-import CreateCriteria from '../create-criteria/create-criteria-form.provider'
-import FilterCriteria from '../filter-criteria/filter-criteria'
 import Modal from '@/components/ui/modal'
 import { DATE_FORMAT } from '@/constants'
 import { Criteria } from '@/models/criteria.model'
