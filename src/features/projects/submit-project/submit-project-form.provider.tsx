@@ -8,8 +8,7 @@ export default function SubmitProjectFormProvider() {
   const { methods, submitProjectMutation } = useSubmitProject()
 
   const onSubmit: SubmitHandler<SubmitProjectFormValues> = async (data) => {
-    // submitProjectMutation.mutate(data)
-    console.log(data)
+    submitProjectMutation.mutate(data)
   }
 
   return (
@@ -17,7 +16,13 @@ export default function SubmitProjectFormProvider() {
       <FormProvider {...methods}>
         <form className='w-full flex flex-col gap-3' onSubmit={methods.handleSubmit(onSubmit)}>
           <SubmitProjectForm />
-          <Button startContent={<Send className='w-4 h-4' />} color='primary' className='ml-auto' type='submit'>
+          <Button
+            isLoading={submitProjectMutation.isPending}
+            startContent={<Send className='w-4 h-4' />}
+            color='primary'
+            className='ml-auto'
+            type='submit'
+          >
             Submit
           </Button>
         </form>

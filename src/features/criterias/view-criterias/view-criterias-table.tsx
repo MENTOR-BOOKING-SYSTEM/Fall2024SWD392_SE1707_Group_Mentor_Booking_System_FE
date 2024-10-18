@@ -1,16 +1,22 @@
-import ViewCriteriasTable from './view-criterias-table'
-import { useViewCriterias } from './use-view-criterias'
+import Modal from '@/components/ui/modal'
+import { Chip, Spinner } from '@nextui-org/react'
+import { getKeyValue, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/table'
 import { Criteria } from '@/models/criteria.model'
 import { getColor, getStatus } from './utils/criteria.util'
 import { format } from 'date-fns'
 import { DATE_FORMAT } from '@/constants'
 import { EditIcon, EyeIcon } from 'lucide-react'
 
+interface ViewCriteriasTableProps {
+  data: Criteria[] | undefined
+  isLoading: boolean
+}
+
 const columns = [
   {
     key: 'criteriaID',
     label: 'ID',
-    className: 'text-left w-16'
+    className: 'text-center w-16'
   },
   {
     key: 'criteriaName',
@@ -20,7 +26,7 @@ const columns = [
   {
     key: 'description',
     label: 'Description',
-    className: 'text-left'
+    className: 'text-left max-w-screen-lg'
   },
   {
     key: 'type',
@@ -40,7 +46,7 @@ const columns = [
   {
     key: 'actions',
     label: 'Actions',
-    className: 'text-center w-24'
+    className: 'text-left w-24'
   }
 ]
 
@@ -50,11 +56,11 @@ const transformData = (criterias: Criteria[]) => {
 
     return {
       criteriaID: criteria.criteriaID,
-      criteriaName: <p className='font-semibold'>{criteria.criteriaName}</p>,
+      criteriaName: criteria.criteriaName,
       description: (
         <div className=''>
           {criteria.description ? (
-            <p className='truncate text-ellipsis max-w-full'>{criteria.description}</p>
+            <p className='max-w-full truncate text-ellipsis'>{criteria.description}</p>
           ) : (
             <p className='text-default-400 w-full truncate'>No description available</p>
           )}
@@ -83,8 +89,35 @@ const transformData = (criterias: Criteria[]) => {
   })
 }
 
-export default function ViewCriterias() {
-  const { data, isLoading } = useViewCriterias()
+export default function ViewCriteriasTable({ data, isLoading }: ViewCriteriasTableProps) {
+  const transformedData = transformData(data || [])
 
-  return <ViewCriteriasTable data={data} isLoading={isLoading} />
+  return (
+    <div>
+      <Table
+        classNames={{
+          table: 'min-h-60'
+        }}
+        color='default'
+        selectionMode='single'
+        disallowEmptySelection
+        aria-label='Criteria Table'
+      >
+        <TableHeader columns={columns}>
+          {(column) => (
+            <TableColumn className={column.className} key={column.key}>
+              {column.label}
+            </TableColumn>
+          )}
+        </TableHeader>
+        <TableBody items={transformedData} isLoading={isLoading} loadingContent={<Spinner />}>
+          {(criteria) => (
+            <TableRow key={criteria.criteriaID} className='max-w-32'>
+              {(columnKey) => <TableCell key={columnKey}>{getKeyValue(criteria, columnKey)}</TableCell>}
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </div>
+  )
 }

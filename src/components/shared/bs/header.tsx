@@ -1,16 +1,17 @@
-import Dropdown from '../ui/dropdown'
+import Button from '../../ui/button'
+import Dropdown from '../../ui/dropdown'
 import Meetup from '/meetup.svg'
-import PageLoader from './page-loader'
+import Modal from '@/components/ui/modal'
 import { ProfileDropdownMenuItems } from '@/constants/menu-items'
 import { useLogout } from '@/features/auth/logout/use-logout'
 import { useUser } from '@/hooks/use-user'
 import { PRIVATE_ROUTES } from '@/routes/routes'
 import { Avatar } from '@nextui-org/avatar'
 import { Divider } from '@nextui-org/divider'
-import { Bell } from 'lucide-react'
+import { Bell, CirclePlus } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
-export default function ADHeader() {
+export default function BSHeader() {
   const { mutate: logout } = useLogout()
   const { currentUserInfo } = useUser()
 
@@ -24,7 +25,14 @@ export default function ADHeader() {
               <p className='font-squada font-semibold text-2xl tracking-wider text-default-800'>Meetup</p>
             </div>
           </Link>
-          <div className='flex items-center gap-4'>
+          <div className='flex items-center gap-3'>
+            {!currentUserInfo.groupID ? (
+              <Modal body={<>Create group</>} onSubmit={() => {}}>
+                <Button color='primary' startContent={<CirclePlus className='w-4 h-4' />}>
+                  Create group
+                </Button>
+              </Modal>
+            ) : null}
             <Dropdown dropdownItems={[]}>
               <Bell className='text-default-400 cursor-pointer stroke-1' />
             </Dropdown>
