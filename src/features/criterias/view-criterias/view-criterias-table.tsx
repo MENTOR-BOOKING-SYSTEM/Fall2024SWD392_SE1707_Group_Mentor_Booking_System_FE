@@ -1,12 +1,13 @@
+import CreateCriteria from '../create-criteria/create-criteria-form.provider'
+import FilterCriteria from '../filter-criteria/filter-criteria'
 import Modal from '@/components/ui/modal'
+import { DATE_FORMAT } from '@/constants'
+import { Criteria } from '@/models/criteria.model'
 import { Chip, Spinner } from '@nextui-org/react'
 import { getKeyValue, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/table'
-import { Criteria } from '@/models/criteria.model'
-import { getColor, getStatus } from './utils/criteria.util'
 import { format } from 'date-fns'
-import { DATE_FORMAT } from '@/constants'
 import { EditIcon, EyeIcon } from 'lucide-react'
-
+import { getColor, getStatus } from './utils/criteria.util'
 interface ViewCriteriasTableProps {
   data: Criteria[] | undefined
   isLoading: boolean
@@ -16,7 +17,7 @@ const columns = [
   {
     key: 'criteriaID',
     label: 'ID',
-    className: 'text-center w-16'
+    className: 'text-left w-16'
   },
   {
     key: 'criteriaName',
@@ -26,7 +27,7 @@ const columns = [
   {
     key: 'description',
     label: 'Description',
-    className: 'text-left max-w-screen-lg'
+    className: 'text-left'
   },
   {
     key: 'type',
@@ -46,7 +47,7 @@ const columns = [
   {
     key: 'actions',
     label: 'Actions',
-    className: 'text-left w-24'
+    className: 'text-center w-24'
   }
 ]
 
@@ -56,11 +57,11 @@ const transformData = (criterias: Criteria[]) => {
 
     return {
       criteriaID: criteria.criteriaID,
-      criteriaName: criteria.criteriaName,
+      criteriaName: <p className='font-semibold'>{criteria.criteriaName}</p>,
       description: (
         <div className=''>
           {criteria.description ? (
-            <p className='max-w-full truncate text-ellipsis'>{criteria.description}</p>
+            <p className='truncate text-ellipsis max-w-full'>{criteria.description}</p>
           ) : (
             <p className='text-default-400 w-full truncate'>No description available</p>
           )}
@@ -93,7 +94,11 @@ export default function ViewCriteriasTable({ data, isLoading }: ViewCriteriasTab
   const transformedData = transformData(data || [])
 
   return (
-    <div>
+    <div className='flex flex-col gap-4'>
+      <div className='flex items-center gap-3 justify-between'>
+        <FilterCriteria />
+        <CreateCriteria isDisabled={isLoading} />
+      </div>
       <Table
         classNames={{
           table: 'min-h-60'
@@ -112,8 +117,12 @@ export default function ViewCriteriasTable({ data, isLoading }: ViewCriteriasTab
         </TableHeader>
         <TableBody items={transformedData} isLoading={isLoading} loadingContent={<Spinner />}>
           {(criteria) => (
-            <TableRow key={criteria.criteriaID} className='max-w-32'>
-              {(columnKey) => <TableCell key={columnKey}>{getKeyValue(criteria, columnKey)}</TableCell>}
+            <TableRow key={criteria.criteriaID}>
+              {(columnKey) => (
+                <TableCell className='max-w-32' key={columnKey}>
+                  {getKeyValue(criteria, columnKey)}
+                </TableCell>
+              )}
             </TableRow>
           )}
         </TableBody>

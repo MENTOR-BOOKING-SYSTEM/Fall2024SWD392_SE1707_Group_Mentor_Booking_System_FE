@@ -4,6 +4,7 @@ import { useGetCurrentPhase } from '@/features/semesters/get-current-phase/use-g
 import { useGetCurrentUserInfo } from '@/features/users/get-current-user-info/use-get-current-user-info'
 import { useAuth } from '@/hooks/use-auth'
 import { useUser } from '@/hooks/use-user'
+import { PRIVATE_ROUTES } from '@/routes/routes'
 import { isAllowRoles } from '@/utils'
 import { useEffect } from 'react'
 import { Navigate } from 'react-router-dom'
@@ -26,7 +27,7 @@ export default function Redirect() {
     if (isAllowRoles([ROLES.ADMIN], user)) {
       return <Navigate to='/dashboard' replace />
     } else if (phase.startsWith('BS')) {
-      return <Navigate to='/prepare' replace />
+      return <Navigate to={PRIVATE_ROUTES.SUBMISSION.path} replace />
     } else if (phase.startsWith('IS')) {
       if (userInfo?.projectID) {
         return <Navigate to={userInfo.projectID + '/boards'} />

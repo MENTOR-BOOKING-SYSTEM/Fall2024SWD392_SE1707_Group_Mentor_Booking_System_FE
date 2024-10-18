@@ -1,5 +1,6 @@
 import Footer from '@/components/shared/footer'
 import { Divider } from '@nextui-org/divider'
+import { Outlet } from 'react-router-dom'
 
 interface DefaultLayoutProps {
   header: React.ReactNode
@@ -18,7 +19,7 @@ export default function DefaultLayout({ header, sidebar, footer = <Footer />, ch
             {sidebar}
             <Divider orientation='vertical' />
           </div>
-          <div className='flex-1 p-4'>{children}</div>
+          <div className='flex-1 p-4'>{children || <Outlet />}</div>
         </div>
       </section>
       {footer}
