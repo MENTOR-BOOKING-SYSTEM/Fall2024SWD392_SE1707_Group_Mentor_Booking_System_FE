@@ -12,6 +12,7 @@ import {
 } from '@nextui-org/react'
 import { EyeIcon } from 'lucide-react'
 import { Semester } from '@/models/semester.model'
+import { format } from 'date-fns'
 
 interface ViewDetailSemesterProps {
   semester: Semester
@@ -19,6 +20,11 @@ interface ViewDetailSemesterProps {
 
 export default function ViewDetailSemester({ semester }: ViewDetailSemesterProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
+
+  const formatDate = (date: Date | string) => {
+    return format(new Date(date), 'dd/MM/yyyy')
+  }
+
   return (
     <>
       <EyeIcon onClick={onOpen} className='w-5 h-5 stroke-1 cursor-pointer' />
@@ -30,17 +36,12 @@ export default function ViewDetailSemester({ semester }: ViewDetailSemesterProps
               <ModalBody>
                 <Input label='Semester' value={semester.semesterName} isReadOnly />
                 <div className='flex items-center gap-3'>
-                  <Input
-                    label='Start Date'
-                    value={new Date(semester.startDate).toLocaleDateString('vi-VN')}
-                    isReadOnly
-                  />
+                  <Input label='Start Date' value={formatDate(semester.startDate)} isReadOnly />
                   <p className='text-sm mx-2'>to</p>
-                  <Input label='End Date' value={new Date(semester.endDate).toLocaleDateString('vi-VN')} isReadOnly />
+                  <Input label='End Date' value={formatDate(semester.endDate)} isReadOnly />
                 </div>
 
                 <Textarea label='Description' value={semester.description || ''} isReadOnly />
-                {/* <ViewCriterias /> */}
               </ModalBody>
               <ModalFooter>
                 <Button color='danger' variant='light' onPress={onClose}>

@@ -17,7 +17,7 @@ import { getColor, getStatus } from './utils/semester.util'
 import { format } from 'date-fns'
 import EditSemester from '../edit-semester/edit-semester'
 import { DATE_FORMAT } from '@/constants'
-import ViewDetailSemester from '../view-detail-semester/view-detai-semester'
+import ViewDetailSemester from '../view-detail-semester/view-detail-semester'
 
 const columns = [
   {

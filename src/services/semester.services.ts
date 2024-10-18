@@ -27,6 +27,11 @@ class SemesterService {
     const { data } = await httpInstance.patch<CreateSemesterAPIResponse>(`/semesters/${semester.semesterID}`, semester)
     return data.message
   }
+
+  async getSemesterById(id: number): Promise<Semester | undefined> {
+    const semesters = await this.getAllSemesters()
+    return semesters.find((semester) => semester.semesterID === id)
+  }
 }
 
 const semesterService = new SemesterService()
