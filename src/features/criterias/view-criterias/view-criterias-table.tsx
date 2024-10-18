@@ -6,9 +6,11 @@ import { getKeyValue, Table, TableBody, TableCell, TableColumn, TableHeader, Tab
 import { format } from 'date-fns'
 import { EditIcon, EyeIcon } from 'lucide-react'
 import { getColor, getStatus } from './utils/criteria.util'
+
 interface ViewCriteriasTableProps {
   data: Criteria[] | undefined
   isLoading: boolean
+  visibleColumns: string[] // New prop to control visible columns
 }
 
 const columns = [
@@ -49,7 +51,6 @@ const columns = [
   }
 ]
 
-//lấy những field bảng khi cần như là list ra
 const transformData = (criterias: Criteria[]) => {
   return criterias.map((criteria) => {
     const type = getStatus(String(criteria.type))
@@ -89,7 +90,10 @@ const transformData = (criterias: Criteria[]) => {
   })
 }
 
-export default function ViewCriteriasTable({ data, isLoading }: ViewCriteriasTableProps) {
+export default function ViewCriteriasTable({ data, isLoading, visibleColumns }: ViewCriteriasTableProps) {
+  // Filter columns based on visibleColumns prop
+  const filteredColumns = columns.filter((column) => visibleColumns.includes(column.key))
+
   const transformedData = transformData(data || [])
 
   return (
@@ -103,7 +107,7 @@ export default function ViewCriteriasTable({ data, isLoading }: ViewCriteriasTab
         disallowEmptySelection
         aria-label='Criteria Table'
       >
-        <TableHeader columns={columns}>
+        <TableHeader columns={filteredColumns}>
           {(column) => (
             <TableColumn className={column.className} key={column.key}>
               {column.label}

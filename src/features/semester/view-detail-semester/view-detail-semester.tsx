@@ -1,4 +1,3 @@
-import ViewCriterias from '@/features/criterias/view-criterias/view-criterias'
 import {
   useDisclosure,
   Modal,
@@ -13,6 +12,8 @@ import {
 import { EyeIcon } from 'lucide-react'
 import { Semester } from '@/models/semester.model'
 import { format } from 'date-fns'
+import { useViewCriterias } from '@/features/criterias/view-criterias/use-view-criterias'
+import ViewCriteriasTable from '@/features/criterias/view-criterias/view-criterias-table'
 
 interface ViewDetailSemesterProps {
   semester: Semester
@@ -20,7 +21,7 @@ interface ViewDetailSemesterProps {
 
 export default function ViewDetailSemester({ semester }: ViewDetailSemesterProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
-
+  const { data, isLoading } = useViewCriterias()
   const formatDate = (date: Date | string) => {
     return format(new Date(date), 'dd/MM/yyyy')
   }
@@ -42,6 +43,11 @@ export default function ViewDetailSemester({ semester }: ViewDetailSemesterProps
                 </div>
 
                 <Textarea label='Description' value={semester.description || ''} isReadOnly />
+                <ViewCriteriasTable
+                  data={data}
+                  isLoading={isLoading}
+                  visibleColumns={['criteriaID', 'criteriaName', 'description', 'type']}
+                />
               </ModalBody>
               <ModalFooter>
                 <Button color='danger' variant='light' onPress={onClose}>
