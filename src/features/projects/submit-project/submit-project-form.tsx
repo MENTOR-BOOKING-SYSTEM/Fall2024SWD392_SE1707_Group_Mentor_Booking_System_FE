@@ -14,13 +14,16 @@ import { SubmitProjectFormValues } from './use-submit-project'
 export default function SubmitProjectForm() {
   const { user } = useAuth()
   const {
+    control,
     formState: { errors },
-    control
+    watch
   } = useFormContext<SubmitProjectFormValues>()
 
   const getErrorState = (name: keyof SubmitProjectFormValues) => {
     return errors[name]
   }
+
+  console.log(watch('collaborators'))
 
   return (
     <>
@@ -35,7 +38,7 @@ export default function SubmitProjectForm() {
           <Controller
             control={control}
             name='collaborators'
-            render={({ field: { onChange } }) => {
+            render={({ field: { onChange, value } }) => {
               if (user?.role.includes(ROLES.MENTOR)) {
                 return <GetAllMentors onChange={onChange} isMultiline isForMentor />
               } else {

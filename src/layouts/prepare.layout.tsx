@@ -2,22 +2,13 @@ import BSHeader from '@/components/shared/bs/header'
 import BSSidebar from '@/components/shared/bs/sidebar'
 import Footer from '@/components/shared/is/footer'
 import { BS_SIDEBAR_MENU_ITEMS } from '@/constants/menu-items'
-import { UserInfo } from '@/models/user.model'
+import { useUser } from '@/hooks/use-user'
 import { PRIVATE_ROUTES } from '@/routes/routes'
 import { Users } from 'lucide-react'
 import { Outlet } from 'react-router-dom'
-import { useLocalStorage } from 'usehooks-ts'
 
 export default function PrepareLayout() {
-  const [currentUserInfo] = useLocalStorage<UserInfo>('userInfo', {
-    email: '',
-    firstName: '',
-    lastName: '',
-    avatarUrl: null,
-    groupID: null,
-    projectID: null,
-    position: null
-  })
+  const { currentUserInfo } = useUser()
 
   if (currentUserInfo) {
     let menuItems = BS_SIDEBAR_MENU_ITEMS
