@@ -1,4 +1,3 @@
-import FormError from '@/components/forms/form-error'
 import { Controller, useFormContext } from 'react-hook-form'
 import { CreateSemesterFormValues } from './use-create-semester'
 import { Input, Textarea } from '@nextui-org/input'
@@ -7,6 +6,7 @@ import { addDays } from 'date-fns'
 import { CalendarDate, DateValue } from '@internationalized/date'
 import { Semester } from '@/models/semester.model'
 import { getErrorState } from '@/utils'
+import FormError from '@/components/forms/form-error'
 
 interface CreateSemesterFormProps {
   latestSemester: Semester | null

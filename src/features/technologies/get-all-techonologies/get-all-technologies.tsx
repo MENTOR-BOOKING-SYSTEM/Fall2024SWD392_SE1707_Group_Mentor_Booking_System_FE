@@ -1,9 +1,10 @@
-import Select from '@/components/ui/select'
 import { useGetAllTechonologies } from './use-get-all-technologies'
 import { Skeleton } from '@nextui-org/skeleton'
+import { Select, SelectItem, SelectSection } from '@nextui-org/select'
+import { Chip } from '@nextui-org/chip'
 
 interface GetAllTechnologiesProps {
-  onChange?: (...event: any[]) => void
+  onChange: (...event: any[]) => void
 }
 
 export default function GetAllTechnologies({ onChange }: GetAllTechnologiesProps) {
@@ -16,24 +17,51 @@ export default function GetAllTechnologies({ onChange }: GetAllTechnologiesProps
       </Skeleton>
     )
   } else if (data && data.length > 0) {
-    const convertedData = data
-      .filter((item) => item.parentID)
-      .map((item) => ({ key: item.techID, label: item.techName }))
+    const transformedData = data
+      .filter((tech) => !tech.parentID)
+      .map((parentTech) => ({
+        ...parentTech,
+        children: data.filter((tech) => tech.parentID === parentTech.techID)
+      }))
 
     return (
       <Select
-        selectItems={convertedData}
-        className='max-w-screen-xl'
-        classNames={{
-          base: 'max-w-xs',
-          trigger: 'min-h-12 py-2'
-        }}
+        items={data}
         isMultiline={true}
         selectionMode='multiple'
         placeholder='Select technologies'
-        onChange={onChange}
-        isChip
-      />
+        classNames={{
+          trigger: 'min-h-12 py-2'
+        }}
+        aria-label='select'
+        onChange={(e) => {
+          const convertedTechs = e.target.value.split(',').map((tech) => parseInt(tech))
+          onChange(convertedTechs)
+        }}
+        disabledKeys={['0']}
+        scrollShadowProps={{ isEnabled: false }}
+        renderValue={(items) => {
+          return (
+            <div className='flex flex-wrap gap-2'>
+              {items.map((item) => (
+                <Chip color='primary' className='text-white' key={item.key}>
+                  {item.textValue}
+                </Chip>
+              ))}
+            </div>
+          )
+        }}
+      >
+        {transformedData.map((section) => (
+          <SelectSection showDivider key={section.techID} title={section.techName}>
+            {section.children.map((child) => (
+              <SelectItem key={child.techID} value={child.techID}>
+                {child.techName}
+              </SelectItem>
+            ))}
+          </SelectSection>
+        ))}
+      </Select>
     )
   }
 }

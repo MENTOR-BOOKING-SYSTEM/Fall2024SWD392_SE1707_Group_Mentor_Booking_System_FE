@@ -6,7 +6,9 @@ import {
   Clock,
   Columns3,
   Database,
+  Hourglass,
   LogOut,
+  NotepadText,
   Settings,
   User,
   UserCogIcon,
@@ -51,25 +53,63 @@ export const IS_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = [
     value: 'members',
     url: PRIVATE_ROUTES.MEMBERS.path,
     icon: (className?: string) => <Users className={className} />
-  },
-  {
-    id: 6,
-    title: 'Semesters',
-    value: 'semesters',
-    url: PRIVATE_ROUTES.SEMESTERS.path,
-    icon: (className?: string) => <CalendarClock className={className} />
   }
 ]
 
-export const BS_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = [
-  {
-    id: 1,
-    title: 'Submission',
-    value: 'submission',
-    url: PRIVATE_ROUTES.SUBMISSION.path,
-    icon: (className?: string) => <Clock className={className} />
-  }
-]
+export const BS_SIDEBAR_MENU_ITEMS: { [key: string]: SidebarMenuItem[] } = {
+  GENERAL: [
+    {
+      id: 1,
+      title: 'Submission',
+      value: 'submission',
+      url: PRIVATE_ROUTES.SUBMISSION.path,
+      icon: (className?: string) => <Clock className={className} />
+    }
+  ],
+  STUDENT: [
+    {
+      id: 2,
+      title: 'Group',
+      value: 'group',
+      url: PRIVATE_ROUTES.GROUP.path,
+      icon: (className?: string) => <Users className={className} />
+    },
+    {
+      id: 3,
+      title: 'Posts',
+      value: 'posts',
+      url: PRIVATE_ROUTES.POSTS.path,
+      icon: (className?: string) => <NotepadText className={className} />
+    }
+  ],
+  MENTOR: [
+    {
+      id: 4,
+      title: 'Review',
+      value: 'review',
+      url: PRIVATE_ROUTES.REVIEW.path,
+      icon: (className?: string) => <Hourglass className={className} />
+    }
+  ],
+  REVIEWER: [],
+  MANAGER: [
+    {
+      id: 5,
+      title: 'Assign Reviewers',
+      value: 'reviewers',
+      url: PRIVATE_ROUTES.REVIEWERS.path,
+      icon: (className?: string) => <Users className={className} />
+    },
+    {
+      id: 6,
+      title: 'Approval Criterias',
+      value: 'approval-criterias',
+      url: PRIVATE_ROUTES.APPROVAL_CRITERIAS.path,
+      icon: (className?: string) => <Database className={className} />
+    }
+  ],
+  BUSINESS: []
+}
 
 export const ADMIN_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = [
   {
@@ -94,6 +134,8 @@ export const ADMIN_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = [
     icon: (className?: string) => <CalendarClock className={className} />
   }
 ]
+
+export const MANAGER_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = []
 
 // Dropdown
 export const ProfileDropdownMenuItems = (logout: () => void): DropdownMenuItem[] => [

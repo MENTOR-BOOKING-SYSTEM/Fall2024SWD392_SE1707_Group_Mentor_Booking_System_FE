@@ -1,13 +1,24 @@
 import ProjectPlaceholder from '/project-placeholder.jpg'
+import { UserInfo } from '@/models/user.model'
 import { PRIVATE_ROUTES } from '@/routes/routes'
 import { Avatar } from '@nextui-org/avatar'
 import { useNavigate } from 'react-router-dom'
+import { useLocalStorage } from 'usehooks-ts'
 
 export default function ViewCurrentProject() {
-  const currentProjectID = null
+  const [userInfo] = useLocalStorage<UserInfo>('userInfo', {
+    email: '',
+    firstName: '',
+    lastName: '',
+    avatarUrl: null,
+    groupID: null,
+    projectID: null,
+    position: null
+  })
+
   const navigate = useNavigate()
 
-  if (currentProjectID) {
+  if (userInfo.projectID) {
     return (
       <div className='flex items-center gap-3 px-6 my-4'>
         <Avatar isBordered color='primary' radius='md' src='https://i.pravatar.cc/150?u=a042581f4e29026704d' />

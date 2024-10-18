@@ -72,5 +72,21 @@ export const PRIVATE_ROUTES: Route = {
   ACCOUNT: {
     path: '/accounts',
     bcLabel: 'Accounts'
+  },
+  APPROVAL_CRITERIAS: {
+    path: '/approval-criterias',
+    bcLabel: 'Approval criterias'
+  },
+  REVIEWERS: {
+    path: '/reviewers',
+    bcLabel: 'Reviewers'
+  },
+  REVIEW: {
+    path: '/review',
+    bcLabel: 'Review'
+  },
+  POSTS: {
+    path: '/posts',
+    bcLabel: 'Posts'
   }
 }
