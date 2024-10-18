@@ -1,3 +1,4 @@
+import ViewCriterias from '@/features/criterias/view-criterias/view-criterias'
 import {
   useDisclosure,
   Modal,
@@ -18,11 +19,10 @@ interface ViewDetailSemesterProps {
 
 export default function ViewDetailSemester({ semester }: ViewDetailSemesterProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
-
   return (
     <>
       <EyeIcon onClick={onOpen} className='w-5 h-5 stroke-1 cursor-pointer' />
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} className='modal-dialog'>
+      <Modal isDismissable={false} size='4xl' isOpen={isOpen} onOpenChange={onOpenChange} className='modal-dialog'>
         <ModalContent>
           {(onClose) => (
             <>
@@ -40,6 +40,7 @@ export default function ViewDetailSemester({ semester }: ViewDetailSemesterProps
                 </div>
 
                 <Textarea label='Description' value={semester.description || ''} isReadOnly />
+                {/* <ViewCriterias /> */}
               </ModalBody>
               <ModalFooter>
                 <Button color='danger' variant='light' onPress={onClose}>

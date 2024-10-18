@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   Modal,
   ModalContent,
@@ -8,55 +8,48 @@ import {
   Button,
   useDisclosure,
   Input,
-  Textarea,
-  DatePicker
+  Textarea
 } from '@nextui-org/react'
 import { EditIcon } from 'lucide-react'
 import { useEditSemester } from './use-edit-semester'
 import { Semester } from '@/models/semester.model'
-import { DateValue, parseDate, CalendarDate } from '@internationalized/date'
-import { addDays } from 'date-fns'
+
+const formatDate = (date: Date): string => {
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1
+  const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()
+  return `${day}/${month}/${year}`
+}
+
+const correctDate = (dateString: string): Date => {
+  const date = new Date(dateString)
+  date.setDate(date.getDate() + 1)
+  return date
+}
 
 interface EditSemesterProps {
   semester: Semester
   allSemesters: Semester[]
 }
 
-//  convert DateValue to JavaScript Date object
-const dateValueToDate = (dateValue: DateValue): Date => {
-  return new Date(dateValue.year, dateValue.month, dateValue.day)
-}
-
 export default function EditSemester({ semester, allSemesters }: EditSemesterProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const [semesterName, setSemesterName] = useState(semester.semesterName)
-  const [startDate, setStartDate] = useState<DateValue>(parseDate(semester.startDate.split('T')[0]))
-  const [endDate, setEndDate] = useState<DateValue>(parseDate(semester.endDate.split('T')[0]))
+  const [startDate, setStartDate] = useState<Date>(correctDate(semester.startDate.split('T')[0]))
+  const [endDate, setEndDate] = useState<Date>(correctDate(semester.endDate.split('T')[0]))
   const [description, setDescription] = useState(semester.description || '')
 
   const { editSemesterMutation } = useEditSemester()
 
-  // Function to handle changes in startDate and automatically adjust endDate
-  const handleStartDateChange = (newStartDate: DateValue) => {
-    const previousSemester = allSemesters
-      .filter((sem) => sem.semesterID !== semester.semesterID)
-      .reduce((prev, current) => (prev.endDate > current.endDate ? prev : current), allSemesters[0])
-
-    // Convert previous semester's end date to JavaScript Date object
-    const prevSemesterEndDate = dateValueToDate(parseDate(previousSemester.endDate.split('T')[0]))
-
-    // Ensure new startDate is greater than the previous semester's end date
-    if (dateValueToDate(newStartDate) <= prevSemesterEndDate) {
-      alert(`Start date must be after the end date of the previous semester (${previousSemester.endDate}).`)
-      return
+  // Reset form fields when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setSemesterName(semester.semesterName)
+      setStartDate(correctDate(semester.startDate.split('T')[0]))
+      setEndDate(correctDate(semester.endDate.split('T')[0]))
+      setDescription(semester.description || '')
     }
-
-    setStartDate(newStartDate)
-
-    // Automatically set endDate to be 16 weeks after startDate
-    const newEndDate = addDays(dateValueToDate(newStartDate), 16 * 7)
-    setEndDate(parseDate(newEndDate.toISOString().split('T')[0])) // Update endDate to 16 weeks later
-  }
+  }, [isOpen, semester])
 
   const handleEdit = () => {
     const updatedFields: Partial<Semester> = {}
@@ -75,12 +68,6 @@ export default function EditSemester({ semester, allSemesters }: EditSemesterPro
     if (semesterName !== semester.semesterName) {
       updatedFields.semesterName = semesterName
     }
-    if (startDate.toString() !== semester.startDate.split('T')[0]) {
-      updatedFields.startDate = startDate.toString()
-    }
-    if (endDate.toString() !== semester.endDate.split('T')[0]) {
-      updatedFields.endDate = endDate.toString()
-    }
     if (description !== semester.description) {
       updatedFields.description = description
     }
@@ -91,12 +78,12 @@ export default function EditSemester({ semester, allSemesters }: EditSemesterPro
         { semesterID: semester.semesterID, ...updatedFields },
         {
           onSuccess: () => {
-            onOpenChange()
+            onOpenChange() // Close modal after successful update
           }
         }
       )
     } else {
-      onOpenChange()
+      onOpenChange() // Close modal without saving if there are no changes
     }
   }
 
@@ -116,21 +103,10 @@ export default function EditSemester({ semester, allSemesters }: EditSemesterPro
                   onChange={(e) => setSemesterName(e.target.value)}
                 />
                 <div className='flex items-center gap-3'>
-                  <DatePicker label='Start Date' value={startDate} onChange={(date) => handleStartDateChange(date)} />
+                  {/* để thành input disable để giữ UI */}
+                  <Input label='Start Date' value={formatDate(startDate)} isDisabled={true} />
                   <p className='text-sm mx-2'>to</p>
-                  <DatePicker
-                    label='End Date'
-                    value={endDate}
-                    // Restrict selection of endDate to be at least 16 weeks after startDate
-                    minValue={
-                      new CalendarDate(
-                        addDays(new Date(startDate.year, startDate.month - 1, startDate.day), 16 * 7).getFullYear(),
-                        addDays(new Date(startDate.year, startDate.month - 1, startDate.day), 16 * 7).getMonth() + 1,
-                        addDays(new Date(startDate.year, startDate.month - 1, startDate.day), 16 * 7).getDate()
-                      )
-                    }
-                    onChange={(date) => setEndDate(date)}
-                  />
+                  <Input label='End Date' value={formatDate(endDate)} isDisabled={true} />
                 </div>
                 <Textarea label='Description' value={description} onChange={(e) => setDescription(e.target.value)} />
               </ModalBody>
@@ -139,7 +115,6 @@ export default function EditSemester({ semester, allSemesters }: EditSemesterPro
                   color='danger'
                   variant='light'
                   onPress={() => {
-                    setDescription('')
                     onClose()
                   }}
                 >

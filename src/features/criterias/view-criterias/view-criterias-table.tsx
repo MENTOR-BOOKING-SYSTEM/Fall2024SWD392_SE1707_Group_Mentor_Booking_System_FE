@@ -51,6 +51,7 @@ const columns = [
   }
 ]
 
+//lấy những field bảng khi cần như là list ra
 const transformData = (criterias: Criteria[]) => {
   return criterias.map((criteria) => {
     const type = getStatus(String(criteria.type))
@@ -95,10 +96,6 @@ export default function ViewCriteriasTable({ data, isLoading }: ViewCriteriasTab
 
   return (
     <div className='flex flex-col gap-4'>
-      <div className='flex items-center gap-3 justify-between'>
-        <FilterCriteria />
-        <CreateCriteria isDisabled={isLoading} />
-      </div>
       <Table
         classNames={{
           table: 'min-h-60'
