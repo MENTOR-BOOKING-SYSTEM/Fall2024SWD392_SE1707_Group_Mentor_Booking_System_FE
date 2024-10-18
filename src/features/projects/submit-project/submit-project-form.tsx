@@ -24,7 +24,7 @@ export default function SubmitProjectForm() {
 
   return (
     <>
-      <div className='flex items-center gap-4 mb-8 h-32'>
+      <div className='flex items-center gap-4 h-32'>
         <Controller
           control={control}
           name='technologies'

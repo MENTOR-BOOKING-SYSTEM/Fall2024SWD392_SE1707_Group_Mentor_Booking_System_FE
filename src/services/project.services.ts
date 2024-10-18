@@ -1,11 +1,9 @@
 import axiosInstance from '@/lib/axios/axios'
 import { SubmitProjectFormValues } from '@/features/projects/submit-project/use-submit-project'
-import { omit } from 'lodash'
 
 class ProjectService {
   async submit(project: SubmitProjectFormValues) {
-    const newProject = omit(project, ['collaborators'])
-    const { data } = await axiosInstance.post('/projects/submit', newProject)
+    const { data } = await axiosInstance.post('/projects/submit', project)
     return data
   }
 }

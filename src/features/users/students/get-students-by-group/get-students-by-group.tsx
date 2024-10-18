@@ -11,7 +11,7 @@ interface GetStudentsByGroupProps {
 
 export default function GetStudentsByGroup({ onChange }: GetStudentsByGroupProps) {
   const { user } = useAuth()
-  const { data, isLoading } = useGetStudentsByGroup(user?.user_id || '')
+  const { data, isLoading } = useGetStudentsByGroup(user?.user_id)
 
   if (isLoading) {
     return (
@@ -22,11 +22,14 @@ export default function GetStudentsByGroup({ onChange }: GetStudentsByGroupProps
   } else if (data) {
     return (
       <Select
-        items={data}
+        items={data.filter((student) => String(student.userID) !== String(user?.user_id))}
         isMultiline={true}
         selectionMode='multiple'
         placeholder='Select collaborators'
-        onChange={(e) => onChange([...e.target.value.split(',')])}
+        onChange={(e) => {
+          const convertedIds = e.target.value.split(',').map((id) => parseInt(id))
+          onChange(convertedIds)
+        }}
         classNames={{
           trigger: 'min-h-12 py-2'
         }}
