@@ -1,5 +1,6 @@
-import Dropdown from '../../ui/dropdown'
+import Dropdown from '../ui/dropdown'
 import Meetup from '/meetup.svg'
+import PageLoader from './page-loader'
 import { ProfileDropdownMenuItems } from '@/constants/menu-items'
 import { useLogout } from '@/features/auth/logout/use-logout'
 import { useUser } from '@/hooks/use-user'
@@ -9,7 +10,7 @@ import { Divider } from '@nextui-org/divider'
 import { Bell } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
-export default function ISHeader() {
+export default function ADHeader() {
   const { mutate: logout } = useLogout()
   const { currentUserInfo } = useUser()
 

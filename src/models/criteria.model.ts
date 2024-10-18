@@ -7,3 +7,8 @@ export interface Criteria {
   updatedAt: string
   deletedAt: string | null
 }
+
+export interface CriteriaType {
+  criteriaTypeID: string
+  type: string
+}
