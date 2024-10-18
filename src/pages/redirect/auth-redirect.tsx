@@ -1,6 +1,6 @@
 import { useTokens } from '@/hooks/use-tokens'
 import { AuthModel } from '@/models/base.model'
-import { PUBLIC_ROUTES } from '@/routes/routes'
+import { PRIVATE_ROUTES, PUBLIC_ROUTES } from '@/routes/routes'
 import { useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useLocalStorage } from 'usehooks-ts'
@@ -17,6 +17,7 @@ export default function AuthRedirect() {
       const tokens = useTokens([accessToken, refreshToken], true)
       if (tokens.length > 0 && tokens[0] && tokens[1]) {
         setAuth({ accessToken, refreshToken })
+        navigate(PRIVATE_ROUTES.ROOT.path)
       } else {
         navigate(PUBLIC_ROUTES.LOGIN)
       }

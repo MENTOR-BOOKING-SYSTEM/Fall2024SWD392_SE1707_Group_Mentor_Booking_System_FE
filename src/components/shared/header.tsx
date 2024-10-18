@@ -1,6 +1,5 @@
 import Dropdown from '../ui/dropdown'
 import Meetup from '/meetup.svg'
-import PageLoader from './page-loader'
 import { ProfileDropdownMenuItems } from '@/constants/menu-items'
 import { useLogout } from '@/features/auth/logout/use-logout'
 import { useUser } from '@/hooks/use-user'
