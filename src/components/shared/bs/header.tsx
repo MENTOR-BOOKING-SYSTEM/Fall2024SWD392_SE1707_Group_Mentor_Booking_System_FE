@@ -4,25 +4,16 @@ import Meetup from '/meetup.svg'
 import Modal from '@/components/ui/modal'
 import { ProfileDropdownMenuItems } from '@/constants/menu-items'
 import { useLogout } from '@/features/auth/logout/use-logout'
-import { UserInfo } from '@/models/user.model'
+import { useUser } from '@/hooks/use-user'
 import { PRIVATE_ROUTES } from '@/routes/routes'
 import { Avatar } from '@nextui-org/avatar'
 import { Divider } from '@nextui-org/divider'
 import { Bell, CirclePlus } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { useLocalStorage } from 'usehooks-ts'
 
 export default function BSHeader() {
   const { mutate: logout } = useLogout()
-  const [currentUserInfo] = useLocalStorage<UserInfo>('userInfo', {
-    email: '',
-    firstName: '',
-    lastName: '',
-    avatarUrl: null,
-    groupID: null,
-    projectID: null,
-    position: null
-  })
+  const { currentUserInfo } = useUser()
 
   if (currentUserInfo) {
     return (

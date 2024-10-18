@@ -1,4 +1,3 @@
-import FormError from '@/components/forms/form-error'
 import { Controller, useFormContext } from 'react-hook-form'
 import { CreateSemesterFormValues } from './use-create-semester'
 import { Input, Textarea } from '@nextui-org/input'
@@ -37,7 +36,6 @@ export default function CreateSemesterForm({ latestSemester }: CreateSemesterFor
           />
         )}
       />
-      <FormError identifier='semesterName' errors={errors} />
       <Controller
         control={control}
         name='description'

@@ -1,5 +1,6 @@
+import { Criteria, CriteriaType } from '../criteria.model'
 import { Semester } from '../semester.model'
-import { UserInfo } from '../user.model'
+import { User, UserInfo } from '../user.model'
 
 export interface LoginAPIResponse {
   message: string
@@ -9,19 +10,7 @@ export interface LoginAPIResponse {
   }
 }
 
-export interface LogoutAPIResponse {
-  message: string
-}
-
-export interface ForgotPwdAPIResponse {
-  message: string
-}
-
-export interface VerifyCodeAPIResponse {
-  message: string
-}
-
-export interface ResetPwdAPIResponse {
+export interface GeneralAPIResponse {
   message: string
 }
 
@@ -50,4 +39,29 @@ export interface GetCurrentUserInfoAPIResponse {
 
 export interface CreateSemesterAPIResponse {
   message: string
+}
+
+export interface GetGroupMembersAPIResponse {
+  message: string
+  result: {
+    userID: number
+    username: string
+    email: string
+    avatarUrl: string
+  }[]
+}
+
+export interface GetAllCriteriasAPIResponse {
+  message: string
+  result: Criteria[]
+}
+
+export interface GetUsersByRoleAPIResponse {
+  message: string
+  result: User[]
+}
+
+export interface GetCriteriaTypesAPIResponse {
+  message: string
+  result: CriteriaType[]
 }

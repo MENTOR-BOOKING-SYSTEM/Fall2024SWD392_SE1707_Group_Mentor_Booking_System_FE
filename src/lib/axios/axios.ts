@@ -1,12 +1,10 @@
-import HttpStatusCode from '@/constants/httpStatusCode.enum'
-import { getAuthFromLS } from '@/utils/auth'
-import { ErrorResponse } from '@/types/utils.type'
+import { envConfig } from '@/constants/env'
+import { AuthModel } from '@/models/base.model'
 import { URL_LOGIN, URL_LOGOUT, URL_REFRESH_TOKEN, URL_REGISTER } from '@/services/auth.services'
 import { AuthResponse, RefreshTokenReponse } from '@/types/auth.type'
+import { ErrorResponse } from '@/types/utils.type'
+import { getAuthFromLS } from '@/utils/auth'
 import { isAxiosExpiredTokenError, isAxiosUnauthorizedError } from '@/utils/utils'
-import { toaster } from '@/components/ui/toaster'
-import { AuthModel } from '@/models/base.model'
-import { envConfig } from '@/constants/env'
 import axios, { AxiosError, type AxiosInstance } from 'axios'
 
 // Purchase: 1 - 3
@@ -66,14 +64,6 @@ export class Http {
         return response
       },
       (error: AxiosError) => {
-        if (
-          ![HttpStatusCode.UnprocessableEntity, HttpStatusCode.Unauthorized].includes(error.response?.status as number)
-        ) {
-          const data: any | undefined = error.response?.data
-          const message = data?.message || error.message
-          toaster.error({ text: message })
-        }
-
         //  401
         if (isAxiosUnauthorizedError<ErrorResponse<{ name: string; message: string }>>(error)) {
           const config = error.response?.config || { headers: {}, url: '' }
@@ -96,9 +86,6 @@ export class Http {
           localStorage.removeItem('auth')
           this.accessToken = ''
           this.refreshToken = ''
-          toaster.error({
-            text: error.response?.data.data?.message || error.response?.data.message || 'An error occurred'
-          })
         }
         return Promise.reject(error)
       }

@@ -1,3 +1,5 @@
+import Header from '@/components/shared/header'
+import Sidebar from '@/components/shared/sidebar'
 import ForgotPwdFormProvider from '@/features/auth/forgot-pwd/forgot-pwd-form.provider'
 import LoginFormProvider from '@/features/auth/login/login-form.provider'
 import ResetPwdFormProvider from '@/features/auth/reset-pwd/reset-pwd-form.provider'
@@ -8,18 +10,19 @@ import DefaultLayout from '@/layouts/default.layout'
 import GuardLayout from '@/layouts/guard.layout'
 import NonSidebarLayout from '@/layouts/non-sidebar.layout'
 import PhaseLayout from '@/layouts/phase.layout'
-import PrepareLayout from '@/layouts/prepare.layout'
 import RoleLayout from '@/layouts/role.layout'
 import Backlog from '@/pages/backlog'
+import Criterias from '@/pages/criterias'
 import NotFound from '@/pages/not-found'
 import ProjectSubmission from '@/pages/project-submission'
 import AuthRedirect from '@/pages/redirect/auth-redirect'
 import Redirect from '@/pages/redirect/redirect'
-import Submission from '@/pages/submission'
 import Semesters from '@/pages/semesters'
-import AdminLayout from '@/layouts/admin.layout'
+import Submission from '@/pages/submission'
+import DefaultBSLayout from '@/layouts/default-bs.layout'
 
 import { PHASES, ROLES } from '@/constants'
+import { ADMIN_SIDEBAR_MENU_ITEMS, IS_SIDEBAR_MENU_ITEMS, MANAGER_SIDEBAR_MENU_ITEMS } from '@/constants/menu-items'
 import { createBrowserRouter } from 'react-router-dom'
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './routes'
 
@@ -69,7 +72,12 @@ export const routes = createBrowserRouter([
             element: <RoleLayout allowRoles={[ROLES.ADMIN]} />,
             children: [
               {
-                element: <AdminLayout />,
+                element: (
+                  <DefaultLayout
+                    header={<Header />}
+                    sidebar={<Sidebar items={ADMIN_SIDEBAR_MENU_ITEMS} urlPositon={1} />}
+                  />
+                ),
                 children: [
                   {
                     path: PRIVATE_ROUTES.DASHBOARD.path,
@@ -77,7 +85,7 @@ export const routes = createBrowserRouter([
                   },
                   {
                     path: PRIVATE_ROUTES.ACCOUNT.path,
-                    element: <div>Account</div>
+                    element: <div>Accounts</div>
                   },
                   {
                     path: PRIVATE_ROUTES.SEMESTERS.path,
@@ -88,28 +96,29 @@ export const routes = createBrowserRouter([
             ]
           },
           {
+            element: <RoleLayout allowRoles={[ROLES.MANAGER]} />,
+            children: [
+              {
+                element: <DefaultBSLayout urlPosition={1} />,
+                children: [
+                  {
+                    path: PRIVATE_ROUTES.REVIEWERS.path,
+                    element: <div>Assign reviewers</div>
+                  },
+                  {
+                    path: PRIVATE_ROUTES.APPROVAL_CRITERIAS.path,
+                    element: <Criterias />
+                  }
+                ]
+              }
+            ]
+          },
+          {
             element: <RoleLayout allowRoles={[ROLES.STUDENT, ROLES.MENTOR, ROLES.BUSINESS]} />,
             children: [
               {
-                element: <PrepareLayout />,
+                element: <DefaultBSLayout urlPosition={1} />,
                 children: [
-                  {
-                    path: PRIVATE_ROUTES.PREPARE.path,
-                    element: (
-                      <PhaseLayout
-                        allowPhases={[
-                          PHASES.BS_W6_1,
-                          PHASES.BS_W5_1,
-                          PHASES.BS_W3_2,
-                          PHASES.BS_W3_1,
-                          PHASES.BS_W2_2,
-                          PHASES.BS_W2_W1_1
-                        ]}
-                      >
-                        <div>Prepare</div>
-                      </PhaseLayout>
-                    )
-                  },
                   {
                     path: PRIVATE_ROUTES.SUBMISSION.path,
                     element: (
@@ -119,12 +128,8 @@ export const routes = createBrowserRouter([
                     )
                   },
                   {
-                    path: PRIVATE_ROUTES.CHOOSE_PROJECT.path,
-                    element: (
-                      <PhaseLayout allowPhases={[PHASES.BS_W2_W1_1]}>
-                        <div>Choose Project</div>
-                      </PhaseLayout>
-                    )
+                    path: PRIVATE_ROUTES.GROUP.path,
+                    element: <div>Group</div>
                   }
                 ]
               },
@@ -134,6 +139,35 @@ export const routes = createBrowserRouter([
                   {
                     path: PRIVATE_ROUTES.SUBMIT_PROJECT.path,
                     element: <ProjectSubmission />
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            element: <RoleLayout allowRoles={[ROLES.STUDENT]} />,
+            children: [
+              {
+                element: <PhaseLayout allowPhases={[PHASES.BS_W2_W1_1]} />,
+                children: [
+                  { path: PRIVATE_ROUTES.CHOOSE_PROJECT.path, element: <div>Choose Project</div> },
+                  {
+                    path: PRIVATE_ROUTES.POSTS.path,
+                    element: <div>Posts</div>
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            element: <RoleLayout allowRoles={[ROLES.MENTOR]} />,
+            children: [
+              {
+                element: <PhaseLayout allowPhases={[PHASES.BS_W3_1, PHASES.BS_W2_2]} />,
+                children: [
+                  {
+                    path: PRIVATE_ROUTES.REVIEW.path,
+                    element: <div>Review projects upload by students, businesses</div>
                   }
                 ]
               }
@@ -157,7 +191,12 @@ export const routes = createBrowserRouter([
                 element: <RoleLayout allowRoles={[ROLES.STUDENT, ROLES.MENTOR, ROLES.BUSINESS]} />,
                 children: [
                   {
-                    element: <DefaultLayout />,
+                    element: (
+                      <DefaultLayout
+                        header={<Header />}
+                        sidebar={<Sidebar items={IS_SIDEBAR_MENU_ITEMS} urlPositon={2} />}
+                      />
+                    ),
                     children: [
                       {
                         path: PRIVATE_ROUTES.CURRENT_PROJECT.path,
