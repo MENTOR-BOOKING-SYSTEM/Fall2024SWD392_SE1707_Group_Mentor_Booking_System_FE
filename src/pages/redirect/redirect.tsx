@@ -3,31 +3,22 @@ import { ROLES } from '@/constants'
 import { useGetCurrentPhase } from '@/features/semesters/get-current-phase/use-get-current-phase'
 import { useGetCurrentUserInfo } from '@/features/users/get-current-user-info/use-get-current-user-info'
 import { useAuth } from '@/hooks/use-auth'
-import { UserInfo } from '@/models/user.model'
+import { useUser } from '@/hooks/use-user'
 import { isAllowRoles } from '@/utils'
 import { useEffect } from 'react'
 import { Navigate } from 'react-router-dom'
-import { useLocalStorage } from 'usehooks-ts'
 
 export default function Redirect() {
   const { user } = useAuth()
   const { data: phase, isLoading: isLoadingPhase } = useGetCurrentPhase()
   const { data: userInfo, isLoading: isLoadingInfo } = useGetCurrentUserInfo()
-  const [_userInfo, setUserInfo] = useLocalStorage<UserInfo>('userInfo', {
-    email: '',
-    firstName: '',
-    lastName: '',
-    avatarUrl: null,
-    groupID: null,
-    projectID: null,
-    position: null
-  })
+  const { setcurrentUserInfo } = useUser()
 
   useEffect(() => {
     if (userInfo) {
-      setUserInfo(userInfo)
+      setcurrentUserInfo(userInfo)
     }
-  }, [userInfo, setUserInfo])
+  }, [userInfo, setcurrentUserInfo])
 
   if (isLoadingPhase || isLoadingInfo) {
     return <PageLoader />

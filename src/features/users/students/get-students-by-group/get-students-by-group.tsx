@@ -27,8 +27,10 @@ export default function GetStudentsByGroup({ onChange }: GetStudentsByGroupProps
         selectionMode='multiple'
         placeholder='Select collaborators'
         onChange={(e) => {
-          const convertedIds = e.target.value.split(',').map((id) => parseInt(id))
-          onChange(convertedIds)
+          const convertedIds = e.target.value.split(',').map((id) => {
+            if (id) return parseInt(id)
+          })
+          onChange([user?.user_id, ...convertedIds].filter((id) => id))
         }}
         classNames={{
           trigger: 'min-h-12 py-2'
