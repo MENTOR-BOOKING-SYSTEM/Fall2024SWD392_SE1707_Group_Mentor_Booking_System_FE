@@ -32,13 +32,13 @@ export default function Redirect() {
   if (isLoadingPhase || isLoadingInfo) {
     return <PageLoader />
   } else if (phase) {
-    if (phase.startsWith('BS')) {
+    if (isAllowRoles([ROLES.ADMIN], user)) {
+      return <Navigate to='/dashboard' replace />
+    } else if (phase.startsWith('BS')) {
       return <Navigate to='/prepare' replace />
     } else if (phase.startsWith('IS')) {
-      if (userInfo?.projectID && !isAllowRoles([ROLES.ADMIN], user)) {
+      if (userInfo?.projectID) {
         return <Navigate to={userInfo.projectID + '/boards'} />
-      } else if (isAllowRoles([ROLES.ADMIN], user)) {
-        return <Navigate to='/dashboard' replace />
       } else {
         return <Navigate to='/404' replace />
       }
