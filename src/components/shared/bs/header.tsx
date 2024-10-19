@@ -1,7 +1,6 @@
 import Button from '../../ui/button'
 import Dropdown from '../../ui/dropdown'
 import Meetup from '/meetup.svg'
-import Modal from '@/components/ui/modal'
 import { ProfileDropdownMenuItems } from '@/constants/menu-items'
 import { useLogout } from '@/features/auth/logout/use-logout'
 import { useUser } from '@/hooks/use-user'
@@ -27,11 +26,9 @@ export default function BSHeader() {
           </Link>
           <div className='flex items-center gap-3'>
             {!currentUserInfo.groupID ? (
-              <Modal body={<>Create group</>} onSubmit={() => {}}>
-                <Button color='primary' startContent={<CirclePlus className='w-4 h-4' />}>
-                  Create group
-                </Button>
-              </Modal>
+              <Button color='primary' startContent={<CirclePlus className='w-4 h-4' />}>
+                Create group
+              </Button>
             ) : null}
             <Dropdown dropdownItems={[]}>
               <Bell className='text-default-400 cursor-pointer stroke-1' />

@@ -1,10 +1,10 @@
-import Modal from '@/components/ui/modal'
+import ViewCriteriaDetail from '../view-criteria-detail/view-criteria-detail'
 import { DATE_FORMAT } from '@/constants'
 import { Criteria } from '@/models/criteria.model'
 import { Chip, Spinner } from '@nextui-org/react'
 import { getKeyValue, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/table'
 import { format } from 'date-fns'
-import { EditIcon, EyeIcon } from 'lucide-react'
+import { PackageOpen } from 'lucide-react'
 import { getColor, getStatus } from './utils/criteria.util'
 
 interface ViewCriteriasTableProps {
@@ -78,12 +78,8 @@ const transformData = (criterias: Criteria[]) => {
       updatedAt: <p className='text-center'>{format(criteria.updatedAt, DATE_FORMAT.DEFAULT)}</p>,
       actions: (
         <div className='flex items-center justify-center gap-2'>
-          <Modal body={<>Hello</>} onSubmit={() => {}}>
-            <EyeIcon className='w-5 h-5 stroke-1 cursor-pointer' />
-          </Modal>
-          <Modal body={<>Hello</>} onSubmit={() => {}}>
-            <EditIcon className='w-5 h-5 stroke-1 cursor-pointer' />
-          </Modal>
+          <ViewCriteriaDetail criteriaID={criteria.criteriaID} />
+          <ViewCriteriaDetail criteriaID={criteria.criteriaID} isEdit />
         </div>
       )
     }
@@ -114,7 +110,17 @@ export default function ViewCriteriasTable({ data, isLoading, visibleColumns }: 
             </TableColumn>
           )}
         </TableHeader>
-        <TableBody items={transformedData} isLoading={isLoading} loadingContent={<Spinner />}>
+        <TableBody
+          items={transformedData}
+          isLoading={isLoading}
+          loadingContent={<Spinner />}
+          emptyContent={
+            <div className='flex flex-col items-center gap-2'>
+              <PackageOpen className='w-10 h-10 stroke-1 text-default-300' />
+              <p>No data available</p>
+            </div>
+          }
+        >
           {(criteria) => (
             <TableRow key={criteria.criteriaID}>
               {(columnKey) => (
