@@ -3,7 +3,7 @@ import Button from '@/components/ui/button'
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@nextui-org/modal'
 import { PlusCircleIcon } from 'lucide-react'
 import { FormProvider, SubmitHandler } from 'react-hook-form'
-import { type CreateCriteriaFormValues, useCreateCriteria } from './use-create-criteria'
+import { type CriteriaFormValues, useCreateCriteria } from './use-create-criteria'
 
 interface CreateCriteriaFormProviderProps {
   isDisabled: boolean
@@ -13,7 +13,7 @@ export default function CreateCriteriaFormProvider({ isDisabled }: CreateCriteri
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const { methods, createCriteriaMutation } = useCreateCriteria(onClose)
 
-  const onSubmit: SubmitHandler<CreateCriteriaFormValues> = (data) => {
+  const onSubmit: SubmitHandler<CriteriaFormValues> = (data) => {
     createCriteriaMutation.mutate(data)
   }
 
@@ -27,7 +27,7 @@ export default function CreateCriteriaFormProvider({ isDisabled }: CreateCriteri
       >
         Create criteria
       </Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} className='modal-dialog'>
+      <Modal backdrop='blur' isOpen={isOpen} onOpenChange={onOpenChange} className='modal-dialog'>
         <ModalContent>
           <form onSubmit={methods.handleSubmit(onSubmit)}>
             <ModalHeader className='flex flex-col gap-1'>Create criteria</ModalHeader>
@@ -35,7 +35,7 @@ export default function CreateCriteriaFormProvider({ isDisabled }: CreateCriteri
               <CreateCriteriaForm />
             </ModalBody>
             <ModalFooter>
-              <Button color='danger' variant='light' onPress={onClose}>
+              <Button color='danger' variant='light' isLoading={createCriteriaMutation.isPending} onPress={onClose}>
                 Close
               </Button>
               <Button color='primary' type='submit' isLoading={createCriteriaMutation.isPending}>

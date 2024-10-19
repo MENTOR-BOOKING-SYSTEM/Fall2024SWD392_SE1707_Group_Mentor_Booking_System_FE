@@ -1,5 +1,5 @@
 export interface Criteria {
-  criteriaID: string
+  criteriaID: number
   type: string
   criteriaName: string
   description: string
