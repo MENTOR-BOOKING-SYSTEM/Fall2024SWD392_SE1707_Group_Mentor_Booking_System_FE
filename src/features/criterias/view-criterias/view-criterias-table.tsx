@@ -89,45 +89,43 @@ export default function ViewCriteriasTable({ data, isLoading }: ViewCriteriasTab
   const transformedData = transformData(data || [])
 
   return (
-    <div className='flex flex-col gap-4'>
-      <Table
-        classNames={{
-          table: 'min-h-60'
-        }}
-        color='default'
-        selectionMode='single'
-        disallowEmptySelection
-        aria-label='Criteria Table'
+    <Table
+      classNames={{
+        table: 'min-h-60'
+      }}
+      color='default'
+      selectionMode='single'
+      disallowEmptySelection
+      aria-label='Criteria Table'
+    >
+      <TableHeader columns={columns}>
+        {(column) => (
+          <TableColumn className={column.className} key={column.key}>
+            {column.label}
+          </TableColumn>
+        )}
+      </TableHeader>
+      <TableBody
+        items={transformedData}
+        isLoading={isLoading}
+        loadingContent={<Spinner />}
+        emptyContent={
+          <div className='flex flex-col items-center gap-2'>
+            <PackageOpen className='w-10 h-10 stroke-1 text-default-300' />
+            <p>No data available</p>
+          </div>
+        }
       >
-        <TableHeader columns={columns}>
-          {(column) => (
-            <TableColumn className={column.className} key={column.key}>
-              {column.label}
-            </TableColumn>
-          )}
-        </TableHeader>
-        <TableBody
-          items={transformedData}
-          isLoading={isLoading}
-          loadingContent={<Spinner />}
-          emptyContent={
-            <div className='flex flex-col items-center gap-2'>
-              <PackageOpen className='w-10 h-10 stroke-1 text-default-300' />
-              <p>No data available</p>
-            </div>
-          }
-        >
-          {(criteria) => (
-            <TableRow key={criteria.criteriaID}>
-              {(columnKey) => (
-                <TableCell className='max-w-32' key={columnKey}>
-                  {getKeyValue(criteria, columnKey)}
-                </TableCell>
-              )}
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </div>
+        {(criteria) => (
+          <TableRow key={criteria.criteriaID}>
+            {(columnKey) => (
+              <TableCell className='max-w-32' key={columnKey}>
+                {getKeyValue(criteria, columnKey)}
+              </TableCell>
+            )}
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
   )
 }

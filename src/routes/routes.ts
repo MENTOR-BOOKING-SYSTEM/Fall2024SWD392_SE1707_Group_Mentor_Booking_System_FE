@@ -88,5 +88,9 @@ export const PRIVATE_ROUTES: Route = {
   POSTS: {
     path: '/posts',
     bcLabel: 'Posts'
+  },
+  TIMESTAMPS: {
+    path: '/timestamps',
+    bcLabel: 'Timestamps'
   }
 }

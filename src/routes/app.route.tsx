@@ -22,9 +22,10 @@ import Submission from '@/pages/submission'
 import DefaultBSLayout from '@/layouts/default-bs.layout'
 
 import { PHASES, ROLES } from '@/constants'
-import { ADMIN_SIDEBAR_MENU_ITEMS, IS_SIDEBAR_MENU_ITEMS, MANAGER_SIDEBAR_MENU_ITEMS } from '@/constants/menu-items'
+import { ADMIN_SIDEBAR_MENU_ITEMS, IS_SIDEBAR_MENU_ITEMS } from '@/constants/menu-items'
 import { createBrowserRouter } from 'react-router-dom'
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './routes'
+import Timestamps from '@/pages/timestamps'
 
 export const routes = createBrowserRouter([
   {
@@ -90,6 +91,10 @@ export const routes = createBrowserRouter([
                   {
                     path: PRIVATE_ROUTES.SEMESTERS.path,
                     element: <Semesters />
+                  },
+                  {
+                    path: PRIVATE_ROUTES.TIMESTAMPS.path,
+                    element: <Timestamps />
                   }
                 ]
               }

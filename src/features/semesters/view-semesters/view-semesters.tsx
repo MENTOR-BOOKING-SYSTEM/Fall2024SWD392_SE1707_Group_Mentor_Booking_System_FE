@@ -61,7 +61,7 @@ const transformData = (semesters: Semester[]) => {
 
     return {
       id: semester.semesterID,
-      semesterName: semester.semesterName,
+      semesterName: <p className='font-semibold'>{semester.semesterName}</p>,
       startDate: <p className='text-center'>{format(semester.startDate, DATE_FORMAT.DEFAULT)}</p>,
       endDate: <p className='text-center'>{format(semester.endDate, DATE_FORMAT.DEFAULT)}</p>,
       description: (
@@ -102,7 +102,7 @@ export default function ViewSemesters() {
   return (
     <div className='flex flex-col gap-4 p-4'>
       <div className='flex items-center gap-3 justify-between'>
-        <FilterSemester />
+        {/* <FilterSemester /> */}
         <CreateSemester latestSemester={data ? data[data?.length - 1] : null} isDisabled={isLoading} />
       </div>
       <Table
