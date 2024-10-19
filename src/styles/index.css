@@ -5,6 +5,15 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
 .Toastify__toast-body {
   padding: 14px !important;
 }

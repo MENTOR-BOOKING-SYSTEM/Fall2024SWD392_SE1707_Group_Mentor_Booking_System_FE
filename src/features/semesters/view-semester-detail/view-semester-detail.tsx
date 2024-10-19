@@ -1,11 +1,23 @@
-import Button from '@/components/ui/button'
 import SemesterForm from '../create-semester/semester-form'
-import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Spinner, useDisclosure } from '@nextui-org/react'
+import ViewSemesterTimestamps from '../view-semester-timestamps/view-semester-timestamps'
+import ShouldRender from '@/components/shared/should-render'
+import Button from '@/components/ui/button'
+import ViewSemesterCriteria from '../view-semester-criterias/view-semester-criterias'
+import {
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  Spinner,
+  Tab,
+  Tabs,
+  useDisclosure
+} from '@nextui-org/react'
 import { EditIcon, EyeIcon } from 'lucide-react'
-import { useEditSemesterDetail, useViewSemesterDetail } from './use-view-semester-detail'
 import { FormProvider, SubmitHandler } from 'react-hook-form'
 import { SemesterFormValues } from '../create-semester/use-create-semester'
-import ShouldRender from '@/components/shared/should-render'
+import { useEditSemesterDetail, useViewSemesterDetail } from './use-view-semester-detail'
 
 interface ViewDetailSemesterProps {
   semesterID: number | undefined
@@ -35,11 +47,11 @@ export default function ViewSemesterDetail({ semesterID, isEdit }: ViewDetailSem
       >
         <EditIcon onClick={handleOpenModal} className='w-5 h-5 stroke-1 cursor-pointer' />
       </ShouldRender>
-      <Modal backdrop='blur' isOpen={isOpen} onOpenChange={onOpenChange} className='modal-dialog'>
+      <Modal backdrop='blur' isOpen={isOpen} onOpenChange={onOpenChange} className='modal-dialog max-w-screen-xl'>
         <ModalContent>
           <form onSubmit={methods.handleSubmit(onSubmit)}>
             <ModalHeader className='flex flex-col gap-1'>{isEdit ? 'Edit semester' : 'Semester detail'}</ModalHeader>
-            <ModalBody>
+            <ModalBody className='max-h-[720px] overflow-y-auto'>
               {isLoading ? (
                 <Spinner />
               ) : (
@@ -48,7 +60,14 @@ export default function ViewSemesterDetail({ semesterID, isEdit }: ViewDetailSem
                 </ShouldRender>
               )}
               <ShouldRender condition={!isEdit} fallback={null}>
-                Timestamp detail
+                <Tabs color='primary' aria-label='Options' className='mx-auto'>
+                  <Tab key='timestamps' title='Timestamps'>
+                    <ViewSemesterTimestamps semesterID={semesterID} />
+                  </Tab>
+                  <Tab key='approval-criterias' title='Approval Criterias'>
+                    <ViewSemesterCriteria semesterID={semesterID} />
+                  </Tab>
+                </Tabs>
               </ShouldRender>
             </ModalBody>
             <ModalFooter>

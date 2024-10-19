@@ -3,3 +3,8 @@ export interface Timestamp {
   timestampName: string
   phase: string
 }
+
+export interface SemesterTimestamp extends Timestamp {
+  startDate: string
+  endDate: string
+}
