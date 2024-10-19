@@ -65,3 +65,8 @@ export interface GetCriteriaTypesAPIResponse {
   message: string
   result: CriteriaType[]
 }
+
+export interface GetCriteriaDetailAPIResponse {
+  message: string
+  result: Criteria
+}

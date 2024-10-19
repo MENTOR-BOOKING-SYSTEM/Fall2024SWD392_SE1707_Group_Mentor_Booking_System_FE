@@ -1,15 +1,19 @@
 import { getErrorState } from '@/utils'
 import { Input, Textarea } from '@nextui-org/input'
 import { Controller, useFormContext } from 'react-hook-form'
-import { CreateCriteriaFormValues } from './use-create-criteria'
+import { CriteriaFormValues } from './use-create-criteria'
 import { useGetCriteriaTypes } from './use-get-criteria-types'
 import { Select, SelectItem, Spinner } from '@nextui-org/react'
 
-export default function CreateCriteriaForm() {
+interface CreateCriteriaFormProps {
+  isDisabled?: boolean
+}
+
+export default function CreateCriteriaForm({ isDisabled }: CreateCriteriaFormProps) {
   const {
     control,
     formState: { errors }
-  } = useFormContext<CreateCriteriaFormValues>()
+  } = useFormContext<CriteriaFormValues>()
 
   const { data, isLoading } = useGetCriteriaTypes()
 
@@ -22,24 +26,27 @@ export default function CreateCriteriaForm() {
       <Controller
         control={control}
         name='name'
-        render={({ field: { onChange } }) => (
+        render={({ field: { onChange, value } }) => (
           <Input
             onChange={onChange}
+            defaultValue={value}
             label='Criteria name'
             placeholder='Enter criteria name'
             autoFocus
             errorMessage={getErrorState(errors, 'name')?.message}
             isInvalid={!!getErrorState(errors, 'name')}
             className='relative'
+            isReadOnly={isDisabled}
           />
         )}
       />
       <Controller
         control={control}
         name='description'
-        render={({ field: { onChange } }) => (
+        render={({ field: { onChange, value } }) => (
           <Textarea
             label='Description'
+            defaultValue={value}
             onChange={onChange}
             placeholder='Enter description'
             disableAnimation
@@ -47,21 +54,23 @@ export default function CreateCriteriaForm() {
             classNames={{
               input: 'resize-y min-h-24'
             }}
+            isReadOnly={isDisabled}
           />
         )}
       />
       <Controller
         control={control}
         name='type'
-        render={({ field: { onChange } }) => (
+        render={({ field: { onChange, value } }) => (
           <Select
             isLoading={isLoading}
             onChange={onChange}
-            defaultSelectedKeys={['1']}
+            defaultSelectedKeys={value ? [String(value)] : ['1']}
             items={data}
             label='Type'
             placeholder='Select a type'
             selectionMode='single'
+            isDisabled={isDisabled}
           >
             {(item) => <SelectItem key={item.criteriaTypeID}>{item.type}</SelectItem>}
           </Select>
