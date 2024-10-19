@@ -1,5 +1,6 @@
 import { Criteria, CriteriaType } from '../criteria.model'
 import { Semester } from '../semester.model'
+import { Timestamp } from '../timestamp.model'
 import { User, UserInfo } from '../user.model'
 
 export interface LoginAPIResponse {
@@ -74,4 +75,9 @@ export interface GetCriteriaTypesAPIResponse {
 export interface GetCriteriaDetailAPIResponse {
   message: string
   result: Criteria
+}
+
+export interface GetAllTimestampsResponse {
+  message: string
+  result: Timestamp[]
 }
