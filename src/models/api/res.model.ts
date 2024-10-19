@@ -41,6 +41,11 @@ export interface CreateSemesterAPIResponse {
   message: string
 }
 
+export interface GetSemesterDetailAPIResponse {
+  message: string
+  result: Semester
+}
+
 export interface GetGroupMembersAPIResponse {
   message: string
   result: {

@@ -28,10 +28,10 @@ export default function CreateCriteriaForm({ isDisabled }: CreateCriteriaFormPro
         name='name'
         render={({ field: { onChange, value } }) => (
           <Input
-            onChange={onChange}
-            defaultValue={value}
             label='Criteria name'
             placeholder='Enter criteria name'
+            defaultValue={value}
+            onChange={onChange}
             autoFocus
             errorMessage={getErrorState(errors, 'name')?.message}
             isInvalid={!!getErrorState(errors, 'name')}
@@ -46,9 +46,9 @@ export default function CreateCriteriaForm({ isDisabled }: CreateCriteriaFormPro
         render={({ field: { onChange, value } }) => (
           <Textarea
             label='Description'
+            placeholder='Enter description'
             defaultValue={value}
             onChange={onChange}
-            placeholder='Enter description'
             disableAnimation
             disableAutosize
             classNames={{

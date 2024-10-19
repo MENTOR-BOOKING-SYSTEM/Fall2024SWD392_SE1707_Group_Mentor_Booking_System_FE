@@ -10,7 +10,6 @@ import { getColor, getStatus } from './utils/criteria.util'
 interface ViewCriteriasTableProps {
   data: Criteria[] | undefined
   isLoading: boolean
-  visibleColumns: string[] // New prop to control visible columns
 }
 
 const columns = [
@@ -86,10 +85,7 @@ const transformData = (criterias: Criteria[]) => {
   })
 }
 
-export default function ViewCriteriasTable({ data, isLoading, visibleColumns }: ViewCriteriasTableProps) {
-  // Filter columns based on visibleColumns prop
-  const filteredColumns = columns.filter((column) => visibleColumns.includes(column.key))
-
+export default function ViewCriteriasTable({ data, isLoading }: ViewCriteriasTableProps) {
   const transformedData = transformData(data || [])
 
   return (
@@ -103,7 +99,7 @@ export default function ViewCriteriasTable({ data, isLoading, visibleColumns }: 
         disallowEmptySelection
         aria-label='Criteria Table'
       >
-        <TableHeader columns={filteredColumns}>
+        <TableHeader columns={columns}>
           {(column) => (
             <TableColumn className={column.className} key={column.key}>
               {column.label}

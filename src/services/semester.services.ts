@@ -1,11 +1,11 @@
 import httpInstance from '@/lib/axios/axios'
-import type { CreateSemesterFormValues } from '@/features/semester/create-semester/use-create-semester'
+import type { SemesterFormValues } from '@/features/semester/create-semester/use-create-semester'
 import type {
   CreateSemesterAPIResponse,
   GetAllSemestersResponse,
-  GetCurrentPhaseAPIResponse
+  GetCurrentPhaseAPIResponse,
+  GetSemesterDetailAPIResponse
 } from '@/models/api/res.model'
-import type { Semester } from '@/models/semester.model'
 
 class SemesterService {
   async getAllSemesters() {
@@ -18,19 +18,20 @@ class SemesterService {
     return data.result
   }
 
-  async createSemester(semester: CreateSemesterFormValues) {
+  async createSemester(semester: SemesterFormValues) {
     const { data } = await httpInstance.post<CreateSemesterAPIResponse>('/semesters/create', semester)
     return data.message
   }
 
-  async updateSemester(semester: Partial<Semester> & { semesterID: number }) {
-    const { data } = await httpInstance.patch<CreateSemesterAPIResponse>(`/semesters/${semester.semesterID}`, semester)
+  async editSemester({ semesterID, semester }: { semesterID: number; semester: SemesterFormValues }) {
+    const { data } = await httpInstance.patch<CreateSemesterAPIResponse>(`/semesters/${semesterID}`, semester)
     return data.message
   }
 
-  async getSemesterById(id: number): Promise<Semester | undefined> {
-    const semesters = await this.getAllSemesters()
-    return semesters.find((semester) => semester.semesterID === id)
+  async getSemesterById(semesterID: number | undefined) {
+    if (!semesterID) return null
+    const { data } = await httpInstance.get<GetSemesterDetailAPIResponse>(`/semesters/${semesterID}`)
+    return data.result
   }
 }
 
