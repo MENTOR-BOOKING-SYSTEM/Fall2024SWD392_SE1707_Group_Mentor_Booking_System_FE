@@ -1,6 +1,7 @@
-import Modal from '@/components/ui/modal'
-import FilterSemester from '../filter-semester/filter-semester'
 import CreateSemester from '../create-semester/create-semester-form.provider'
+import FilterSemester from '../filter-semester/filter-semester'
+import ViewSemesterDetail from '../view-semester-detail/view-detail-semester'
+import { DATE_FORMAT } from '@/constants'
 import { Semester } from '@/models/semester.model'
 import {
   Chip,
@@ -14,11 +15,8 @@ import {
   TableRow
 } from '@nextui-org/react'
 import { format } from 'date-fns'
-import { EditIcon, EyeIcon } from 'lucide-react'
 import { useViewSemesters } from './use-view-semesters'
 import { getColor, getStatus } from './utils/semester.util'
-import { DATE_FORMAT } from '@/constants'
-
 const columns = [
   {
     key: 'id',
@@ -85,18 +83,12 @@ const transformData = (semesters: Semester[]) => {
       actions:
         status === 'Upcoming' ? (
           <div className='flex items-center justify-center gap-2'>
-            <Modal body={<>Hello</>} onSubmit={() => {}}>
-              <EyeIcon className='w-5 h-5 stroke-1 cursor-pointer' />
-            </Modal>
-            <Modal body={<>Hello</>} onSubmit={() => {}}>
-              <EditIcon className='w-5 h-5 stroke-1 cursor-pointer' />
-            </Modal>
+            <ViewSemesterDetail semesterID={semester.semesterID} />
+            <ViewSemesterDetail semesterID={semester.semesterID} isEdit />
           </div>
         ) : (
           <div className='flex items-center justify-center gap-2'>
-            <Modal body={<>Hello</>} onSubmit={() => {}}>
-              <EyeIcon className='w-5 h-5 stroke-1 cursor-pointer' />
-            </Modal>
+            <ViewSemesterDetail semesterID={semester.semesterID} />
           </div>
         )
     }

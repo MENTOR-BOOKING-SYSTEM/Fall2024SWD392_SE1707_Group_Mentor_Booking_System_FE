@@ -39,5 +39,6 @@ export const ROLES = {
 
 export const DATE_FORMAT = {
   DEFAULT: 'dd-MM-yyyy',
+  DATEPICKER: 'yyyy-MM-dd',
   DATABASE: 'yyyy-MM-dd HH:mm:ss'
 }

@@ -2,9 +2,10 @@ import { twMerge } from 'tailwind-merge'
 import { Route } from '@/models/base.model'
 import { Token } from '@/hooks/use-tokens'
 import { FieldErrors, FieldValues } from 'react-hook-form'
-import { ROLES } from '@/constants'
+import { DATE_FORMAT, ROLES } from '@/constants'
 import { BS_SIDEBAR_MENU_ITEMS } from '@/constants/menu-items'
 import { type ClassValue, clsx } from 'clsx'
+import { addDays, format } from 'date-fns'
 
 /**
  * Hàm giúp nối các className Tailwind lại với nhau
@@ -86,4 +87,21 @@ export const getBSSidebar = (user: Token | undefined) => {
   }
 
   return menuItems
+}
+
+export const formatDBDate = ({
+  date,
+  daysToAdd,
+  formatter
+}: {
+  date: string | undefined
+  daysToAdd?: number
+  formatter?: string
+}) => {
+  if (!date) return ''
+  if (typeof daysToAdd === 'number') {
+    const nextDay = addDays(new Date(date), daysToAdd)
+    return format(nextDay, DATE_FORMAT.DATEPICKER)
+  }
+  return format(new Date(date), formatter || DATE_FORMAT.DATEPICKER)
 }

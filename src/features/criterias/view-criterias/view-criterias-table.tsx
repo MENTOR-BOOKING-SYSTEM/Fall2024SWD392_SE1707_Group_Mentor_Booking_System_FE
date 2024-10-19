@@ -1,5 +1,3 @@
-import CreateCriteria from '../create-criteria/create-criteria-form.provider'
-import FilterCriteria from '../filter-criteria/filter-criteria'
 import ViewCriteriaDetail from '../view-criteria-detail/view-criteria-detail'
 import { DATE_FORMAT } from '@/constants'
 import { Criteria } from '@/models/criteria.model'
@@ -92,10 +90,6 @@ export default function ViewCriteriasTable({ data, isLoading }: ViewCriteriasTab
 
   return (
     <div className='flex flex-col gap-4'>
-      <div className='flex items-center gap-3 justify-between'>
-        <FilterCriteria />
-        <CreateCriteria isDisabled={isLoading} />
-      </div>
       <Table
         classNames={{
           table: 'min-h-60'
