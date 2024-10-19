@@ -17,6 +17,7 @@ import {
 import { format } from 'date-fns'
 import { useViewSemesters } from './use-view-semesters'
 import { getColor, getStatus } from './utils/semester.util'
+
 const columns = [
   {
     key: 'id',
