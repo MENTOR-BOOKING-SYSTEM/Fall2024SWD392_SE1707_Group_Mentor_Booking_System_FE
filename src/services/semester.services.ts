@@ -1,6 +1,7 @@
 import httpInstance from '@/lib/axios/axios'
 import type {
   CreateSemesterAPIResponse,
+  GeneralAPIResponse,
   GetAllSemestersResponse,
   GetCurrentPhaseAPIResponse,
   GetSemesterCriteriasAPIResponse,
@@ -46,6 +47,11 @@ class SemesterService {
     if (!semesterID) return null
     const { data } = await httpInstance.get<GetSemesterCriteriasAPIResponse>(`/semesters/${semesterID}/criteria`)
     return data.result
+  }
+
+  async assignCriterias({ semesterID, criteria }: { semesterID: string; criteria: string[] }) {
+    const { data } = await httpInstance.post<GeneralAPIResponse>('/semesters/assign-criteria', { semesterID, criteria })
+    return data.message
   }
 }
 
