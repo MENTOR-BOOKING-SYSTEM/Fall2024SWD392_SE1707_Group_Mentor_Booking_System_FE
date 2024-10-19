@@ -18,6 +18,7 @@ import { EditIcon, EyeIcon } from 'lucide-react'
 import { FormProvider, SubmitHandler } from 'react-hook-form'
 import { SemesterFormValues } from '../create-semester/use-create-semester'
 import { useEditSemesterDetail, useViewSemesterDetail } from './use-view-semester-detail'
+import { cn } from '@/utils'
 
 interface ViewDetailSemesterProps {
   semesterID: number | undefined
@@ -47,11 +48,16 @@ export default function ViewSemesterDetail({ semesterID, isEdit }: ViewDetailSem
       >
         <EditIcon onClick={handleOpenModal} className='w-5 h-5 stroke-1 cursor-pointer' />
       </ShouldRender>
-      <Modal backdrop='blur' isOpen={isOpen} onOpenChange={onOpenChange} className='modal-dialog max-w-screen-xl'>
+      <Modal
+        backdrop='blur'
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        className={cn('modal-dialog', isEdit ? '' : 'max-w-screen-xl')}
+      >
         <ModalContent>
           <form onSubmit={methods.handleSubmit(onSubmit)}>
             <ModalHeader className='flex flex-col gap-1'>{isEdit ? 'Edit semester' : 'Semester detail'}</ModalHeader>
-            <ModalBody className='max-h-[720px] overflow-y-auto'>
+            <ModalBody className='max-h-[40rem] overflow-y-auto'>
               {isLoading ? (
                 <Spinner />
               ) : (

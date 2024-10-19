@@ -30,7 +30,7 @@ export default function CreateSemesterFormProvider({ latestSemester, isDisabled 
         Create semester
       </Button>
 
-      <Modal isDismissable={false} isOpen={isOpen} onOpenChange={onOpenChange} className='modal-dialog'>
+      <Modal backdrop='blur' isOpen={isOpen} onOpenChange={onOpenChange} className='modal-dialog'>
         <ModalContent>
           <form onSubmit={methods.handleSubmit(onSubmit)}>
             <ModalHeader className='flex flex-col gap-1'>Create semester</ModalHeader>
