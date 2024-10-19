@@ -1,12 +1,16 @@
 import CreateCriteria from '../create-criteria/create-criteria-form.provider'
 import ViewCriteriaDetail from '../view-criteria-detail/view-criteria-detail'
 import ViewCriteriasTable from './view-criterias-table'
+import FilterCriteria from '../filter-criteria/filter-criteria'
+import Tooltip from '@/components/shared/tooltip'
+import AssignCriterias from '../assign-criterias/assign-criterias-form.provider'
 import { useViewCriterias } from './use-view-criterias'
 import { getColor, getStatus } from './utils/criteria.util'
 import { Criteria } from '@/models/criteria.model'
 import { Chip } from '@nextui-org/chip'
 import { format } from 'date-fns'
 import { DATE_FORMAT } from '@/constants'
+import { Tab, Tabs } from '@nextui-org/react'
 
 const columns = [
   {
@@ -52,7 +56,11 @@ const transformData = (criterias: Criteria[]) => {
 
     return {
       criteriaID: criteria.criteriaID,
-      criteriaName: <p className='font-semibold'>{criteria.criteriaName}</p>,
+      criteriaName: (
+        <Tooltip content={criteria.criteriaName}>
+          <p className='font-semibold truncate text-ellipsis'>{criteria.criteriaName}</p>
+        </Tooltip>
+      ),
       description: (
         <>
           {criteria.description ? (
@@ -85,12 +93,19 @@ export default function ViewCriterias() {
   const { data, isLoading } = useViewCriterias()
 
   return (
-    <div className='flex flex-col gap-3'>
-      <div className='flex items-center gap-3 justify-between'>
-        {/* <FilterCriteria /> */}
-        <CreateCriteria isDisabled={isLoading} />
-      </div>
-      <ViewCriteriasTable data={data} isLoading={isLoading} columns={columns} transformData={transformData} />
-    </div>
+    <Tabs color='primary' aria-label='Options' defaultSelectedKey='criterias'>
+      <Tab key='criterias' title='Criterias'>
+        <div className='flex flex-col gap-3 mt-2'>
+          <div className='flex items-center justify-between'>
+            <FilterCriteria />
+            <CreateCriteria isDisabled={isLoading} />
+          </div>
+          <ViewCriteriasTable data={data} isLoading={isLoading} columns={columns} transformData={transformData} />
+        </div>
+      </Tab>
+      <Tab key='semesters' title='Semesters'>
+        <AssignCriterias />
+      </Tab>
+    </Tabs>
   )
 }
