@@ -123,7 +123,6 @@ export default function SemesterForm({ latestSemester, isEdit, isDisabledDate }:
               label='Semester name'
               placeholder='Enter semester name'
               defaultValue={value}
-              autoFocus
               errorMessage={errors.semesterName?.message}
               isInvalid={!!errors.semesterName}
               className='relative'

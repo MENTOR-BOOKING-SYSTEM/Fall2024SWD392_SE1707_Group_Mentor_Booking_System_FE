@@ -1,6 +1,6 @@
 import CreateSemester from '../create-semester/create-semester-form.provider'
 import FilterSemester from '../filter-semester/filter-semester'
-import ViewSemesterDetail from '../view-semester-detail/view-detail-semester'
+import ViewSemesterDetail from '../view-semester-detail/view-semester-detail'
 import { DATE_FORMAT } from '@/constants'
 import { Semester } from '@/models/semester.model'
 import {
@@ -26,7 +26,7 @@ const columns = [
   {
     key: 'semesterName',
     label: 'Semester',
-    className: 'text-left w-96'
+    className: 'text-left w-64'
   },
   {
     key: 'startDate',
@@ -41,17 +41,17 @@ const columns = [
   {
     key: 'description',
     label: 'Description',
-    className: 'text-left w-[520px]'
+    className: 'text-left'
   },
   {
     key: 'status',
     label: 'Status',
-    className: 'text-center'
+    className: 'text-center w-24'
   },
   {
     key: 'actions',
     label: 'Actions',
-    className: 'text-center'
+    className: 'text-center w-24'
   }
 ]
 
@@ -65,13 +65,13 @@ const transformData = (semesters: Semester[]) => {
       startDate: <p className='text-center'>{format(semester.startDate, DATE_FORMAT.DEFAULT)}</p>,
       endDate: <p className='text-center'>{format(semester.endDate, DATE_FORMAT.DEFAULT)}</p>,
       description: (
-        <div className='truncate max-w-96'>
+        <>
           {semester.description ? (
-            <p>{semester.description}</p>
+            <p className='truncate text-ellipsis max-w-full'>{semester.description}</p>
           ) : (
             <p className='text-default-400 w-full truncate'>No description available</p>
           )}
-        </div>
+        </>
       ),
       status: (
         <div className='flex justify-center'>
@@ -123,8 +123,12 @@ export default function ViewSemesters() {
         </TableHeader>
         <TableBody items={transformedData} isLoading={isLoading} loadingContent={<Spinner />}>
           {(semester) => (
-            <TableRow key={semester.id} className='max-w-32'>
-              {(columnKey) => <TableCell key={columnKey}>{getKeyValue(semester, columnKey)}</TableCell>}
+            <TableRow key={semester.id}>
+              {(columnKey) => (
+                <TableCell className='max-w-32' key={columnKey}>
+                  {getKeyValue(semester, columnKey)}
+                </TableCell>
+              )}
             </TableRow>
           )}
         </TableBody>
