@@ -1,4 +1,4 @@
-import ViewSemesters from '@/features/semester/view-all-semesters/view-semesters'
+import ViewSemesters from '@/features/semesters/view-semesters/view-semesters'
 
 export default function Semesters() {
   return (
