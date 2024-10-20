@@ -20,12 +20,14 @@ import Redirect from '@/pages/redirect/redirect'
 import Semesters from '@/pages/semesters'
 import Submission from '@/pages/projects/submission'
 import DefaultBSLayout from '@/layouts/default-bs.layout'
+import Timestamps from '@/pages/timestamps'
+import ReviewProject from '@/features/projects/review-project/review-project'
+import ProjectReview from '@/pages/projects/project-review'
 
 import { PHASES, ROLES } from '@/constants'
 import { ADMIN_SIDEBAR_MENU_ITEMS, IS_SIDEBAR_MENU_ITEMS } from '@/constants/menu-items'
 import { createBrowserRouter } from 'react-router-dom'
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './routes'
-import Timestamps from '@/pages/timestamps'
 
 export const routes = createBrowserRouter([
   {
@@ -171,8 +173,17 @@ export const routes = createBrowserRouter([
                 element: <PhaseLayout allowPhases={[PHASES.BS_W3_1, PHASES.BS_W2_2]} />,
                 children: [
                   {
-                    path: PRIVATE_ROUTES.REVIEW.path,
-                    element: <div>Review projects upload by students, businesses</div>
+                    element: <DefaultBSLayout urlPosition={1} />,
+                    children: [
+                      {
+                        path: PRIVATE_ROUTES.REVIEW.path,
+                        element: <ProjectReview />
+                      },
+                      {
+                        path: PRIVATE_ROUTES.REVIEW_PROJECT.path,
+                        element: <ReviewProject />
+                      }
+                    ]
                   }
                 ]
               }

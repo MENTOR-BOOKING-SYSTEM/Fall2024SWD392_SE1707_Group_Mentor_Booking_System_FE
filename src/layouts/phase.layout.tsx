@@ -13,7 +13,7 @@ export default function PhaseLayout({ allowPhases, customErrorPage, children }: 
 
   if (isLoading) {
     return <PageLoader />
-  } else if (data && allowPhases.includes(data)) {
+  } else if (data && allowPhases.some((phase) => data.includes(phase))) {
     return children || <Outlet />
   } else {
     if (customErrorPage) {

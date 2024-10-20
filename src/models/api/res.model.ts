@@ -30,7 +30,7 @@ export interface GetAllSemestersResponse {
 }
 export interface GetCurrentPhaseAPIResponse {
   message: string
-  result: string
+  result: string[]
 }
 
 export interface GetCurrentUserInfoAPIResponse {
