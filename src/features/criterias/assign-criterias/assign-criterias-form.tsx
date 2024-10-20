@@ -16,7 +16,7 @@ export default function AssignCriteriasForm() {
       name='criteria'
       render={({ field: { onChange, value } }) => {
         return (
-          <CheckboxGroup className='overflow-auto' value={value} onChange={onChange}>
+          <CheckboxGroup className='overflow-auto' value={value || []} onChange={onChange}>
             {criterias?.map((criteria) => {
               const status = getStatus(String(criteria.type))
               return (

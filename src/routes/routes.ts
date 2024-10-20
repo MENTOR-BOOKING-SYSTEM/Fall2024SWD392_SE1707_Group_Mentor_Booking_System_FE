@@ -85,6 +85,10 @@ export const PRIVATE_ROUTES: Route = {
     path: '/review',
     bcLabel: 'Review'
   },
+  REVIEW_PROJECT: {
+    path: '/review/:projectId',
+    bcLabel: 'Review project'
+  },
   POSTS: {
     path: '/posts',
     bcLabel: 'Posts'

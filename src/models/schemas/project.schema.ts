@@ -43,3 +43,9 @@ export const submitProjectWithMentorIDSchema = z
     }
     return data
   })
+
+export const reviewProjectSchema = z.object({
+  projectID: z.string(),
+  criteriaID: z.array(z.string()).default([]),
+  type: z.enum(['Reject', 'Accept', 'Consider'])
+})

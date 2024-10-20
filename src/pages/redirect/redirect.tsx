@@ -26,9 +26,9 @@ export default function Redirect() {
   } else if (phase) {
     if (isAllowRoles([ROLES.ADMIN], user)) {
       return <Navigate to='/dashboard' replace />
-    } else if (phase.startsWith('BS')) {
+    } else if (phase[0].startsWith('BS')) {
       return <Navigate to={PRIVATE_ROUTES.SUBMISSION.path} replace />
-    } else if (phase.startsWith('IS')) {
+    } else if (phase[0].startsWith('IS')) {
       if (userInfo?.projectID) {
         return <Navigate to={userInfo.projectID + '/boards'} />
       } else {

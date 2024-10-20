@@ -53,6 +53,11 @@ class SemesterService {
     const { data } = await httpInstance.post<GeneralAPIResponse>('/semesters/assign-criteria', { semesterID, criteria })
     return data.message
   }
+
+  async getCurrentSemester() {
+    const { data } = await httpInstance.get<GetSemesterDetailAPIResponse>('/semesters/current')
+    return data.result
+  }
 }
 
 const semesterService = new SemesterService()
