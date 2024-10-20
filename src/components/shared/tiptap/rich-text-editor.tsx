@@ -87,7 +87,7 @@ export default function RichTextEditor({ lsSectionName, editorTag, className, on
       </CardBody>
       <div className='flex items-center justify-between p-4'>
         {editorTag}
-        <div className='flex items-center gap-2'>
+        {/* <div className='flex items-center gap-2'>
           <CircularProgress
             aria-label='Loading...'
             className='stroke-2'
@@ -104,7 +104,7 @@ export default function RichTextEditor({ lsSectionName, editorTag, className, on
               Has {editor.storage.characterCount.words()} words
             </p>
           )}
-        </div>
+        </div> */}
       </div>
     </Card>
   )

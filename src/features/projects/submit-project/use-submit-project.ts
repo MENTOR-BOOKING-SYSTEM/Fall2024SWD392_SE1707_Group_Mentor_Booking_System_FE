@@ -1,5 +1,4 @@
 import projectService from '@/services/project.services'
-import { useAuth } from '@/hooks/use-auth'
 import { submitProjectSchema, submitProjectWithMentorIDSchema } from '@/models/schemas/project.schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
@@ -9,12 +8,14 @@ import { z } from 'zod'
 import { toaster } from '@/components/ui/toaster'
 import { useNavigate } from 'react-router-dom'
 import { PRIVATE_ROUTES } from '@/routes/routes'
+import { ROLES } from '@/constants'
+import { useUser } from '@/hooks/use-user'
 
 export type SubmitProjectFormValues = z.infer<typeof submitProjectSchema>
 export type SubmitProjectWithMentorIDFormValues = z.infer<typeof submitProjectWithMentorIDSchema>
 
 export const useSubmitProject = () => {
-  const { user } = useAuth()
+  const { user, currentUserInfo } = useUser()
   const navigate = useNavigate()
   const actorsLS = `${user?.user_id}-act`
   const funcRequirementsLS = `${user?.user_id}-fr`
@@ -22,23 +23,25 @@ export const useSubmitProject = () => {
   const [funcRequirements] = useLocalStorage(`${user?.user_id}-fr`, { [funcRequirementsLS]: '' })
   const [actors] = useLocalStorage(`${user?.user_id}-act`, { [actorsLS]: '' })
 
+  const ownerId = user?.role.includes(ROLES.STUDENT) ? (currentUserInfo.groupID ?? 0) : user!.user_id
+
   const methods = useForm<SubmitProjectFormValues>({
     resolver: zodResolver(submitProjectSchema),
     defaultValues: {
-      projectName: '',
       funcRequirements: funcRequirements[funcRequirementsLS],
       actors: actors[actorsLS],
-      collaborators: [user?.user_id]
+      collaborators: [ownerId],
+      type: user?.role.includes(ROLES.STUDENT) ? 'Group' : 'Personal'
     }
   })
 
   const methodsWithMentorID = useForm<SubmitProjectWithMentorIDFormValues>({
     resolver: zodResolver(submitProjectWithMentorIDSchema),
     defaultValues: {
-      projectName: '',
       funcRequirements: funcRequirements[funcRequirementsLS],
       actors: actors[actorsLS],
-      collaborators: [user?.user_id]
+      collaborators: [ownerId],
+      type: user?.role.includes(ROLES.STUDENT) ? 'Group' : 'Personal'
     }
   })
 

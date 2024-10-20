@@ -1,10 +1,9 @@
+import FormError from '@/components/forms/form-error'
 import RichTextEditor from '@/components/shared/tiptap/rich-text-editor'
 import Tooltip from '@/components/shared/tooltip'
 import GetAllTechnologies from '@/features/technologies/get-all-techonologies/get-all-technologies'
-import GetStudentsByGroup from '@/features/users/students/get-students-by-group/get-students-by-group'
 import GetAllMentors from '@/features/users/mentors/get-all-mentors/get-all-mentors'
-import FormError from '@/components/forms/form-error'
-import { ROLES, TOOLTIP, TRANSPARENT_INPUT_CLASS_NAME } from '@/constants'
+import { TOOLTIP, TRANSPARENT_INPUT_CLASS_NAME } from '@/constants'
 import { useAuth } from '@/hooks/use-auth'
 import { Code } from '@nextui-org/code'
 import { Input } from '@nextui-org/input'
@@ -15,15 +14,12 @@ export default function SubmitProjectForm() {
   const { user } = useAuth()
   const {
     control,
-    formState: { errors },
-    watch
+    formState: { errors }
   } = useFormContext<SubmitProjectFormValues>()
 
   const getErrorState = (name: keyof SubmitProjectFormValues) => {
     return errors[name]
   }
-
-  console.log(watch('collaborators'))
 
   return (
     <>
@@ -34,16 +30,12 @@ export default function SubmitProjectForm() {
           render={({ field: { onChange } }) => <GetAllTechnologies onChange={onChange} />}
         />
         <FormError<SubmitProjectFormValues> identifier='technologies' errors={errors} />
-        {!user?.role.includes('Business') && (
+        {user?.role.includes('Mentor') && (
           <Controller
             control={control}
             name='collaborators'
-            render={({ field: { onChange, value } }) => {
-              if (user?.role.includes(ROLES.MENTOR)) {
-                return <GetAllMentors onChange={onChange} isMultiline isForMentor />
-              } else {
-                return <GetStudentsByGroup onChange={onChange} />
-              }
+            render={({ field: { onChange } }) => {
+              return <GetAllMentors onChange={onChange} isMultiline isForMentor />
             }}
           />
         )}
@@ -52,7 +44,7 @@ export default function SubmitProjectForm() {
             <Controller
               control={control}
               name='mentorID'
-              render={({ field: { onChange } }) => <GetAllMentors onChange={onChange} />}
+              render={({ field: { onChange } }) => <GetAllMentors onChange={onChange} isMultiline />}
             />
             <FormError<SubmitProjectFormValues> errors={errors} identifier='mentorID' className='absolute -bottom-5' />
           </div>
