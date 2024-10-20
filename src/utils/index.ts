@@ -4,8 +4,8 @@ import { Token } from '@/hooks/use-tokens'
 import { FieldErrors, FieldValues } from 'react-hook-form'
 import { DATE_FORMAT, ROLES } from '@/constants'
 import { BS_SIDEBAR_MENU_ITEMS } from '@/constants/menu-items'
-import { type ClassValue, clsx } from 'clsx'
 import { addDays, format } from 'date-fns'
+import { type ClassValue, clsx } from 'clsx'
 
 /**
  * Hàm giúp nối các className Tailwind lại với nhau
@@ -63,14 +63,13 @@ export const generateBreadcrumbLabels = (routes: Route) => {
   )
 }
 
-export const isAllowRoles = (roles: string[], user: Token | undefined) =>
-  user?.role.some((role) => roles.includes(role))
+export const isAllowRoles = (roles: string[], user: Token | null) => user?.role.some((role) => roles.includes(role))
 
 export const getErrorState = <T extends FieldValues>(errors: FieldErrors<T>, fieldName: keyof T) => {
   return errors[fieldName]
 }
 
-export const getBSSidebar = (user: Token | undefined) => {
+export const getBSSidebar = (user: Token | null) => {
   const menuItems = []
   if (isAllowRoles([ROLES.STUDENT], user)) {
     menuItems.push(...BS_SIDEBAR_MENU_ITEMS.GENERAL, ...BS_SIDEBAR_MENU_ITEMS.STUDENT)
