@@ -39,6 +39,7 @@ export default function Dropdown<T>({ dropdownItems, children, backdrop, params 
                   <DropdownItem
                     className={cn('my-1', section.color === 'danger' ? 'text-danger' : '')}
                     key={section.key}
+                    textValue='text'
                     startContent={section.icon ? section.icon('w-5 h-5') : null}
                     color={section.color}
                     onClick={() => handleClick(item)}
@@ -53,6 +54,7 @@ export default function Dropdown<T>({ dropdownItems, children, backdrop, params 
               <DropdownItem
                 className={cn('my-1', item.color === 'danger' ? 'text-danger' : '')}
                 key={item.key}
+                textValue='text'
                 startContent={item.icon ? item.icon('w-5 h-5') : null}
                 color={item.color}
                 onClick={() => handleClick(item)}

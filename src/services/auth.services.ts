@@ -1,16 +1,15 @@
-import axiosInstance from '@/lib/axios/axios'
+import httpInstance from '@/lib/axios/axios'
+import { GeneralAPIResponse, LoginAPIResponse } from '@/models/api/res.model'
 import type { ForgotPwdAPIRequest, LoginAPIRequest, ResetPasswordAPIRequest } from '@/models/api/req.model'
-import type {
-  ForgotPwdAPIResponse,
-  LoginAPIResponse,
-  LogoutAPIResponse,
-  ResetPwdAPIResponse,
-  VerifyCodeAPIResponse
-} from '@/models/api/res.model'
+
+export const URL_LOGIN = 'users/login'
+export const URL_REGISTER = 'users/register'
+export const URL_LOGOUT = 'users/logout'
+export const URL_REFRESH_TOKEN = 'users/refresh-token'
 
 class AuthService {
   async login({ email, password }: LoginAPIRequest) {
-    const { data } = await axiosInstance.post<LoginAPIResponse>('users/login', {
+    const { data } = await httpInstance.post<LoginAPIResponse>('users/login', {
       email,
       password
     })
@@ -18,27 +17,27 @@ class AuthService {
   }
 
   async logout(refreshToken: string) {
-    await axiosInstance.post<LogoutAPIResponse>('users/logout', { refreshToken })
+    await httpInstance.post<GeneralAPIResponse>('users/logout', { refreshToken })
   }
 
   async forgotPwd({ email }: ForgotPwdAPIRequest) {
-    const { data } = await axiosInstance.post<ForgotPwdAPIResponse>('users/forgot-password', {
+    const { data } = await httpInstance.post<GeneralAPIResponse>('users/forgot-password', {
       email
     })
     return data.message
   }
 
   async verifyCode(code: string) {
-    const { data } = await axiosInstance.get<VerifyCodeAPIResponse>('users/verify-code', {
+    const { data } = await httpInstance.get<GeneralAPIResponse>('users/verify-code', {
       params: {
         code
       }
     })
-    return data
+    return data.message
   }
 
   async resetPwd({ forgotPasswordToken, password, confirmPassword }: ResetPasswordAPIRequest) {
-    const { data } = await axiosInstance.post<ResetPwdAPIResponse>('users/reset-password', {
+    const { data } = await httpInstance.post<GeneralAPIResponse>('users/reset-password', {
       forgotPasswordToken,
       password,
       confirmPassword

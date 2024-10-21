@@ -1,9 +1,10 @@
 import { jwtDecode, JwtPayload } from 'jwt-decode'
 
 export interface Token extends JwtPayload {
-  user_id: string
+  user_id: number
   token_type: number
   email: string
+  role: string[]
 }
 
 export const useTokens = (tokens: string[], isReturnPayload?: boolean): (undefined | Token)[] => {

@@ -2,7 +2,7 @@ import SubmitProjectFormProvider from '@/features/projects/submit-project/submit
 
 export default function ProjectSubmission() {
   return (
-    <div>
+    <div className='overflow-y-auto px-96'>
       <SubmitProjectFormProvider />
     </div>
   )

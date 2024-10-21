@@ -1,21 +1,28 @@
 import Footer from '@/components/shared/footer'
-import Header from '@/components/shared/header'
-import Sidebar from '@/components/shared/sidebar'
+import { Divider } from '@nextui-org/divider'
 import { Outlet } from 'react-router-dom'
 
-export default function DefaultLayout() {
+interface DefaultLayoutProps {
+  header: React.ReactNode
+  sidebar: React.ReactNode
+  footer?: React.ReactNode
+  children?: React.ReactNode
+}
+
+export default function DefaultLayout({ header, sidebar, footer = <Footer />, children }: DefaultLayoutProps) {
   return (
-    <div className='min-h-screen w-full flex flex-col gap-2'>
-      <section className='flex flex-col gap-4 flex-1'>
-        <Header />
-        <div className='flex flex-1 gap-4'>
-          <Sidebar />
-          <div className='flex-1'>
-            <Outlet />
+    <div className='min-h-screen w-full flex flex-col'>
+      <section className='flex flex-col flex-1'>
+        {header}
+        <div className='flex flex-1'>
+          <div className='flex'>
+            {sidebar}
+            <Divider orientation='vertical' />
           </div>
+          <div className='flex-1 p-4'>{children || <Outlet />}</div>
         </div>
       </section>
-      <Footer />
+      {footer}
     </div>
   )
 }
