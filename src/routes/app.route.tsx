@@ -28,6 +28,7 @@ import { PHASES, ROLES } from '@/constants'
 import { ADMIN_SIDEBAR_MENU_ITEMS, IS_SIDEBAR_MENU_ITEMS } from '@/constants/menu-items'
 import { createBrowserRouter } from 'react-router-dom'
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './routes'
+import CreateGroupForm from '@/features/group/create-group/create-group-form.provider'
 
 export const routes = createBrowserRouter([
   {
@@ -137,6 +138,14 @@ export const routes = createBrowserRouter([
                   {
                     path: PRIVATE_ROUTES.GROUP.path,
                     element: <div>Group</div>
+                  },
+                  {
+                    path: PRIVATE_ROUTES.CREATE_GROUP.path,
+                    element: (
+                      <div>
+                        <CreateGroupForm />
+                      </div>
+                    )
                   }
                 ]
               },

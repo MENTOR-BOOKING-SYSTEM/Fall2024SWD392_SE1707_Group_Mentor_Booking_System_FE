@@ -57,6 +57,11 @@ export interface GetSemesterCriteriasAPIResponse {
   result: Criteria[]
 }
 
+// Group
+export interface CreateGroupAPIResponse {
+  message: string
+}
+
 export interface GetGroupMembersAPIResponse {
   message: string
   result: {
