@@ -2,7 +2,7 @@ import Dropdown from '../ui/dropdown'
 import Meetup from '/meetup.svg'
 import { ProfileDropdownMenuItems } from '@/constants/menu-items'
 import { useLogout } from '@/features/auth/logout/use-logout'
-import { useUser } from '@/hooks/use-user'
+import { useGetCurrentUserInfo } from '@/features/users/get-current-user-info/use-get-current-user-info'
 import { PRIVATE_ROUTES } from '@/routes/routes'
 import { Avatar } from '@nextui-org/avatar'
 import { Divider } from '@nextui-org/divider'
@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom'
 
 export default function ADHeader() {
   const { mutate: logout } = useLogout()
-  const { currentUserInfo } = useUser()
+  const { data: currentUserInfo } = useGetCurrentUserInfo()
 
   if (currentUserInfo) {
     return (

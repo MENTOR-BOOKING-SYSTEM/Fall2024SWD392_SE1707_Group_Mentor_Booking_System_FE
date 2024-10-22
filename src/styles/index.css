@@ -112,3 +112,9 @@
   top: 0.2em;
   font-weight: bolder;
 }
+
+/* Normal CSS */
+p {
+  margin: 0;
+  line-height: 1.5;
+}
