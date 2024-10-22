@@ -25,7 +25,7 @@ export default function Submission() {
   }
 
   return (
-    <div className='flex flex-col gap-2'>
+    <div className='flex flex-col gap-2 h-full'>
       {isValid() ? (
         <Button
           color='primary'
@@ -36,7 +36,9 @@ export default function Submission() {
           Submit project
         </Button>
       ) : null}
-      <ViewSubmission />
+      <div className='flex-1'>
+        <ViewSubmission />
+      </div>
     </div>
   )
 }
