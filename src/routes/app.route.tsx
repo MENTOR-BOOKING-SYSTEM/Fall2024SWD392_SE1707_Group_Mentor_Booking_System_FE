@@ -29,6 +29,7 @@ import { ADMIN_SIDEBAR_MENU_ITEMS, IS_SIDEBAR_MENU_ITEMS } from '@/constants/men
 import { createBrowserRouter } from 'react-router-dom'
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './routes'
 import CreateGroupForm from '@/features/group/create-group/create-group-form.provider'
+import ViewGroupTable from '@/features/group/view-group/view-group-table'
 
 export const routes = createBrowserRouter([
   {
@@ -144,6 +145,14 @@ export const routes = createBrowserRouter([
                     element: (
                       <div>
                         <CreateGroupForm isDisabled={false} />
+                      </div>
+                    )
+                  },
+                  {
+                    path: PRIVATE_ROUTES.VIEW_GROUP.path,
+                    element: (
+                      <div>
+                        <ViewGroupTable />
                       </div>
                     )
                   }

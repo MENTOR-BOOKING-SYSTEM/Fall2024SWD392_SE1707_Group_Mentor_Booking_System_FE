@@ -100,5 +100,9 @@ export const PRIVATE_ROUTES: Route = {
   CREATE_GROUP: {
     path: '/create-group',
     bcLabel: 'Create group'
+  },
+  VIEW_GROUP: {
+    path: '/view-group',
+    bcLabel: 'View group'
   }
 }

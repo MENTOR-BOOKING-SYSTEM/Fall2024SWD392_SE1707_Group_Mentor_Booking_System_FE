@@ -1,6 +1,3 @@
-// export default function CreateGroupForm() {
-//   return <div></div>
-// }
 import React from 'react'
 import {
   Table,
@@ -17,7 +14,7 @@ import {
 import { EditIcon } from 'lucide-react'
 import { DeleteIcon } from 'lucide-react'
 import { EyeIcon } from 'lucide-react'
-import { columns, users } from '../view-group-member-detail/data'
+import { columns, users } from './data'
 
 const statusColorMap: Record<string, ChipProps['color']> = {
   active: 'success',

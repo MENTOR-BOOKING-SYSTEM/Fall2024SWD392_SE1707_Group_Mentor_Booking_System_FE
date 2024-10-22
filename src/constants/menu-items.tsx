@@ -84,10 +84,17 @@ export const BS_SIDEBAR_MENU_ITEMS: { [key: string]: SidebarMenuItem[] } = {
       icon: (className?: string) => <NotepadText className={className} />
     },
     {
-      id: 3,
+      id: 4,
       title: 'Create group',
       value: 'Create group',
       url: PRIVATE_ROUTES.CREATE_GROUP.path,
+      icon: (className?: string) => <BoxIcon className={className} />
+    },
+    {
+      id: 5,
+      title: 'View group',
+      value: 'View group',
+      url: PRIVATE_ROUTES.VIEW_GROUP.path,
       icon: (className?: string) => <BoxIcon className={className} />
     }
   ],
