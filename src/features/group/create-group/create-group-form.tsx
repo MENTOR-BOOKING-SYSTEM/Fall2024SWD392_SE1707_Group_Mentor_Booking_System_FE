@@ -38,10 +38,10 @@ export default function App() {
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]))
   const [visibleColumns, setVisibleColumns] = React.useState<Selection>(new Set(INITIAL_VISIBLE_COLUMNS))
   const [statusFilter, setStatusFilter] = React.useState<Selection>('all')
-  //   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
-  //     column: 'age',
-  //     direction: 'ascending'
-  //   })
+  const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
+    column: 'age',
+    direction: 'ascending'
+  })
 
   const hasSearchFilter = Boolean(filterValue)
 
@@ -64,15 +64,15 @@ export default function App() {
     return filteredUsers
   }, [users, filterValue, statusFilter])
 
-  //   const sortedItems = React.useMemo(() => {
-  //     return [...filteredItems].sort((a: User, b: User) => {
-  //   const first = a[sortDescriptor.column as keyof User] as number
-  //   const second = b[sortDescriptor.column as keyof User] as number
-  //   const cmp = first < second ? -1 : first > second ? 1 : 0
+  const sortedItems = React.useMemo(() => {
+    return [...filteredItems].sort((a: User, b: User) => {
+      const first = a[sortDescriptor.column as keyof User] as number
+      const second = b[sortDescriptor.column as keyof User] as number
+      const cmp = first < second ? -1 : first > second ? 1 : 0
 
-  //   return sortDescriptor.direction === 'descending' ? -cmp : cmp
-  // })
-  //   }, [sortDescriptor, filteredItems])
+      return sortDescriptor.direction === 'descending' ? -cmp : cmp
+    })
+  }, [sortDescriptor, filteredItems])
 
   const renderCell = React.useCallback((user: User, columnKey: React.Key) => {
     const cellValue = user[columnKey as keyof User]
@@ -191,11 +191,11 @@ export default function App() {
       }}
       selectedKeys={selectedKeys}
       selectionMode='multiple'
-      //   sortDescriptor={sortDescriptor}
+      sortDescriptor={sortDescriptor}
       topContent={topContent}
       topContentPlacement='outside'
       onSelectionChange={setSelectedKeys}
-      //   onSortChange={setSortDescriptor}
+      onSortChange={setSortDescriptor}
     >
       <TableHeader columns={headerColumns}>
         {(column) => (
@@ -208,8 +208,10 @@ export default function App() {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={'No users found'}>
-        {(item) => <TableRow>{(columnKey) => <TableCell children={undefined}>{}</TableCell>}</TableRow>}
+      <TableBody emptyContent={'No users found'} items={sortedItems}>
+        {(item) => (
+          <TableRow key={item.id}>{(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}</TableRow>
+        )}
       </TableBody>
     </Table>
   )
