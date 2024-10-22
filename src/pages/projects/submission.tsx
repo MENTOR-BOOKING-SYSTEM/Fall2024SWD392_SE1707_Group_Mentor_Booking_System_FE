@@ -24,7 +24,7 @@ export default function Submission() {
   }
 
   return (
-    <div className='flex flex-col gap-2'>
+    <div className='flex flex-col gap-2 h-full'>
       <Button
         color='primary'
         startContent={<CirclePlus className='w-4 h-4' />}
@@ -34,8 +34,9 @@ export default function Submission() {
       >
         Submit project
       </Button>
-
-      <ViewSubmission />
+      <div className='flex-1'>
+        <ViewSubmission />
+      </div>
     </div>
   )
 }

@@ -23,12 +23,12 @@ import DefaultBSLayout from '@/layouts/default-bs.layout'
 import Timestamps from '@/pages/timestamps'
 import ReviewProject from '@/features/projects/review-project/review-project'
 import ProjectReview from '@/pages/projects/project-review'
-import ViewProjectDetail from '@/features/projects/view-project-detail/view-project-detail'
+import ProjectDetail from '@/pages/projects/project-detail'
 
+import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './routes'
 import { PHASES, ROLES } from '@/constants'
 import { ADMIN_SIDEBAR_MENU_ITEMS, IS_SIDEBAR_MENU_ITEMS } from '@/constants/menu-items'
 import { createBrowserRouter } from 'react-router-dom'
-import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './routes'
 
 export const routes = createBrowserRouter([
   {
@@ -77,7 +77,7 @@ export const routes = createBrowserRouter([
             children: [
               {
                 path: PRIVATE_ROUTES.PROJECT_DETAIL.path,
-                element: <ViewProjectDetail />
+                element: <ProjectDetail />
               }
             ]
           },
