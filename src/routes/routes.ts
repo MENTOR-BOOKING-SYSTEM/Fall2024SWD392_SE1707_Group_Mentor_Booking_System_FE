@@ -96,5 +96,9 @@ export const PRIVATE_ROUTES: Route = {
   TIMESTAMPS: {
     path: '/timestamps',
     bcLabel: 'Timestamps'
+  },
+  PROJECT_DETAIL: {
+    path: '/:projectId/detail',
+    bcLabel: 'Project detail'
   }
 }

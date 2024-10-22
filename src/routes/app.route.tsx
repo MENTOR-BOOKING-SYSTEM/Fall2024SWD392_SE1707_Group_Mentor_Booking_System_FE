@@ -23,6 +23,7 @@ import DefaultBSLayout from '@/layouts/default-bs.layout'
 import Timestamps from '@/pages/timestamps'
 import ReviewProject from '@/features/projects/review-project/review-project'
 import ProjectReview from '@/pages/projects/project-review'
+import ViewProjectDetail from '@/features/projects/view-project-detail/view-project-detail'
 
 import { PHASES, ROLES } from '@/constants'
 import { ADMIN_SIDEBAR_MENU_ITEMS, IS_SIDEBAR_MENU_ITEMS } from '@/constants/menu-items'
@@ -70,6 +71,15 @@ export const routes = createBrowserRouter([
           {
             path: PRIVATE_ROUTES.ROOT.path,
             element: <Redirect />
+          },
+          {
+            element: <DefaultBSLayout urlPosition={1} />,
+            children: [
+              {
+                path: PRIVATE_ROUTES.PROJECT_DETAIL.path,
+                element: <ViewProjectDetail />
+              }
+            ]
           },
           {
             element: <RoleLayout allowRoles={[ROLES.ADMIN]} />,

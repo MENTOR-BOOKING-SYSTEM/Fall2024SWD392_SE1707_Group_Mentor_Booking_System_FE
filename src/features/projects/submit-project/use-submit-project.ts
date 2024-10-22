@@ -10,14 +10,13 @@ import { useNavigate } from 'react-router-dom'
 import { PRIVATE_ROUTES } from '@/routes/routes'
 import { ROLES } from '@/constants'
 import { useUser } from '@/hooks/use-user'
-import { useGetCurrentUserInfo } from '@/features/users/get-current-user-info/use-get-current-user-info'
 
 export type SubmitProjectFormValues = z.infer<typeof submitProjectSchema>
 export type SubmitProjectWithMentorIDFormValues = z.infer<typeof submitProjectWithMentorIDSchema>
 
 export const useSubmitProject = () => {
   const { user } = useUser()
-  const { data: currentUserInfo } = useGetCurrentUserInfo()
+  const { currentUserInfo } = useUser()
   const navigate = useNavigate()
   const actorsLS = `${user?.user_id}-act`
   const funcRequirementsLS = `${user?.user_id}-fr`
