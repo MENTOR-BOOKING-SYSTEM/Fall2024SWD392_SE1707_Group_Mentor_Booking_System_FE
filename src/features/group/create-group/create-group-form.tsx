@@ -20,27 +20,29 @@ export default function CreateGroupForm() {
   const [filterValue, setFilterValue] = React.useState('')
   const [filteredItems, setFilteredItems] = React.useState<User[]>([])
   const [isLoading, setIsLoading] = React.useState(false)
+  const [hasSearched, setHasSearched] = React.useState(false)
 
   const handleSearch = React.useCallback((value: string) => {
     setFilterValue(value)
 
     if (!value) {
-      // Khi xóa tìm kiếm, không hiển thị dữ liệu nào
       setFilteredItems([])
       setIsLoading(false)
+      setHasSearched(false)
       return
     }
 
+    setFilteredItems([])
+    setHasSearched(true)
     setIsLoading(true)
 
-    // Thêm delay để giả lập trạng thái loading
     setTimeout(() => {
       const lowercasedFilter = value.toLowerCase()
       const result = users.filter((user) => user.name.toLowerCase().includes(lowercasedFilter))
 
       setFilteredItems(result)
       setIsLoading(false)
-    }, 1000) // 1 giây delay
+    }, 1000)
   }, [])
 
   const renderCell = React.useCallback(
@@ -48,12 +50,12 @@ export default function CreateGroupForm() {
       const cellValue = user[columnKey as keyof User]
 
       if (isLoading) {
-        return null // Không hiển thị nội dung khi đang tải
+        return null
       }
 
       switch (columnKey) {
         case 'name':
-          return <User avatarProps={{ radius: 'lg', src: user.avatar }} name={cellValue} />
+          return <User avatarProps={{ radius: 'lg', src: user.avatar }} name='' />
         case 'actions':
           return <Button color='primary'>Add</Button>
         default:
@@ -96,13 +98,23 @@ export default function CreateGroupForm() {
       <TableHeader columns={[...columns.filter((column) => !['id', 'role', 'team', 'Actions'].includes(column.uid))]}>
         {(column) => (
           <TableColumn key={column.uid} align='start'>
-            {column.name}
+            {column.uid === 'name' ? 'AVATAR' : column.name}
           </TableColumn>
         )}
       </TableHeader>
 
       <TableBody
-        emptyContent={filterValue ? 'No users found' : 'No data available'}
+        emptyContent={
+          isLoading ? (
+            <Spinner />
+          ) : !hasSearched ? (
+            'Start typing to search...'
+          ) : filterValue ? (
+            'No users found'
+          ) : (
+            'No data available'
+          )
+        }
         items={filteredItems}
         loadingState={loadingState}
         loadingContent={<Spinner />}
