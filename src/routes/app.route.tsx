@@ -143,7 +143,7 @@ export const routes = createBrowserRouter([
                     path: PRIVATE_ROUTES.CREATE_GROUP.path,
                     element: (
                       <div>
-                        <CreateGroupForm />
+                        <CreateGroupForm isDisabled={false} />
                       </div>
                     )
                   }

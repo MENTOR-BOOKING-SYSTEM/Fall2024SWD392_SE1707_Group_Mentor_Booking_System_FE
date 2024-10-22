@@ -33,7 +33,7 @@ const INITIAL_VISIBLE_COLUMNS = ['name', 'role', 'status', 'actions']
 
 type User = (typeof users)[0]
 
-export default function App() {
+export default function CreateGroupForm() {
   const [filterValue, setFilterValue] = React.useState('')
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]))
   const [visibleColumns, setVisibleColumns] = React.useState<Selection>(new Set(INITIAL_VISIBLE_COLUMNS))
