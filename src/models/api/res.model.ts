@@ -1,4 +1,5 @@
 import { Criteria, CriteriaType } from '../criteria.model'
+import { Project } from '../project.model'
 import { Semester } from '../semester.model'
 import { SemesterTimestamp, Timestamp } from '../timestamp.model'
 import { User, UserInfo } from '../user.model'
@@ -90,4 +91,9 @@ export interface GetCriteriaDetailAPIResponse {
 export interface GetAllTimestampsResponse {
   message: string
   result: Timestamp[]
+}
+
+export interface GetProjectSubmissionAPIResponse {
+  message: string
+  result: Project[]
 }

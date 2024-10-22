@@ -10,12 +10,14 @@ import { useNavigate } from 'react-router-dom'
 import { PRIVATE_ROUTES } from '@/routes/routes'
 import { ROLES } from '@/constants'
 import { useUser } from '@/hooks/use-user'
+import { useGetCurrentUserInfo } from '@/features/users/get-current-user-info/use-get-current-user-info'
 
 export type SubmitProjectFormValues = z.infer<typeof submitProjectSchema>
 export type SubmitProjectWithMentorIDFormValues = z.infer<typeof submitProjectWithMentorIDSchema>
 
 export const useSubmitProject = () => {
-  const { user, currentUserInfo } = useUser()
+  const { user } = useUser()
+  const { data: currentUserInfo } = useGetCurrentUserInfo()
   const navigate = useNavigate()
   const actorsLS = `${user?.user_id}-act`
   const funcRequirementsLS = `${user?.user_id}-fr`
@@ -23,7 +25,7 @@ export const useSubmitProject = () => {
   const [funcRequirements] = useLocalStorage(`${user?.user_id}-fr`, { [funcRequirementsLS]: '' })
   const [actors] = useLocalStorage(`${user?.user_id}-act`, { [actorsLS]: '' })
 
-  const ownerId = user?.role.includes(ROLES.STUDENT) ? (currentUserInfo.groupID ?? 0) : user!.user_id
+  const ownerId = user?.role.includes(ROLES.STUDENT) ? (currentUserInfo?.groupID ?? 0) : user!.user_id
 
   const methods = useForm<SubmitProjectFormValues>({
     resolver: zodResolver(submitProjectSchema),

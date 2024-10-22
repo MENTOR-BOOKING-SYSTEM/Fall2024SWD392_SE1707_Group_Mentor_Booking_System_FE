@@ -1,10 +1,16 @@
-import axiosInstance from '@/lib/axios/axios'
+import httpInstance from '@/lib/axios/axios'
 import { SubmitProjectFormValues } from '@/features/projects/submit-project/use-submit-project'
+import { GetProjectSubmissionAPIResponse } from '@/models/api/res.model'
 
 class ProjectService {
   async submit(project: SubmitProjectFormValues) {
-    const { data } = await axiosInstance.post('/projects/submit', project)
+    const { data } = await httpInstance.post('/projects/submit', project)
     return data
+  }
+
+  async getProjectSubmission() {
+    const { data } = await httpInstance.get<GetProjectSubmissionAPIResponse>('/projects/get-submit?page=1&limit=50')
+    return data.result
   }
 }
 

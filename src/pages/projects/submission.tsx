@@ -1,19 +1,21 @@
 import Button from '@/components/ui/button'
 import ViewSubmission from '@/features/projects/view-submission/view-submission'
 import { ROLES } from '@/constants'
-import { useUser } from '@/hooks/use-user'
+import { useGetCurrentUserInfo } from '@/features/users/get-current-user-info/use-get-current-user-info'
 import { PRIVATE_ROUTES } from '@/routes/routes'
 import { isAllowRoles } from '@/utils'
 import { CirclePlus } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { useUser } from '@/hooks/use-user'
 
 export default function Submission() {
   const navigate = useNavigate()
-  const { currentUserInfo, user } = useUser()
+  const { user } = useUser()
+  const { data: currentUserInfo } = useGetCurrentUserInfo()
 
   const isValid = () => {
     if (isAllowRoles([ROLES.STUDENT], user)) {
-      if (currentUserInfo.groupID && !currentUserInfo.projectID && currentUserInfo.position === 'Leader') {
+      if (currentUserInfo?.groupID && !currentUserInfo?.projectID && currentUserInfo?.position === 'Leader') {
         return true
       } else {
         return false
