@@ -4,6 +4,7 @@ import { PlusCircleIcon } from 'lucide-react'
 import { FormProvider, SubmitHandler } from 'react-hook-form'
 import { useCreateCriteria, type CriteriaFormValues } from '@/features/criterias/create-criteria/use-create-criteria'
 import CreateGroupForm from './create-group-form'
+import GroupForm from './group-form'
 
 interface CreateGroupFormProviderProps {
   isDisabled: boolean
@@ -31,9 +32,11 @@ export default function CreateGroupFormProvider({ isDisabled }: CreateGroupFormP
         <ModalContent>
           <form onSubmit={methods.handleSubmit(onSubmit)}>
             <ModalHeader className='flex flex-col gap-1'>Create group</ModalHeader>
-            <ModalBody className='max-h-[30rem] overflow-y-auto'>
-              <CreateGroupForm />
-              <div>Table group name</div>
+            <ModalBody className='h-[30rem] overflow-y-auto'>
+              <div className='flex space-x-8'>
+                <CreateGroupForm />
+                <GroupForm />
+              </div>
             </ModalBody>
             <ModalFooter>
               <Button color='danger' variant='light' isLoading={createCriteriaMutation.isPending} onPress={onClose}>
