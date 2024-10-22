@@ -8,6 +8,7 @@ import { Skeleton } from '@nextui-org/skeleton'
 import { CircleChevronRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useViewSubmission } from './use-view-submission'
+import EmptyContainer from '@/components/shared/empty-container'
 
 export default function ViewSubmission() {
   const { data, isLoading } = useViewSubmission()
@@ -26,7 +27,7 @@ export default function ViewSubmission() {
         </Skeleton>
       </div>
     )
-  } else if (data) {
+  } else if (data && data.length > 0) {
     return (
       <div className='grid grid-cols-2 gap-4 mt-3'>
         {data.map((project) => (
@@ -78,6 +79,15 @@ export default function ViewSubmission() {
             </Card>
           </Link>
         ))}
+      </div>
+    )
+  } else {
+    return (
+      <div className='h-full flex items-center justify-center'>
+        <EmptyContainer
+          className='w-16 h-16'
+          text={<p className='font-medium text-medium text-default-300'>No submission available</p>}
+        />
       </div>
     )
   }

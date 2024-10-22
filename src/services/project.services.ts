@@ -1,5 +1,5 @@
 import httpInstance from '@/lib/axios/axios'
-import { SubmitProjectFormValues } from '@/features/projects/submit-project/use-submit-project'
+import { SubmitProjectFormValues } from '@/features/projects/submit-project/submit-project-for-others/use-submit-project'
 import { GetProjectSubmissionAPIResponse } from '@/models/api/res.model'
 
 class ProjectService {
