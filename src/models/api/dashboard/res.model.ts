@@ -9,3 +9,11 @@ export interface GetAccountsAPIResponse {
   message: string
   result: GetAccountsPagination
 }
+
+export interface GetRolesAPIResponse {
+  message: string
+  result: {
+    roleID: number
+    roleName: string
+  }[]
+}
