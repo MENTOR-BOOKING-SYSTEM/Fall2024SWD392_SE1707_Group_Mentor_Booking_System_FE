@@ -1,7 +1,5 @@
 export interface Project {
-  userID: number
   projectID: number
-  type: 'Personal' | 'Group' | 'Collaboration'
   projectName: string
   slug: string
   funcRequirements: string

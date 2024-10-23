@@ -3,14 +3,25 @@ import { ROLES } from '@/constants'
 import { useGetCurrentPhase } from '@/features/semesters/get-current-phase/use-get-current-phase'
 import { useGetCurrentUserInfo } from '@/features/users/get-current-user-info/use-get-current-user-info'
 import { useAuth } from '@/hooks/use-auth'
+import { useUser } from '@/hooks/use-user'
 import { PRIVATE_ROUTES } from '@/routes/routes'
 import { isAllowRoles } from '@/utils'
+import { useEffect } from 'react'
 import { Navigate } from 'react-router-dom'
 
 export default function Redirect() {
   const { user } = useAuth()
   const { data: phase, isLoading: isLoadingPhase } = useGetCurrentPhase()
   const { data: userInfo, isLoading: isLoadingInfo } = useGetCurrentUserInfo()
+
+  const { setCurrentUserInfo, setCurrentPhase } = useUser()
+
+  useEffect(() => {
+    if (userInfo && phase) {
+      setCurrentUserInfo(userInfo)
+      setCurrentPhase({ currentPhase: phase })
+    }
+  }, [userInfo, phase, setCurrentUserInfo, setCurrentPhase])
 
   if (isLoadingPhase || isLoadingInfo) {
     return <PageLoader />

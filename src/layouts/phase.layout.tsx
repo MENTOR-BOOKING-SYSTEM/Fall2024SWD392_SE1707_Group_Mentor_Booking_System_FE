@@ -1,5 +1,4 @@
-import PageLoader from '@/components/shared/page-loader'
-import { useGetCurrentPhase } from '@/features/semesters/get-current-phase/use-get-current-phase'
+import { useUser } from '@/hooks/use-user'
 import { Navigate, Outlet } from 'react-router-dom'
 
 interface PhaseLayoutProps {
@@ -9,11 +8,11 @@ interface PhaseLayoutProps {
 }
 
 export default function PhaseLayout({ allowPhases, customErrorPage, children }: PhaseLayoutProps) {
-  const { data, isLoading } = useGetCurrentPhase()
+  const {
+    currentPhase: { currentPhase }
+  } = useUser()
 
-  if (isLoading) {
-    return <PageLoader />
-  } else if (data && allowPhases.some((phase) => data.includes(phase))) {
+  if (currentPhase && allowPhases.some((phase) => currentPhase.includes(phase))) {
     return children || <Outlet />
   } else {
     if (customErrorPage) {

@@ -23,11 +23,13 @@ import DefaultBSLayout from '@/layouts/default-bs.layout'
 import Timestamps from '@/pages/timestamps'
 import ReviewProject from '@/features/projects/review-project/review-project'
 import ProjectReview from '@/pages/projects/project-review'
+import ProjectDetail from '@/pages/projects/project-detail'
+import ErrorLayout from '@/layouts/error.layout'
 
+import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './routes'
 import { PHASES, ROLES } from '@/constants'
 import { ADMIN_SIDEBAR_MENU_ITEMS, IS_SIDEBAR_MENU_ITEMS } from '@/constants/menu-items'
 import { createBrowserRouter } from 'react-router-dom'
-import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './routes'
 
 export const routes = createBrowserRouter([
   {
@@ -72,14 +74,29 @@ export const routes = createBrowserRouter([
             element: <Redirect />
           },
           {
+            element: (
+              <ErrorLayout>
+                <DefaultBSLayout urlPosition={1} />
+              </ErrorLayout>
+            ),
+            children: [
+              {
+                path: PRIVATE_ROUTES.PROJECT_DETAIL.path,
+                element: <ProjectDetail />
+              }
+            ]
+          },
+          {
             element: <RoleLayout allowRoles={[ROLES.ADMIN]} />,
             children: [
               {
                 element: (
-                  <DefaultLayout
-                    header={<Header />}
-                    sidebar={<Sidebar items={ADMIN_SIDEBAR_MENU_ITEMS} urlPositon={1} />}
-                  />
+                  <ErrorLayout>
+                    <DefaultLayout
+                      header={<Header />}
+                      sidebar={<Sidebar items={ADMIN_SIDEBAR_MENU_ITEMS} urlPositon={1} />}
+                    />
+                  </ErrorLayout>
                 ),
                 children: [
                   {
@@ -106,7 +123,11 @@ export const routes = createBrowserRouter([
             element: <RoleLayout allowRoles={[ROLES.MANAGER]} />,
             children: [
               {
-                element: <DefaultBSLayout urlPosition={1} />,
+                element: (
+                  <ErrorLayout>
+                    <DefaultBSLayout urlPosition={1} />
+                  </ErrorLayout>
+                ),
                 children: [
                   {
                     path: PRIVATE_ROUTES.REVIEWERS.path,
@@ -124,7 +145,11 @@ export const routes = createBrowserRouter([
             element: <RoleLayout allowRoles={[ROLES.STUDENT, ROLES.MENTOR, ROLES.BUSINESS]} />,
             children: [
               {
-                element: <DefaultBSLayout urlPosition={1} />,
+                element: (
+                  <ErrorLayout>
+                    <DefaultBSLayout urlPosition={1} />
+                  </ErrorLayout>
+                ),
                 children: [
                   {
                     path: PRIVATE_ROUTES.SUBMISSION.path,
@@ -141,7 +166,11 @@ export const routes = createBrowserRouter([
                 ]
               },
               {
-                element: <NonSidebarLayout />,
+                element: (
+                  <ErrorLayout>
+                    <NonSidebarLayout />
+                  </ErrorLayout>
+                ),
                 children: [
                   {
                     path: PRIVATE_ROUTES.SUBMIT_PROJECT.path,
@@ -173,7 +202,11 @@ export const routes = createBrowserRouter([
                 element: <PhaseLayout allowPhases={[PHASES.BS_W3_1, PHASES.BS_W2_2]} />,
                 children: [
                   {
-                    element: <DefaultBSLayout urlPosition={1} />,
+                    element: (
+                      <ErrorLayout>
+                        <DefaultBSLayout urlPosition={1} />
+                      </ErrorLayout>
+                    ),
                     children: [
                       {
                         path: PRIVATE_ROUTES.REVIEW.path,
@@ -208,10 +241,12 @@ export const routes = createBrowserRouter([
                 children: [
                   {
                     element: (
-                      <DefaultLayout
-                        header={<Header />}
-                        sidebar={<Sidebar items={IS_SIDEBAR_MENU_ITEMS} urlPositon={2} />}
-                      />
+                      <ErrorLayout>
+                        <DefaultLayout
+                          header={<Header />}
+                          sidebar={<Sidebar items={IS_SIDEBAR_MENU_ITEMS} urlPositon={2} />}
+                        />
+                      </ErrorLayout>
                     ),
                     children: [
                       {
