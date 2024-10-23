@@ -17,30 +17,29 @@ import GroupForm from './group-form'
 
 export default function CreateGroupForm() {
   const [filterValue, setFilterValue] = React.useState('')
-  const [filteredItems, setFilteredItems] = React.useState<SearchUserResult[]>([])
   const [isLoading, setIsLoading] = React.useState(false)
   const [hasSearched, setHasSearched] = React.useState(false)
   const [selectedUsers, setSelectedUsers] = React.useState<SearchUserResult[]>([])
   const [availableUsers, setAvailableUsers] = React.useState<SearchUserResult[]>([])
+  const [allUsers, setAllUsers] = React.useState<SearchUserResult[]>([])
 
   const handleSearch = React.useCallback(async (value: string) => {
     setFilterValue(value)
 
     if (!value) {
-      setFilteredItems([])
+      setAvailableUsers([])
       setIsLoading(false)
       setHasSearched(false)
       return
     }
 
-    setFilteredItems([])
     setHasSearched(true)
     setIsLoading(true)
 
     try {
       const result = await searchUserService.searchUsers([1], true, value, false)
-      setFilteredItems(result)
       setAvailableUsers(result)
+      setAllUsers(result)
     } catch (error) {
       console.error('Error searching users:', error)
     } finally {
@@ -48,17 +47,25 @@ export default function CreateGroupForm() {
     }
   }, [])
 
-  const handleAddUser = (user: SearchUserResult) => {
-    if (!selectedUsers.some((selectedUser) => selectedUser.userID === user.userID)) {
-      setSelectedUsers((prevUsers) => [...prevUsers, user])
-      setAvailableUsers((prevUsers) => prevUsers.filter((u) => u.userID !== user.userID))
-    }
-  }
+  const handleAddUser = React.useCallback(
+    (user: SearchUserResult) => {
+      if (!selectedUsers.some((selectedUser) => selectedUser.userID === user.userID) && selectedUsers.length < 5) {
+        setSelectedUsers((prevUsers) => [...prevUsers, user])
+        setAvailableUsers((prevUsers) => prevUsers.filter((u) => u.userID !== user.userID))
+      }
+    },
+    [selectedUsers]
+  )
 
-  const handleRemoveUser = (user: SearchUserResult) => {
-    setSelectedUsers((prevUsers) => prevUsers.filter((u) => u.userID !== user.userID))
-    setAvailableUsers((prevUsers) => [...prevUsers, user])
-  }
+  const handleRemoveUser = React.useCallback(
+    (user: SearchUserResult) => {
+      setSelectedUsers((prevUsers) => prevUsers.filter((u) => u.userID !== user.userID))
+      if (filterValue && allUsers.some((u) => u.userID === user.userID)) {
+        setAvailableUsers((prevUsers) => [...prevUsers, user])
+      }
+    },
+    [filterValue, allUsers]
+  )
 
   const renderCell = React.useCallback(
     (user: SearchUserResult, columnKey: React.Key) => {
@@ -73,7 +80,7 @@ export default function CreateGroupForm() {
           return <User avatarProps={{ radius: 'lg', src: user.avatarUrl || undefined }} name={``} />
         case 'actions':
           return (
-            <Button color='primary' onClick={() => handleAddUser(user)}>
+            <Button color='primary' onPress={() => handleAddUser(user)} isDisabled={selectedUsers.length >= 4}>
               Add
             </Button>
           )
@@ -81,7 +88,7 @@ export default function CreateGroupForm() {
           return cellValue
       }
     },
-    [isLoading]
+    [isLoading, handleAddUser, selectedUsers.length]
   )
 
   const columns = [
@@ -155,7 +162,12 @@ export default function CreateGroupForm() {
         </Table>
       </div>
       <div className='flex-1'>
-        <GroupForm selectedUsers={selectedUsers} setSelectedUsers={setSelectedUsers} onRemoveUser={handleRemoveUser} />
+        <GroupForm
+          selectedUsers={selectedUsers}
+          setSelectedUsers={setSelectedUsers}
+          onRemoveUser={handleRemoveUser}
+          maxUsers={4}
+        />
       </div>
     </div>
   )
