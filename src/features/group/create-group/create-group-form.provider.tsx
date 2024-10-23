@@ -8,6 +8,7 @@ import CreateGroupForm from './create-group-form'
 interface CreateGroupFormProviderProps {
   isDisabled: boolean
 }
+
 export default function CreateGroupFormProvider({ isDisabled }: CreateGroupFormProviderProps) {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const { methods, createGroupMutation } = useCreateGroup(onClose)
