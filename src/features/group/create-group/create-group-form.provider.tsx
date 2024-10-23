@@ -13,8 +13,7 @@ export default function CreateGroupFormProvider({ isDisabled }: CreateGroupFormP
   const { methods, createGroupMutation } = useCreateGroup(onClose)
 
   const onSubmit: SubmitHandler<GroupFormValues> = (data) => {
-    console.log('Submitting data:', data)
-    createGroupMutation.mutate(data)
+    createGroupMutation.mutate({ groupName: data.groupName, usersID: data.usersID })
   }
 
   return (
