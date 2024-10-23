@@ -96,9 +96,5 @@ export const PRIVATE_ROUTES: Route = {
   TIMESTAMPS: {
     path: '/timestamps',
     bcLabel: 'Timestamps'
-  },
-  CREATE_GROUP: {
-    path: '/create-group',
-    bcLabel: 'Create group'
   }
 }

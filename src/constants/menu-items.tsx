@@ -1,6 +1,5 @@
 import { PRIVATE_ROUTES } from '@/routes/routes'
 import {
-  BoxIcon,
   CalendarDays,
   ChartBarBig,
   Clock,
@@ -8,7 +7,6 @@ import {
   Database,
   FolderClock,
   Hourglass,
-  Icon,
   LogOut,
   NotepadText,
   Rows2,
@@ -82,13 +80,6 @@ export const BS_SIDEBAR_MENU_ITEMS: { [key: string]: SidebarMenuItem[] } = {
       value: 'posts',
       url: PRIVATE_ROUTES.POSTS.path,
       icon: (className?: string) => <NotepadText className={className} />
-    },
-    {
-      id: 3,
-      title: 'Create group',
-      value: 'Create group',
-      url: PRIVATE_ROUTES.CREATE_GROUP.path,
-      icon: (className?: string) => <BoxIcon className={className} />
     }
   ],
   MENTOR: [
