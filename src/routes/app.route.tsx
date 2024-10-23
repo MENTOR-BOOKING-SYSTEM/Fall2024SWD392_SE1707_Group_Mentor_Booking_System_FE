@@ -28,6 +28,7 @@ import { PHASES, ROLES } from '@/constants'
 import { ADMIN_SIDEBAR_MENU_ITEMS, IS_SIDEBAR_MENU_ITEMS } from '@/constants/menu-items'
 import { createBrowserRouter } from 'react-router-dom'
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './routes'
+import Accounts from '@/pages/dashboard/accounts'
 
 export const routes = createBrowserRouter([
   {
@@ -88,7 +89,7 @@ export const routes = createBrowserRouter([
                   },
                   {
                     path: PRIVATE_ROUTES.ACCOUNT.path,
-                    element: <div>Accounts</div>
+                    element: <Accounts />
                   },
                   {
                     path: PRIVATE_ROUTES.SEMESTERS.path,

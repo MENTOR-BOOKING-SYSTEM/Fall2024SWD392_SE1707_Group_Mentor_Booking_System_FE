@@ -1,9 +1,10 @@
 import httpInstance from '@/lib/axios/axios'
-import { SubmitProjectFormValues } from '@/features/projects/submit-project/submit-project-for-others/use-submit-project'
-import { GetProjectSubmissionAPIResponse } from '@/models/api/res.model'
+import { SubmitProjectForMentorFormValues } from '@/features/projects/submit-project/submit-project-for-mentor/use-submit-project'
+import { SubmitProjectForOthersFormValues } from '@/features/projects/submit-project/submit-project-for-others/use-submit-project'
+import { GetProjectSubmissionAPIResponse } from '@/models/api/projects/res.model'
 
 class ProjectService {
-  async submit(project: SubmitProjectFormValues) {
+  async submit(project: SubmitProjectForMentorFormValues | SubmitProjectForOthersFormValues) {
     const { data } = await httpInstance.post('/projects/submit', project)
     return data
   }

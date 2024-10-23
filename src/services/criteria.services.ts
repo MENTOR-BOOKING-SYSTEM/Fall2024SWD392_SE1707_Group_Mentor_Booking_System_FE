@@ -1,11 +1,11 @@
 import httpInstance from '@/lib/axios/axios'
 import { CriteriaFormValues } from '@/features/criterias/create-criteria/use-create-criteria'
 import {
-  GeneralAPIResponse,
   GetAllCriteriasAPIResponse,
   GetCriteriaDetailAPIResponse,
   GetCriteriaTypesAPIResponse
-} from '@/models/api/res.model'
+} from '@/models/api/criterias/res.model'
+import { GeneralAPIResponse } from '@/models/base.model'
 
 class CriteriaService {
   async getAllCriterias() {

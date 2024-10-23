@@ -17,3 +17,12 @@ export interface Route {
     bcLabel: string
   }
 }
+
+export interface Pagination {
+  total: number
+  pages: number
+}
+
+export interface GeneralAPIResponse {
+  message: string
+}

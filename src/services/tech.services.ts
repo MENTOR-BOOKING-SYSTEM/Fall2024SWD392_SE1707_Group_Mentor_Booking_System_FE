@@ -1,5 +1,5 @@
 import httpInstance from '@/lib/axios/axios'
-import { GetAllTechsAPIResponse } from '@/models/api/res.model'
+import { GetAllTechsAPIResponse } from '@/models/api/technologies/res.model'
 
 class TechService {
   async getAllTechs() {
