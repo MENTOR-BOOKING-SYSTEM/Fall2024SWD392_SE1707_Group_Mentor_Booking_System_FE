@@ -1,15 +1,17 @@
 import React from 'react'
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, User, Button } from '@nextui-org/react'
 import { SearchUserResult } from '@/services/search-user.services'
-import { UseFormRegister } from 'react-hook-form'
+import { FieldErrors, UseFormRegister } from 'react-hook-form'
 import { GroupFormValues } from './use-create-group'
 
 interface GroupFormProps {
   selectedUsers: SearchUserResult[]
   setSelectedUsers: React.Dispatch<React.SetStateAction<SearchUserResult[]>>
+
   onRemoveUser: (user: SearchUserResult) => void
   maxUsers: number
   register: UseFormRegister<GroupFormValues>
+  errors: FieldErrors<GroupFormValues>
 }
 
 export default function GroupForm({
@@ -17,7 +19,8 @@ export default function GroupForm({
   setSelectedUsers,
   onRemoveUser,
   maxUsers,
-  register
+  register,
+  errors
 }: GroupFormProps) {
   const columns = [
     { name: 'NAME', uid: 'name' },
@@ -60,7 +63,9 @@ export default function GroupForm({
         label='Group'
         labelPlacement='outside-left'
         placeholder='Enter name'
+        errorMessage={errors.groupName?.message}
       />
+      {errors.groupName && <p className='text-danger text-sm'>{errors.groupName.message}</p>}
       <input type='hidden' {...register('usersID')} value={selectedUsers.map((user) => user.userID).join(',')} />
       <div className='h-3'>
         {selectedUsers.length > maxUsers && (

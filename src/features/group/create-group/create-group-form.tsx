@@ -18,7 +18,10 @@ import { useFormContext } from 'react-hook-form'
 import { GroupFormValues } from './use-create-group'
 
 export default function CreateGroupForm() {
-  const { register } = useFormContext<GroupFormValues>()
+  const {
+    register,
+    formState: { errors }
+  } = useFormContext<GroupFormValues>()
   const [filterValue, setFilterValue] = React.useState('')
   const [isLoading, setIsLoading] = React.useState(false)
   const [hasSearched, setHasSearched] = React.useState(false)
@@ -181,6 +184,7 @@ export default function CreateGroupForm() {
           onRemoveUser={handleRemoveUser}
           maxUsers={maxUsers}
           register={register}
+          errors={errors}
         />
       </div>
     </div>
