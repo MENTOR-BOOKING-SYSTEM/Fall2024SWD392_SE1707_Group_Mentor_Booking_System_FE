@@ -1,8 +1,8 @@
 import projectService from '@/services/project.services'
-import { useQueries } from '@tanstack/react-query'
+import { useSuspenseQueries } from '@tanstack/react-query'
 
 export const useViewProjectDetail = (projectID: string) => {
-  return useQueries({
+  return useSuspenseQueries({
     queries: [
       {
         queryKey: ['project-detail', projectID],
