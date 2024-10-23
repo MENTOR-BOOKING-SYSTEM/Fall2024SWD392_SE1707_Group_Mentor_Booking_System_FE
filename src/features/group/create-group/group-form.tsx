@@ -5,9 +5,10 @@ import { SearchUserResult } from '@/services/search-user.service'
 interface GroupFormProps {
   selectedUsers: SearchUserResult[]
   setSelectedUsers: React.Dispatch<React.SetStateAction<SearchUserResult[]>>
+  onRemoveUser: (user: SearchUserResult) => void
 }
 
-export default function GroupForm({ selectedUsers, setSelectedUsers }: GroupFormProps) {
+export default function GroupForm({ selectedUsers, setSelectedUsers, onRemoveUser }: GroupFormProps) {
   const [groupName, setGroupName] = React.useState('')
 
   const columns = [
@@ -18,6 +19,7 @@ export default function GroupForm({ selectedUsers, setSelectedUsers }: GroupForm
 
   const handleRemoveUser = (userToRemove: SearchUserResult) => {
     setSelectedUsers((prevUsers) => prevUsers.filter((user) => user.userID !== userToRemove.userID))
+    onRemoveUser(userToRemove)
   }
 
   const renderCell = React.useCallback((user: SearchUserResult, columnKey: React.Key) => {

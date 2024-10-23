@@ -21,6 +21,7 @@ export default function CreateGroupForm() {
   const [isLoading, setIsLoading] = React.useState(false)
   const [hasSearched, setHasSearched] = React.useState(false)
   const [selectedUsers, setSelectedUsers] = React.useState<SearchUserResult[]>([])
+  const [availableUsers, setAvailableUsers] = React.useState<SearchUserResult[]>([])
 
   const handleSearch = React.useCallback(async (value: string) => {
     setFilterValue(value)
@@ -39,6 +40,7 @@ export default function CreateGroupForm() {
     try {
       const result = await searchUserService.searchUsers([1], true, value, false)
       setFilteredItems(result)
+      setAvailableUsers(result)
     } catch (error) {
       console.error('Error searching users:', error)
     } finally {
@@ -49,7 +51,13 @@ export default function CreateGroupForm() {
   const handleAddUser = (user: SearchUserResult) => {
     if (!selectedUsers.some((selectedUser) => selectedUser.userID === user.userID)) {
       setSelectedUsers((prevUsers) => [...prevUsers, user])
+      setAvailableUsers((prevUsers) => prevUsers.filter((u) => u.userID !== user.userID))
     }
+  }
+
+  const handleRemoveUser = (user: SearchUserResult) => {
+    setSelectedUsers((prevUsers) => prevUsers.filter((u) => u.userID !== user.userID))
+    setAvailableUsers((prevUsers) => [...prevUsers, user])
   }
 
   const renderCell = React.useCallback(
@@ -134,7 +142,7 @@ export default function CreateGroupForm() {
                 'No data available'
               )
             }
-            items={filteredItems}
+            items={availableUsers}
             loadingState={loadingState}
             loadingContent={<Spinner />}
           >
@@ -147,7 +155,7 @@ export default function CreateGroupForm() {
         </Table>
       </div>
       <div className='flex-1'>
-        <GroupForm selectedUsers={selectedUsers} setSelectedUsers={setSelectedUsers} />
+        <GroupForm selectedUsers={selectedUsers} setSelectedUsers={setSelectedUsers} onRemoveUser={handleRemoveUser} />
       </div>
     </div>
   )
