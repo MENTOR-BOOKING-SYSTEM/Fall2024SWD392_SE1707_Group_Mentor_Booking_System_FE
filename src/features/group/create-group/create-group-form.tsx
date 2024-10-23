@@ -14,8 +14,11 @@ import {
 import { SearchIcon } from 'lucide-react'
 import searchUserService, { SearchUserResult } from '@/services/search-user.services'
 import GroupForm from './group-form'
+import { useFormContext } from 'react-hook-form'
+import { GroupFormValues } from './use-create-group'
 
 export default function CreateGroupForm() {
+  const { register } = useFormContext<GroupFormValues>()
   const [filterValue, setFilterValue] = React.useState('')
   const [isLoading, setIsLoading] = React.useState(false)
   const [hasSearched, setHasSearched] = React.useState(false)
@@ -177,6 +180,7 @@ export default function CreateGroupForm() {
           setSelectedUsers={setSelectedUsers}
           onRemoveUser={handleRemoveUser}
           maxUsers={maxUsers}
+          register={register}
         />
       </div>
     </div>

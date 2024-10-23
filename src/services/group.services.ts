@@ -10,6 +10,11 @@ class GroupService {
     const { data } = await httpInstance.post('/groups/remove-member', { groupID, userID })
     return data
   }
+
+  async createGroup(groupName: string, userIDs: number[]) {
+    const { data } = await httpInstance.post('/group/', { groupName, userID: userIDs })
+    return data
+  }
 }
 
 const groupService = new GroupService()

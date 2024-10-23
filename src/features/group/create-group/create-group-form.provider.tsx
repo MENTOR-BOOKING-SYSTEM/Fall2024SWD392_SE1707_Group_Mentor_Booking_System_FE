@@ -8,13 +8,13 @@ import CreateGroupForm from './create-group-form'
 interface CreateGroupFormProviderProps {
   isDisabled: boolean
 }
-
 export default function CreateGroupFormProvider({ isDisabled }: CreateGroupFormProviderProps) {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
-  const { methods, createSemesterMutation: createGroupMutation } = useCreateGroup(onClose)
+  const { methods, createGroupMutation } = useCreateGroup(onClose)
 
   const onSubmit: SubmitHandler<GroupFormValues> = (data) => {
-    createGroupMutation.mutate(data as any)
+    console.log('Submitting data:', data)
+    createGroupMutation.mutate(data)
   }
 
   return (
@@ -25,12 +25,12 @@ export default function CreateGroupFormProvider({ isDisabled }: CreateGroupFormP
         startContent={<PlusCircleIcon className='w-4 h-4' />}
         isDisabled={isDisabled}
       >
-        Create group
+        Create Group
       </Button>
       <Modal backdrop='blur' size='5xl' isOpen={isOpen} onOpenChange={onOpenChange} className='modal-dialog'>
         <ModalContent>
           <form onSubmit={methods.handleSubmit(onSubmit)}>
-            <ModalHeader className='flex flex-col gap-1'>Create group</ModalHeader>
+            <ModalHeader className='flex flex-col gap-1'>Create Group</ModalHeader>
             <ModalBody className='h-[30rem] overflow-y-auto'>
               <CreateGroupForm />
             </ModalBody>

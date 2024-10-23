@@ -1,17 +1,24 @@
 import React from 'react'
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, User, Button } from '@nextui-org/react'
 import { SearchUserResult } from '@/services/search-user.services'
+import { UseFormRegister } from 'react-hook-form'
+import { GroupFormValues } from './use-create-group'
 
 interface GroupFormProps {
   selectedUsers: SearchUserResult[]
   setSelectedUsers: React.Dispatch<React.SetStateAction<SearchUserResult[]>>
   onRemoveUser: (user: SearchUserResult) => void
   maxUsers: number
+  register: UseFormRegister<GroupFormValues>
 }
 
-export default function GroupForm({ selectedUsers, setSelectedUsers, onRemoveUser, maxUsers }: GroupFormProps) {
-  const [groupName, setGroupName] = React.useState('')
-
+export default function GroupForm({
+  selectedUsers,
+  setSelectedUsers,
+  onRemoveUser,
+  maxUsers,
+  register
+}: GroupFormProps) {
   const columns = [
     { name: 'NAME', uid: 'name' },
     { name: 'EMAIL', uid: 'email' },
@@ -42,19 +49,19 @@ export default function GroupForm({ selectedUsers, setSelectedUsers, onRemoveUse
     },
     [handleRemoveUser]
   )
-  // ------------------------------------------------------------
+
   return (
     <div className='flex flex-col gap-4'>
       <Input
+        {...register('groupName')}
         isClearable
         isRequired
         type='text'
         label='Group'
         labelPlacement='outside-left'
         placeholder='Enter name'
-        value={groupName}
-        onValueChange={setGroupName}
       />
+      <input type='hidden' {...register('usersID')} value={selectedUsers.map((user) => user.userID).join(',')} />
       <div className='h-3'>
         {selectedUsers.length > maxUsers && (
           <p className='text-danger'>Maximum number of members has been reached ({maxUsers}).</p>
