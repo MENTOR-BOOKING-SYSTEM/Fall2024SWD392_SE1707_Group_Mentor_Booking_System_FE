@@ -2,9 +2,8 @@ import Button from '@/components/ui/button'
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@nextui-org/modal'
 import { PlusCircleIcon } from 'lucide-react'
 import { FormProvider, SubmitHandler } from 'react-hook-form'
-import { useCreateCriteria, type CriteriaFormValues } from '@/features/criterias/create-criteria/use-create-criteria'
+import { useCreateGroup, type GroupFormValues } from './use-create-group'
 import CreateGroupForm from './create-group-form'
-import GroupForm from './group-form'
 
 interface CreateGroupFormProviderProps {
   isDisabled: boolean
@@ -12,10 +11,10 @@ interface CreateGroupFormProviderProps {
 
 export default function CreateGroupFormProvider({ isDisabled }: CreateGroupFormProviderProps) {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
-  const { methods, createCriteriaMutation } = useCreateCriteria(onClose)
+  const { methods, createSemesterMutation: createGroupMutation } = useCreateGroup(onClose)
 
-  const onSubmit: SubmitHandler<CriteriaFormValues> = (data) => {
-    createCriteriaMutation.mutate(data)
+  const onSubmit: SubmitHandler<GroupFormValues> = (data) => {
+    createGroupMutation.mutate(data as any)
   }
 
   return (
@@ -33,16 +32,13 @@ export default function CreateGroupFormProvider({ isDisabled }: CreateGroupFormP
           <form onSubmit={methods.handleSubmit(onSubmit)}>
             <ModalHeader className='flex flex-col gap-1'>Create group</ModalHeader>
             <ModalBody className='h-[30rem] overflow-y-auto'>
-              <div className='flex space-x-8'>
-                <CreateGroupForm />
-                <GroupForm />
-              </div>
+              <CreateGroupForm />
             </ModalBody>
             <ModalFooter>
-              <Button color='danger' variant='light' isLoading={createCriteriaMutation.isPending} onPress={onClose}>
+              <Button color='danger' variant='light' isLoading={createGroupMutation.isPending} onPress={onClose}>
                 Close
               </Button>
-              <Button color='primary' type='submit' isLoading={createCriteriaMutation.isPending}>
+              <Button color='primary' type='submit' isLoading={createGroupMutation.isPending}>
                 Create
               </Button>
             </ModalFooter>

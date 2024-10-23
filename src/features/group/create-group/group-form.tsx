@@ -1,28 +1,34 @@
 import React from 'react'
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, User, Button } from '@nextui-org/react'
-import { columns, users } from './data'
+import { SearchUserResult } from '@/services/search-user.service'
 
-type User = (typeof users)[0]
+interface GroupFormProps {
+  selectedUsers: SearchUserResult[]
+  setSelectedUsers: React.Dispatch<React.SetStateAction<SearchUserResult[]>>
+}
 
-const updatedColumns = columns.map((column) => (column.uid === 'name' ? { ...column, name: 'AVATAR' } : column))
+export default function GroupForm({ selectedUsers, setSelectedUsers }: GroupFormProps) {
+  const [groupName, setGroupName] = React.useState('')
 
-export default function CreateGroupForm() {
-  const [inputValue, setInputValue] = React.useState('')
+  const columns = [
+    { name: 'NAME', uid: 'name' },
+    { name: 'EMAIL', uid: 'email' },
+    { name: 'ACTIONS', uid: 'actions' }
+  ]
 
-  const renderCell = React.useCallback((user: User, columnKey: React.Key) => {
-    const cellValue = user[columnKey as keyof User]
+  const handleRemoveUser = (userToRemove: SearchUserResult) => {
+    setSelectedUsers((prevUsers) => prevUsers.filter((user) => user.userID !== userToRemove.userID))
+  }
+
+  const renderCell = React.useCallback((user: SearchUserResult, columnKey: React.Key) => {
+    const cellValue = user[columnKey as keyof SearchUserResult]
 
     switch (columnKey) {
       case 'name':
-        return <User avatarProps={{ radius: 'lg', src: user.avatar }} name='' />
+        return <User avatarProps={{ radius: 'lg', src: user.avatarUrl || undefined }} name={``} />
       case 'actions':
         return (
-          <Button
-            color='danger'
-            variant='light'
-            isLoading={false}
-            onPress={() => console.log('Remove action for', user.name)}
-          >
+          <Button color='danger' variant='light' onPress={() => handleRemoveUser(user)}>
             Remove
           </Button>
         )
@@ -31,50 +37,30 @@ export default function CreateGroupForm() {
     }
   }, [])
 
-  const topContent = React.useMemo(() => {
-    return (
-      <div className='flex flex-col gap-4'>
-        <div className='flex justify-between gap-3 items-end'>
-          <Input
-            isClearable
-            isRequired
-            type='group name'
-            label="Group's Name"
-            labelPlacement='outside-left'
-            className='w-full sm:max-w-[44%]'
-            placeholder='Type name'
-            value={inputValue}
-            onClear={() => setInputValue('')}
-            onValueChange={(value) => setInputValue(value)}
-          />
-        </div>
-      </div>
-    )
-  }, [inputValue])
-
   return (
-    <Table
-      aria-label='Example table with avatars'
-      isHeaderSticky
-      classNames={{
-        wrapper: 'max-h-[400px]'
-      }}
-      topContent={topContent}
-      topContentPlacement='outside'
-    >
-      <TableHeader columns={[...updatedColumns.filter((column) => !['id', 'role', 'team'].includes(column.uid))]}>
-        {(column) => (
-          <TableColumn key={column.uid} align='start'>
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
-
-      <TableBody items={users}>
-        {(item) => (
-          <TableRow key={item.id}>{(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}</TableRow>
-        )}
-      </TableBody>
-    </Table>
+    <div className='flex flex-col gap-4'>
+      <Input
+        isClearable
+        type='text'
+        label="Group's Name"
+        placeholder='Enter group name'
+        value={groupName}
+        onValueChange={setGroupName}
+      />
+      <Table aria-label='Selected users table'>
+        <TableHeader columns={columns}>
+          {(column) => (
+            <TableColumn key={column.uid} align='start'>
+              {column.name}
+            </TableColumn>
+          )}
+        </TableHeader>
+        <TableBody items={selectedUsers}>
+          {(item) => (
+            <TableRow key={item.userID}>{(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}</TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </div>
   )
 }

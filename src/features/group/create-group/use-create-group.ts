@@ -10,7 +10,7 @@ import { createGroupSchema } from '@/models/schemas/group.schema'
 
 export type GroupFormValues = z.infer<typeof createGroupSchema>
 
-export const useCreateSemester = (onClose: () => void) => {
+export function useCreateGroup(onClose: () => void) {
   const methods = useForm<GroupFormValues>({
     resolver: zodResolver(semesterSchema)
   })
