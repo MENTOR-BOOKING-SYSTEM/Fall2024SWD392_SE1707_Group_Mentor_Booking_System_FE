@@ -1,12 +1,20 @@
-import { Controller, useFormContext } from 'react-hook-form'
-import { CreateAccountFormValues } from './use-create-account'
-import { Input } from '@nextui-org/input'
+import Dropzone from '@/components/shared/dropzone/dropzone'
 import { getErrorState } from '@/utils'
-import { useGetAllRoles } from '../get-all-roles/use-get-all-roles'
+import { Input } from '@nextui-org/input'
+import { Avatar, Chip, Spinner } from '@nextui-org/react'
 import { Select, SelectItem } from '@nextui-org/select'
-import { Chip, Spinner } from '@nextui-org/react'
+import { Controller, useFormContext } from 'react-hook-form'
+import { useGetAllRoles } from '../get-all-roles/use-get-all-roles'
+import { CreateAccountFormValues } from './use-create-account'
+import { FileRejection } from 'react-dropzone'
 
-export default function CreateAccountForm() {
+interface CreateAccountFormProps {
+  isPending: boolean
+  onDrop: <T extends File>(acceptedFiles: T[], rejectedFiles: FileRejection[]) => void
+  avatar: string
+}
+
+export default function CreateAccountForm({ isPending, onDrop, avatar }: CreateAccountFormProps) {
   const {
     control,
     formState: { errors }
@@ -20,37 +28,44 @@ export default function CreateAccountForm() {
 
   return (
     <div className='flex flex-col gap-3'>
-      <div className='flex items-center gap-3'>
-        <Controller
-          control={control}
-          name='firstName'
-          render={({ field: { onChange, value } }) => (
-            <Input
-              label='First name (optional)'
-              placeholder='Enter first name'
-              defaultValue={value}
-              onChange={onChange}
-              errorMessage={getErrorState(errors, 'firstName')?.message}
-              isInvalid={!!getErrorState(errors, 'firstName')}
-              className='relative'
-            />
-          )}
-        />
-        <Controller
-          control={control}
-          name='lastName'
-          render={({ field: { onChange, value } }) => (
-            <Input
-              label='Last name (optional)'
-              placeholder='Enter last name'
-              defaultValue={value}
-              onChange={onChange}
-              errorMessage={getErrorState(errors, 'lastName')?.message}
-              isInvalid={!!getErrorState(errors, 'lastName')}
-              className='relative'
-            />
-          )}
-        />
+      <div className='flex items-center gap-6 justify-between'>
+        <Dropzone onDrop={onDrop}>
+          <Avatar className='cursor-pointer w-20 h-20' isBordered color='primary' src={avatar} />
+        </Dropzone>
+        <div className='flex flex-col gap-3 flex-1'>
+          <Controller
+            control={control}
+            name='firstName'
+            render={({ field: { onChange, value } }) => (
+              <Input
+                label='First name (optional)'
+                placeholder='Enter first name'
+                defaultValue={value}
+                onChange={onChange}
+                errorMessage={getErrorState(errors, 'firstName')?.message}
+                isInvalid={!!getErrorState(errors, 'firstName')}
+                className='relative'
+                isDisabled={isPending}
+              />
+            )}
+          />
+          <Controller
+            control={control}
+            name='lastName'
+            render={({ field: { onChange, value } }) => (
+              <Input
+                label='Last name (optional)'
+                placeholder='Enter last name'
+                defaultValue={value}
+                onChange={onChange}
+                errorMessage={getErrorState(errors, 'lastName')?.message}
+                isInvalid={!!getErrorState(errors, 'lastName')}
+                className='relative'
+                isDisabled={isPending}
+              />
+            )}
+          />
+        </div>
       </div>
       <Controller
         control={control}
@@ -65,6 +80,7 @@ export default function CreateAccountForm() {
             errorMessage={getErrorState(errors, 'email')?.message}
             isInvalid={!!getErrorState(errors, 'email')}
             className='relative'
+            isDisabled={isPending}
           />
         )}
       />
@@ -80,6 +96,7 @@ export default function CreateAccountForm() {
             errorMessage={getErrorState(errors, 'username')?.message}
             isInvalid={!!getErrorState(errors, 'username')}
             className='relative'
+            isDisabled={isPending}
           />
         )}
       />
@@ -96,6 +113,7 @@ export default function CreateAccountForm() {
             isInvalid={!!getErrorState(errors, 'password')}
             className='relative'
             type='password'
+            isDisabled={isPending}
           />
         )}
       />
@@ -112,6 +130,7 @@ export default function CreateAccountForm() {
             isInvalid={!!getErrorState(errors, 'confirmPassword')}
             className='relative'
             type='password'
+            isDisabled={isPending}
           />
         )}
       />
@@ -138,6 +157,7 @@ export default function CreateAccountForm() {
             isInvalid={!!getErrorState(errors, 'roles')}
             errorMessage={getErrorState(errors, 'roles')?.message}
             isMultiline={true}
+            isDisabled={isPending}
             renderValue={(items) => {
               return (
                 <div className='flex flex-wrap gap-2'>

@@ -19,3 +19,11 @@ export interface GetUsersByRoleAPIResponse {
   message: string
   result: User[]
 }
+
+export interface UploadFilesAPIResponse {
+  message: string
+  result: {
+    url: string
+    type: number
+  }[]
+}
