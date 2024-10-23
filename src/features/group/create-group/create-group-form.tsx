@@ -12,7 +12,7 @@ import {
   Spinner
 } from '@nextui-org/react'
 import { SearchIcon } from 'lucide-react'
-import searchUserService, { SearchUserResult } from '@/services/search-user.service'
+import searchUserService, { SearchUserResult } from '@/services/search-user.services'
 import GroupForm from './group-form'
 
 export default function CreateGroupForm() {
@@ -22,6 +22,7 @@ export default function CreateGroupForm() {
   const [selectedUsers, setSelectedUsers] = React.useState<SearchUserResult[]>([])
   const [availableUsers, setAvailableUsers] = React.useState<SearchUserResult[]>([])
   const [allUsers, setAllUsers] = React.useState<SearchUserResult[]>([])
+  const maxUsers = 5
 
   const handleSearch = React.useCallback(async (value: string) => {
     setFilterValue(value)
@@ -49,12 +50,12 @@ export default function CreateGroupForm() {
 
   const handleAddUser = React.useCallback(
     (user: SearchUserResult) => {
-      if (!selectedUsers.some((selectedUser) => selectedUser.userID === user.userID) && selectedUsers.length < 5) {
+      if (selectedUsers.length < maxUsers) {
         setSelectedUsers((prevUsers) => [...prevUsers, user])
         setAvailableUsers((prevUsers) => prevUsers.filter((u) => u.userID !== user.userID))
       }
     },
-    [selectedUsers]
+    [selectedUsers, maxUsers]
   )
 
   const handleRemoveUser = React.useCallback(
@@ -80,7 +81,7 @@ export default function CreateGroupForm() {
           return <User avatarProps={{ radius: 'lg', src: user.avatarUrl || undefined }} name={``} />
         case 'actions':
           return (
-            <Button color='primary' onPress={() => handleAddUser(user)} isDisabled={selectedUsers.length >= 4}>
+            <Button color='primary' onPress={() => handleAddUser(user)} isDisabled={selectedUsers.length >= maxUsers}>
               Add
             </Button>
           )
@@ -88,7 +89,7 @@ export default function CreateGroupForm() {
           return cellValue
       }
     },
-    [isLoading, handleAddUser, selectedUsers.length]
+    [isLoading, handleAddUser, selectedUsers.length, maxUsers]
   )
 
   const columns = [
@@ -160,13 +161,16 @@ export default function CreateGroupForm() {
             )}
           </TableBody>
         </Table>
+        {selectedUsers.length >= maxUsers && (
+          <p className='text-danger mt-2'>Maximum number of members has been reached ({maxUsers})</p>
+        )}
       </div>
       <div className='flex-1'>
         <GroupForm
           selectedUsers={selectedUsers}
           setSelectedUsers={setSelectedUsers}
           onRemoveUser={handleRemoveUser}
-          maxUsers={4}
+          maxUsers={maxUsers}
         />
       </div>
     </div>

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, User, Button } from '@nextui-org/react'
-import { SearchUserResult } from '@/services/search-user.service'
+import { SearchUserResult } from '@/services/search-user.services'
 
 interface GroupFormProps {
   selectedUsers: SearchUserResult[]
@@ -69,7 +69,10 @@ export default function GroupForm({ selectedUsers, setSelectedUsers, onRemoveUse
           )}
         </TableBody>
       </Table>
-      {selectedUsers.length >= maxUsers && <p className='text-danger'>Maximum number of users ({maxUsers}) reached.</p>}
+      {selectedUsers.length >= maxUsers && (
+        <p className='text-danger'>Maximum number of members has been reached ({maxUsers}).</p>
+      )}
+      {selectedUsers.length < 3 && <p className='text-warning'>Need at least 3 members to create a group</p>}
     </div>
   )
 }
