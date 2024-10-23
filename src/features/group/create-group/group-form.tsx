@@ -42,7 +42,7 @@ export default function GroupForm({ selectedUsers, setSelectedUsers, onRemoveUse
     },
     [handleRemoveUser]
   )
-
+  // ------------------------------------------------------------
   return (
     <div className='flex flex-col gap-4'>
       <Input
@@ -55,7 +55,19 @@ export default function GroupForm({ selectedUsers, setSelectedUsers, onRemoveUse
         value={groupName}
         onValueChange={setGroupName}
       />
-      <Table aria-label='Selected users table'>
+      <div className='h-3'>
+        {selectedUsers.length > maxUsers && (
+          <p className='text-danger'>Maximum number of members has been reached ({maxUsers}).</p>
+        )}
+        {selectedUsers.length < 3 && <p className='text-warning'>Need at least 3 members to create a group</p>}
+      </div>
+      <Table
+        aria-label='Selected users table'
+        isHeaderSticky
+        classNames={{
+          wrapper: 'max-h-[400px]'
+        }}
+      >
         <TableHeader columns={columns}>
           {(column) => (
             <TableColumn key={column.uid} align='start'>
@@ -69,10 +81,6 @@ export default function GroupForm({ selectedUsers, setSelectedUsers, onRemoveUse
           )}
         </TableBody>
       </Table>
-      {selectedUsers.length >= maxUsers && (
-        <p className='text-danger'>Maximum number of members has been reached ({maxUsers}).</p>
-      )}
-      {selectedUsers.length < 3 && <p className='text-warning'>Need at least 3 members to create a group</p>}
     </div>
   )
 }

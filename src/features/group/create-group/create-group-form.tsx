@@ -22,51 +22,53 @@ export default function CreateGroupForm() {
   const [selectedUsers, setSelectedUsers] = React.useState<SearchUserResult[]>([])
   const [availableUsers, setAvailableUsers] = React.useState<SearchUserResult[]>([])
   const [allUsers, setAllUsers] = React.useState<SearchUserResult[]>([])
-  const maxUsers = 5
+  const [removedUsers, setRemovedUsers] = React.useState<SearchUserResult[]>([])
+  const maxUsers = 4
 
-  const handleSearch = React.useCallback(async (value: string) => {
-    setFilterValue(value)
+  const handleSearch = React.useCallback(
+    async (value: string) => {
+      setFilterValue(value)
 
-    if (!value) {
-      setAvailableUsers([])
-      setIsLoading(false)
-      setHasSearched(false)
-      return
-    }
+      if (!value) {
+        setAvailableUsers([])
+        setIsLoading(false)
+        setHasSearched(false)
+        return
+      }
 
-    setHasSearched(true)
-    setIsLoading(true)
+      setHasSearched(true)
+      setIsLoading(true)
 
-    try {
-      const result = await searchUserService.searchUsers([1], true, value, false)
-      setAvailableUsers(result)
-      setAllUsers(result)
-    } catch (error) {
-      console.error('Error searching users:', error)
-    } finally {
-      setIsLoading(false)
-    }
-  }, [])
+      try {
+        const result = await searchUserService.searchUsers([1], true, value, false)
+        const filteredResult = result.filter((user) => !selectedUsers.some((u) => u.userID === user.userID))
+        setAvailableUsers(filteredResult)
+        setAllUsers(result)
+      } catch (error) {
+        console.error('Error searching users:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    },
+    [selectedUsers]
+  )
 
   const handleAddUser = React.useCallback(
     (user: SearchUserResult) => {
       if (selectedUsers.length < maxUsers) {
         setSelectedUsers((prevUsers) => [...prevUsers, user])
         setAvailableUsers((prevUsers) => prevUsers.filter((u) => u.userID !== user.userID))
+
+        setRemovedUsers((prevRemovedUsers) => prevRemovedUsers.filter((u) => u.userID !== user.userID))
       }
     },
     [selectedUsers, maxUsers]
   )
 
-  const handleRemoveUser = React.useCallback(
-    (user: SearchUserResult) => {
-      setSelectedUsers((prevUsers) => prevUsers.filter((u) => u.userID !== user.userID))
-      if (filterValue && allUsers.some((u) => u.userID === user.userID)) {
-        setAvailableUsers((prevUsers) => [...prevUsers, user])
-      }
-    },
-    [filterValue, allUsers]
-  )
+  const handleRemoveUser = React.useCallback((user: SearchUserResult) => {
+    setSelectedUsers((prevUsers) => prevUsers.filter((u) => u.userID !== user.userID))
+    setRemovedUsers((prevRemovedUsers) => [...prevRemovedUsers, user])
+  }, [])
 
   const renderCell = React.useCallback(
     (user: SearchUserResult, columnKey: React.Key) => {
@@ -121,49 +123,53 @@ export default function CreateGroupForm() {
   return (
     <div className='flex gap-x-4'>
       <div className='flex-1'>
-        <Table
-          aria-label='Example table with search and loading state'
-          isHeaderSticky
-          classNames={{
-            wrapper: 'max-h-[400px]'
-          }}
-          topContent={topContent}
-          topContentPlacement='outside'
-        >
-          <TableHeader columns={columns}>
-            {(column) => (
-              <TableColumn key={column.uid} align='start'>
-                {column.name}
-              </TableColumn>
+        <div className='flex flex-col gap-4'>
+          {topContent}
+          <div className='h-3'>
+            {selectedUsers.length > maxUsers && (
+              <p className='text-danger'>Maximum number of members has been reached ({maxUsers})</p>
             )}
-          </TableHeader>
-
-          <TableBody
-            emptyContent={
-              isLoading ? (
-                <Spinner />
-              ) : !hasSearched ? (
-                'Start typing to search...'
-              ) : filterValue ? (
-                'No users found'
-              ) : (
-                'No data available'
-              )
-            }
-            items={availableUsers}
-            loadingState={loadingState}
-            loadingContent={<Spinner />}
+          </div>
+          <Table
+            aria-label='Example table with search and loading state'
+            isHeaderSticky
+            classNames={{
+              wrapper: 'max-h-[400px]'
+            }}
+            topContentPlacement='outside'
           >
-            {(item) => (
-              <TableRow key={item.userID}>
-                {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-        {selectedUsers.length >= maxUsers && (
-          <p className='text-danger mt-2'>Maximum number of members has been reached ({maxUsers})</p>
-        )}
+            <TableHeader columns={columns}>
+              {(column) => (
+                <TableColumn key={column.uid} align='start'>
+                  {column.name}
+                </TableColumn>
+              )}
+            </TableHeader>
+
+            <TableBody
+              emptyContent={
+                isLoading ? (
+                  <Spinner />
+                ) : !hasSearched ? (
+                  'Start typing to search...'
+                ) : filterValue ? (
+                  'No users found'
+                ) : (
+                  'No data available'
+                )
+              }
+              items={availableUsers}
+              loadingState={loadingState}
+              loadingContent={<Spinner />}
+            >
+              {(item) => (
+                <TableRow key={item.userID}>
+                  {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
       </div>
       <div className='flex-1'>
         <GroupForm
