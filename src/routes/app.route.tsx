@@ -105,7 +105,7 @@ export const routes = createBrowserRouter([
                     element: <div>Dashboard</div>
                   },
                   {
-                    path: PRIVATE_ROUTES.ACCOUNT.path,
+                    path: PRIVATE_ROUTES.ACCOUNTS.path,
                     element: <Accounts />
                   },
                   {

@@ -59,36 +59,34 @@ const columns = [
 ]
 
 const transformData = (accounts: Account[]) => {
-  return accounts
-    .sort((a, b) => a.userID - b.userID)
-    .map((account) => ({
-      userID: account.userID,
-      avatarUrl: (
-        <div className='flex justify-center'>
-          <Avatar src={account.avatarUrl || ''} isBordered color='primary' />
-        </div>
-      ),
-      email: account.email,
-      username: account.username,
-      name: `${account.firstName} ${account.lastName}`,
-      roles: (
-        <div className='flex flex-wrap items-center gap-2'>
-          {account.roles.map((role) => (
-            <Chip key={role.roleID} size='sm' variant='flat' color={getColor(role.roleName)}>
-              {role.roleName}
-            </Chip>
-          ))}
-        </div>
-      ),
-      createdAt: <p className='text-center'>{format(account.createdAt, DATE_FORMAT.DEFAULT)}</p>,
-      updatedAt: <p className='text-center'>{format(account.updatedAt, DATE_FORMAT.DEFAULT)}</p>,
-      actions: (
-        <div className='flex justify-center items-center gap-3'>
-          <EyeIcon className='w-5 h-5 stroke-1 cursor-pointer' />
-          <EditIcon className='w-5 h-5 stroke-1 cursor-pointer' />
-        </div>
-      )
-    }))
+  return accounts.map((account) => ({
+    userID: account.userID,
+    avatarUrl: (
+      <div className='flex justify-center'>
+        <Avatar src={account.avatarUrl || ''} isBordered color='primary' />
+      </div>
+    ),
+    email: account.email,
+    username: account.username,
+    name: `${account.firstName} ${account.lastName}`,
+    roles: (
+      <div className='flex flex-wrap items-center gap-2'>
+        {account.roles.map((role) => (
+          <Chip key={role.roleID} size='sm' variant='flat' color={getColor(role.roleName)}>
+            {role.roleName}
+          </Chip>
+        ))}
+      </div>
+    ),
+    createdAt: <p className='text-center'>{format(account.createdAt, DATE_FORMAT.DEFAULT)}</p>,
+    updatedAt: <p className='text-center'>{format(account.updatedAt, DATE_FORMAT.DEFAULT)}</p>,
+    actions: (
+      <div className='flex justify-center items-center gap-3'>
+        <EyeIcon className='w-5 h-5 stroke-1 cursor-pointer' />
+        <EditIcon className='w-5 h-5 stroke-1 cursor-pointer' />
+      </div>
+    )
+  }))
 }
 
 export default function ViewAccounts() {
@@ -138,7 +136,7 @@ export default function ViewAccounts() {
         </Select>
       )}
       <div className='ml-auto'>
-        <CreateAccount isDisabled={isLoading} />
+        <CreateAccount isDisabled={isLoading} semesterID={selectedSemesterID} page={page} />
       </div>
       <ViewAccountsTable
         columns={columns}

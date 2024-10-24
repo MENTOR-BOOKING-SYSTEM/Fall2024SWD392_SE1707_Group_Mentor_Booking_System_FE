@@ -7,21 +7,21 @@ import { CreateAccountFormValues, useCreateAccount } from './use-create-account'
 import { FormProvider, SubmitHandler } from 'react-hook-form'
 import { useMutation } from '@tanstack/react-query'
 import { toaster } from '@/components/ui/toaster'
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 import { FileRejection } from 'react-dropzone'
 
 interface CreateAccountFormProviderProps {
   isDisabled: boolean
+  semesterID: number | undefined
+  page: number
 }
 
-export default function CreateAccountFormProvider({ isDisabled }: CreateAccountFormProviderProps) {
+export default function CreateAccountFormProvider({ isDisabled, semesterID, page }: CreateAccountFormProviderProps) {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
-  const { methods, createAccountMutation } = useCreateAccount()
-  const [avatar, setAvatar] = useState('')
+  const { methods, createAccountMutation, avatar, setAvatar } = useCreateAccount(page, semesterID, onClose)
 
   const onSubmit: SubmitHandler<CreateAccountFormValues> = (data) => {
-    // createAccountMutation.mutate(data)
-    console.log(data)
+    createAccountMutation.mutate({ account: data, semesterID })
   }
 
   const { mutate, isPending } = useMutation({
@@ -59,7 +59,7 @@ export default function CreateAccountFormProvider({ isDisabled }: CreateAccountF
       >
         Create account
       </Button>
-      <Modal className='max-w-[620px]' isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal className='modal-dialog max-w-[620px]' isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           <ModalHeader className='flex flex-col gap-1'>Create account</ModalHeader>
           <form onSubmit={methods.handleSubmit(onSubmit)}>
@@ -67,10 +67,10 @@ export default function CreateAccountFormProvider({ isDisabled }: CreateAccountF
               <CreateAccountForm avatar={avatar} isPending={isPending} onDrop={onDrop} />
             </ModalBody>
             <ModalFooter>
-              <Button color='danger' variant='light' onPress={onClose}>
+              <Button color='danger' variant='light' onPress={onClose} isLoading={createAccountMutation.isPending}>
                 Close
               </Button>
-              <Button color='primary' type='submit'>
+              <Button color='primary' type='submit' isLoading={createAccountMutation.isPending}>
                 Create
               </Button>
             </ModalFooter>
