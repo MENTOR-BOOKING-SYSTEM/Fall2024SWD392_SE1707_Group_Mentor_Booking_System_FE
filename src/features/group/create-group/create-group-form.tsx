@@ -20,7 +20,8 @@ import { GroupFormValues } from './use-create-group'
 export default function CreateGroupForm() {
   const {
     register,
-    formState: { errors }
+    formState: { errors },
+    setValue
   } = useFormContext<GroupFormValues>()
   const [filterValue, setFilterValue] = React.useState('')
   const [isLoading, setIsLoading] = React.useState(false)
@@ -79,19 +80,35 @@ export default function CreateGroupForm() {
   const handleAddUser = React.useCallback(
     (user: SearchUserResult) => {
       if (selectedUsers.length < maxUsers) {
-        setSelectedUsers((prevUsers) => [...prevUsers, user])
+        setSelectedUsers((prevUsers) => {
+          const newUsers = [...prevUsers, user]
+          setValue(
+            'usersID',
+            newUsers.map((u) => u.userID)
+          )
+          return newUsers
+        })
         setAvailableUsers((prevUsers) => prevUsers.filter((u) => u.userID !== user.userID))
-
         setRemovedUsers((prevRemovedUsers) => prevRemovedUsers.filter((u) => u.userID !== user.userID))
       }
     },
-    [selectedUsers, maxUsers]
+    [selectedUsers, maxUsers, setValue]
   )
 
-  const handleRemoveUser = React.useCallback((user: SearchUserResult) => {
-    setSelectedUsers((prevUsers) => prevUsers.filter((u) => u.userID !== user.userID))
-    setRemovedUsers((prevRemovedUsers) => [...prevRemovedUsers, user])
-  }, [])
+  const handleRemoveUser = React.useCallback(
+    (user: SearchUserResult) => {
+      setSelectedUsers((prevUsers) => {
+        const newUsers = prevUsers.filter((u) => u.userID !== user.userID)
+        setValue(
+          'usersID',
+          newUsers.map((u) => u.userID)
+        )
+        return newUsers
+      })
+      setRemovedUsers((prevRemovedUsers) => [...prevRemovedUsers, user])
+    },
+    [setValue]
+  )
 
   const renderCell = React.useCallback(
     (user: SearchUserResult, columnKey: React.Key) => {
@@ -202,6 +219,7 @@ export default function CreateGroupForm() {
           maxUsers={maxUsers}
           register={register}
           errors={errors}
+          setValue={(name, value) => setValue(name as 'groupName' | 'usersID', value)}
         />
       </div>
     </div>

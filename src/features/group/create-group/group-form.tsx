@@ -1,17 +1,17 @@
 import React from 'react'
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, User, Button } from '@nextui-org/react'
 import { SearchUserResult } from '@/services/search-user.services'
-import { FieldErrors, UseFormRegister } from 'react-hook-form'
+import { FieldErrors, UseFormRegister, useFormContext } from 'react-hook-form'
 import { GroupFormValues } from './use-create-group'
 
 interface GroupFormProps {
   selectedUsers: SearchUserResult[]
   setSelectedUsers: React.Dispatch<React.SetStateAction<SearchUserResult[]>>
-
   onRemoveUser: (user: SearchUserResult) => void
   maxUsers: number
   register: UseFormRegister<GroupFormValues>
   errors: FieldErrors<GroupFormValues>
+  setValue: (name: string, value: any) => void
 }
 
 export default function GroupForm({
@@ -20,7 +20,8 @@ export default function GroupForm({
   onRemoveUser,
   maxUsers,
   register,
-  errors
+  errors,
+  setValue
 }: GroupFormProps) {
   const columns = [
     { name: 'NAME', uid: 'name' },
@@ -29,7 +30,14 @@ export default function GroupForm({
   ]
 
   const handleRemoveUser = (userToRemove: SearchUserResult) => {
-    setSelectedUsers((prevUsers) => prevUsers.filter((user) => user.userID !== userToRemove.userID))
+    setSelectedUsers((prevUsers) => {
+      const newUsers = prevUsers.filter((user) => user.userID !== userToRemove.userID)
+      setValue(
+        'usersID',
+        newUsers.map((u) => u.userID)
+      )
+      return newUsers
+    })
     onRemoveUser(userToRemove)
   }
 
@@ -66,7 +74,6 @@ export default function GroupForm({
         errorMessage={errors.groupName?.message}
       />
       {errors.groupName && <p className='text-danger text-sm'>{errors.groupName.message}</p>}
-      <input type='hidden' {...register('usersID')} value={selectedUsers.map((user) => user.userID).join(',')} />
       <div className='h-3'>
         {selectedUsers.length > maxUsers && (
           <p className='text-danger'>Maximum number of members has been reached ({maxUsers}).</p>

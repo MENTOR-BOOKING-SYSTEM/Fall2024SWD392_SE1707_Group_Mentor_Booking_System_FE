@@ -12,7 +12,7 @@ class GroupService {
   }
 
   async createGroup(groupName: string, userIDs: number[]) {
-    const { data } = await httpInstance.post('/groups/', { groupName, userID: userIDs })
+    const { data } = await httpInstance.post('/groups/', { groupName, usersID: userIDs })
     return data
   }
 }
