@@ -6,6 +6,7 @@ export interface UserInfo {
   groupID: number | null
   projectID: number | null
   position: string | null
+  userID: number
 }
 
 export interface User {

@@ -16,6 +16,7 @@ import { useUserInfo } from './use-user-infor'
 import { useViewGroupMembers } from './use-view-group-members'
 import { PackageOpen } from 'lucide-react'
 import ViewGroupMemberDetail from '../view-group-member-detail/view-group-member-detail'
+import EditGroupMemberModal from '../edit-group-member/edit-group-member-modal'
 
 const columns = [
   { name: 'NAME', uid: 'name', className: 'text-left' },
@@ -34,18 +35,22 @@ const transformData = (members: any[]) => {
 
 export default function ViewGroupTable() {
   const { userInfo } = useUserInfo()
-  const { data: members, isLoading } = useViewGroupMembers(userInfo.groupID || 0)
+  const { data: members, isLoading, refetch } = useViewGroupMembers(userInfo.groupID || 0)
   const [selectedUser, setSelectedUser] = useState<any>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [transformedData, setTransformedData] = useState<any[]>([])
+  const [currentUser, setCurrentUser] = useState<any>(null)
 
   useEffect(() => {
     if (members && Array.isArray(members.result)) {
       const transformed = transformData(members.result)
       setTransformedData(transformed)
-      console.log('Transformed Data:', transformed)
+      const current = transformed.find((user) => user.userID === userInfo.userID)
+      setCurrentUser(current)
+      console.log('Current User:', current)
+      console.log('Is Current User Leader:', current?.position === 'Leader')
     }
-  }, [members])
+  }, [members, userInfo.userID])
 
   const handleViewDetail = (user: any) => {
     setSelectedUser({
@@ -58,39 +63,50 @@ export default function ViewGroupTable() {
     setIsModalOpen(true)
   }
 
-  const renderCell = React.useCallback((user: any, columnKey: React.Key) => {
-    switch (columnKey) {
-      case 'name':
-        return (
-          <User
-            avatarProps={{
-              radius: 'lg',
-              src: user.avatarUrl || 'https://i.pravatar.cc/150?img=default'
-            }}
-            name={user.name}
-          />
-        )
-      case 'email':
-        return user.email
-      case 'position':
-        return user.position
-      case 'actions':
-        return (
-          <div className='relative flex items-center gap-2 justify-center'>
-            <Tooltip content='View Detail'>
-              <span
-                className='text-lg text-default-400 cursor-pointer active:opacity-50'
-                onClick={() => handleViewDetail(user)}
-              >
-                <EyeIcon />
-              </span>
-            </Tooltip>
-          </div>
-        )
-      default:
-        return null
-    }
-  }, [])
+  const renderCell = React.useCallback(
+    (user: any, columnKey: React.Key) => {
+      switch (columnKey) {
+        case 'name':
+          return (
+            <User
+              avatarProps={{
+                radius: 'lg',
+                src: user.avatarUrl || 'https://i.pravatar.cc/150?img=default'
+              }}
+              name={user.name}
+            />
+          )
+        case 'email':
+          return user.email
+        case 'position':
+          return user.position
+        case 'actions':
+          return (
+            <div className='relative flex items-center gap-2 justify-center'>
+              <Tooltip content='View Detail'>
+                <span
+                  className='text-lg text-default-400 cursor-pointer active:opacity-50'
+                  onClick={() => handleViewDetail(user)}
+                >
+                  <EyeIcon />
+                </span>
+              </Tooltip>
+              {currentUser?.position === 'Leader' && user.position !== 'Leader' && (
+                <EditGroupMemberModal
+                  member={user}
+                  groupID={userInfo.groupID || 0}
+                  onSuccess={() => refetch()}
+                  isCurrentUserLeader={true}
+                />
+              )}
+            </div>
+          )
+        default:
+          return null
+      }
+    },
+    [currentUser, handleViewDetail, userInfo.groupID, refetch]
+  )
 
   if (!userInfo.groupID) {
     return (

@@ -11,6 +11,11 @@ class GroupService {
     return data
   }
 
+  async assignLeader(groupID: number, userID: number) {
+    const { data } = await httpInstance.post('/groups/assign-leader', { groupID, userID })
+    return data
+  }
+
   async createGroup(groupName: string, userIDs: number[]) {
     const { data } = await httpInstance.post('/groups/', { groupName, usersID: userIDs })
     return data

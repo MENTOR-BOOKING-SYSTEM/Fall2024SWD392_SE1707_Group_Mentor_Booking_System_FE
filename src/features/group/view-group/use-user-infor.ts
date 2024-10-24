@@ -9,7 +9,8 @@ export const useUserInfo = () => {
     avatarUrl: null,
     groupID: null,
     projectID: null,
-    position: null
+    position: null,
+    userID: 0
   })
 
   return {
