@@ -8,7 +8,6 @@ import {
   Database,
   FolderClock,
   Hourglass,
-  Icon,
   LogOut,
   NotepadText,
   Rows2,

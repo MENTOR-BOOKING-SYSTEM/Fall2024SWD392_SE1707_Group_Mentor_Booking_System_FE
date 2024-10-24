@@ -12,9 +12,10 @@ interface CreateGroupFormProviderProps {
 export default function CreateGroupFormProvider({ isDisabled }: CreateGroupFormProviderProps) {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const { methods, createGroupMutation } = useCreateGroup(onClose)
+  const watchedUsers = methods.watch('usersID')
 
   const onSubmit: SubmitHandler<GroupFormValues> = (data) => {
-    createGroupMutation.mutate({ groupName: data.groupName, usersID: data.usersID })
+    createGroupMutation.mutate({ groupName: data.groupName, usersID: watchedUsers })
   }
 
   return (

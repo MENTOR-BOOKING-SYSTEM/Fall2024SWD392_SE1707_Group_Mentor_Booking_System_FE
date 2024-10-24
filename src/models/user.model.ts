@@ -16,3 +16,12 @@ export interface User {
   firstName: string
   lastName: string
 }
+// export interface User {
+//   id: number
+//   firstName: string
+//   lastName: string
+//   email: string
+//   avatarUrl?: string
+//   role?: string
+//   team?: string
+// }

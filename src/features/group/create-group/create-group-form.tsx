@@ -20,7 +20,8 @@ import { GroupFormValues } from './use-create-group'
 export default function CreateGroupForm() {
   const {
     register,
-    formState: { errors }
+    formState: { errors },
+    setValue
   } = useFormContext<GroupFormValues>()
   const [filterValue, setFilterValue] = React.useState('')
   const [isLoading, setIsLoading] = React.useState(false)
@@ -30,31 +31,48 @@ export default function CreateGroupForm() {
   const [allUsers, setAllUsers] = React.useState<SearchUserResult[]>([])
   const [removedUsers, setRemovedUsers] = React.useState<SearchUserResult[]>([])
   const maxUsers = 4
+  const searchTimeoutRef = React.useRef<NodeJS.Timeout | null>(null)
 
   const handleSearch = React.useCallback(
-    async (value: string) => {
+    (value: string) => {
       setFilterValue(value)
 
-      if (!value) {
+      if (value.trim() === '') {
         setAvailableUsers([])
-        setIsLoading(false)
         setHasSearched(false)
+        setIsLoading(false)
         return
       }
 
-      setHasSearched(true)
-      setIsLoading(true)
-
-      try {
-        const result = await searchUserService.searchUsers([1], true, value, false)
-        const filteredResult = result.filter((user) => !selectedUsers.some((u) => u.userID === user.userID))
-        setAvailableUsers(filteredResult)
-        setAllUsers(result)
-      } catch (error) {
-        console.error('Error searching users:', error)
-      } finally {
-        setIsLoading(false)
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current)
       }
+
+      setIsLoading(true)
+      setAvailableUsers([])
+
+      searchTimeoutRef.current = setTimeout(async () => {
+        if (!value) {
+          setAvailableUsers([])
+          setIsLoading(false)
+          setHasSearched(false)
+          return
+        }
+
+        setHasSearched(true)
+
+        try {
+          const result = await searchUserService.searchUsers([1], true, value, false)
+          const filteredResult = result.filter((user) => !selectedUsers.some((u) => u.userID === user.userID))
+
+          setAvailableUsers(filteredResult)
+          setAllUsers(result)
+        } catch (error) {
+          console.error('Error searching users:', error)
+        } finally {
+          setIsLoading(false)
+        }
+      }, 1000)
     },
     [selectedUsers]
   )
@@ -62,19 +80,35 @@ export default function CreateGroupForm() {
   const handleAddUser = React.useCallback(
     (user: SearchUserResult) => {
       if (selectedUsers.length < maxUsers) {
-        setSelectedUsers((prevUsers) => [...prevUsers, user])
+        setSelectedUsers((prevUsers) => {
+          const newUsers = [...prevUsers, user]
+          setValue(
+            'usersID',
+            newUsers.map((u) => u.userID)
+          )
+          return newUsers
+        })
         setAvailableUsers((prevUsers) => prevUsers.filter((u) => u.userID !== user.userID))
-
         setRemovedUsers((prevRemovedUsers) => prevRemovedUsers.filter((u) => u.userID !== user.userID))
       }
     },
-    [selectedUsers, maxUsers]
+    [selectedUsers, maxUsers, setValue]
   )
 
-  const handleRemoveUser = React.useCallback((user: SearchUserResult) => {
-    setSelectedUsers((prevUsers) => prevUsers.filter((u) => u.userID !== user.userID))
-    setRemovedUsers((prevRemovedUsers) => [...prevRemovedUsers, user])
-  }, [])
+  const handleRemoveUser = React.useCallback(
+    (user: SearchUserResult) => {
+      setSelectedUsers((prevUsers) => {
+        const newUsers = prevUsers.filter((u) => u.userID !== user.userID)
+        setValue(
+          'usersID',
+          newUsers.map((u) => u.userID)
+        )
+        return newUsers
+      })
+      setRemovedUsers((prevRemovedUsers) => [...prevRemovedUsers, user])
+    },
+    [setValue]
+  )
 
   const renderCell = React.useCallback(
     (user: SearchUserResult, columnKey: React.Key) => {
@@ -137,7 +171,7 @@ export default function CreateGroupForm() {
             )}
           </div>
           <Table
-            aria-label='Example table with search and loading state'
+            aria-label='Table with search and loading state'
             isHeaderSticky
             classNames={{
               wrapper: 'max-h-[400px]'
@@ -185,6 +219,7 @@ export default function CreateGroupForm() {
           maxUsers={maxUsers}
           register={register}
           errors={errors}
+          setValue={(name, value) => setValue(name as 'groupName' | 'usersID', value)}
         />
       </div>
     </div>
