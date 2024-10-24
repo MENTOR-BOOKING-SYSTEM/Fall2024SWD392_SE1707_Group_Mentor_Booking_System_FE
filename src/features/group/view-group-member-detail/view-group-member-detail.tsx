@@ -2,7 +2,7 @@ import React from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from '@nextui-org/react'
 
 interface User {
-  id: number
+  userId: number
   name: string
   role: string
   team: string
@@ -31,6 +31,7 @@ export default function ViewGroupMemberDetail({ isOpen, onOpenChange, user }: Vi
               {user.name}
             </ModalHeader>
             <ModalBody>
+              <p>ID: {user.userId}</p>
               <p>Email: {user.email}</p>
               <p>Position: {user.role}</p>
               <p>GroupName: {user.team}</p>
