@@ -6,9 +6,8 @@ interface User {
   name: string
   role: string
   team: string
-  status: string
-  age: string
   email: string
+  avatarUrl: string | null
 }
 
 interface ViewGroupMemberDetailProps {
@@ -23,16 +22,22 @@ export default function ViewGroupMemberDetail({ isOpen, onOpenChange, user }: Vi
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className='flex flex-col gap-1'>{user.name}</ModalHeader>
+            <ModalHeader className='flex flex-col gap-1'>
+              <img
+                className='w-10 h-10 rounded-full mr-3'
+                src={user.avatarUrl || 'https://i.pravatar.cc/150?img=default'}
+                alt='Avatar'
+              />
+              {user.name}
+            </ModalHeader>
             <ModalBody>
               <p>Email: {user.email}</p>
-              <p>Vai trò: {user.role}</p>
-              <p>Nhóm: {user.team}</p>
-              <p>Tuổi: {user.age}</p>
+              <p>Position: {user.role}</p>
+              <p>GroupName: {user.team}</p>
             </ModalBody>
             <ModalFooter>
-              <Button color='danger' variant='flat' onPress={onClose}>
-                Đóng
+              <Button color='danger' variant='light' onPress={onClose}>
+                CLose
               </Button>
             </ModalFooter>
           </>
