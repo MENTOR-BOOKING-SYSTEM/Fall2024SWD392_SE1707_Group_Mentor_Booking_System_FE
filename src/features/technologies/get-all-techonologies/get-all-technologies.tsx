@@ -29,7 +29,8 @@ export default function GetAllTechnologies({ onChange }: GetAllTechnologiesProps
         items={data}
         isMultiline={true}
         selectionMode='multiple'
-        placeholder='Select technologies'
+        placeholder='Select your project catergories here'
+        label='Technologies (optional)'
         classNames={{
           trigger: 'min-h-12 py-2'
         }}

@@ -1,7 +1,7 @@
+import EmptyContainer from '@/components/shared/empty-container'
 import { Criteria } from '@/models/criteria.model'
 import { Spinner } from '@nextui-org/react'
 import { getKeyValue, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/table'
-import { PackageOpen } from 'lucide-react'
 
 interface ViewCriteriasTableProps {
   data: Criteria[] | null | undefined
@@ -34,12 +34,7 @@ export default function ViewCriteriasTable({ data, isLoading, columns, transform
         items={transformedData}
         isLoading={isLoading}
         loadingContent={<Spinner />}
-        emptyContent={
-          <div className='flex flex-col items-center gap-2'>
-            <PackageOpen className='w-10 h-10 stroke-1 text-default-300' />
-            <p>No data available</p>
-          </div>
-        }
+        emptyContent={<EmptyContainer />}
       >
         {(criteria) => (
           <TableRow key={criteria.criteriaID}>

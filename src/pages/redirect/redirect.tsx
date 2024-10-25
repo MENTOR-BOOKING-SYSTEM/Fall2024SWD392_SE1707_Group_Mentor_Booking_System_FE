@@ -13,19 +13,21 @@ export default function Redirect() {
   const { user } = useAuth()
   const { data: phase, isLoading: isLoadingPhase } = useGetCurrentPhase()
   const { data: userInfo, isLoading: isLoadingInfo } = useGetCurrentUserInfo()
-  const { setcurrentUserInfo } = useUser()
+
+  const { setCurrentUserInfo, setCurrentPhase } = useUser()
 
   useEffect(() => {
-    if (userInfo) {
-      setcurrentUserInfo(userInfo)
+    if (userInfo && phase) {
+      setCurrentUserInfo(userInfo)
+      setCurrentPhase({ currentPhase: phase })
     }
-  }, [userInfo, setcurrentUserInfo])
+  }, [userInfo, phase, setCurrentUserInfo, setCurrentPhase])
 
   if (isLoadingPhase || isLoadingInfo) {
     return <PageLoader />
   } else if (phase) {
     if (isAllowRoles([ROLES.ADMIN], user)) {
-      return <Navigate to='/dashboard' replace />
+      return <Navigate to={PRIVATE_ROUTES.ACCOUNTS.path} replace />
     } else if (phase[0].startsWith('BS')) {
       return <Navigate to={PRIVATE_ROUTES.SUBMISSION.path} replace />
     } else if (phase[0].startsWith('IS')) {
