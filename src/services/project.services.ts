@@ -15,27 +15,27 @@ class ProjectService {
   }
 
   async getProjectSubmission() {
-    const { data } = await httpInstance.get<GetProjectSubmissionAPIResponse>('/projects/get-submit?page=1&limit=50')
+    const { data } = await httpInstance.get<GetProjectSubmissionAPIResponse>('/projects/get-submit?page=1&limit=10')
     return data.result
   }
 
-  async getProjectDetail(projectID: string) {
-    const { data } = await httpInstance.get<GetProjectDetailAPIResponse>(`/projects/${projectID}/detail`)
+  async getProjectDetail(slug: string) {
+    const { data } = await httpInstance.get<GetProjectDetailAPIResponse>(`/projects/${slug}/detail`)
     return data.result
   }
 
-  async getProjectOwner(projectID: string) {
-    const { data } = await httpInstance.get<GetProjectOwnerAPIResponse>(`/projects/${projectID}/own`)
+  async getProjectOwner(slug: string) {
+    const { data } = await httpInstance.get<GetProjectOwnerAPIResponse>(`/projects/owners/${slug}`)
     return data.result
   }
 
-  async getProjectReviewer(projectID: string) {
-    const { data } = await httpInstance.get<GetProjectOwnerAPIResponse>(`/projects/${projectID}/review`)
+  async getProjectReviewer(slug: string) {
+    const { data } = await httpInstance.get<GetProjectOwnerAPIResponse>(`/projects/reviewers/${slug}`)
     return data.result
   }
 
-  async getProjectTechnologies(projectID: string) {
-    const { data } = await httpInstance.get<GetProjectTechnologiesAPIResponse>(`/projects/${projectID}/technologies`)
+  async getProjectTechnologies(slug: string) {
+    const { data } = await httpInstance.get<GetProjectTechnologiesAPIResponse>(`/projects/technologies/${slug}`)
     return data.result
   }
 }
