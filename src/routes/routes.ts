@@ -69,7 +69,7 @@ export const PRIVATE_ROUTES: Route = {
     path: '/group',
     bcLabel: 'Group'
   },
-  ACCOUNT: {
+  ACCOUNTS: {
     path: '/accounts',
     bcLabel: 'Accounts'
   },

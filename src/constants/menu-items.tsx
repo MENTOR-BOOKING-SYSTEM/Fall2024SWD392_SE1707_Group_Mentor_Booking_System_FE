@@ -123,7 +123,7 @@ export const ADMIN_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = [
     id: 2,
     title: 'Accounts',
     value: 'accounts',
-    url: PRIVATE_ROUTES.ACCOUNT.path,
+    url: PRIVATE_ROUTES.ACCOUNTS.path,
     icon: (className?: string) => <UserCogIcon className={className} />
   },
   {

@@ -2,7 +2,8 @@ import httpInstance from '@/lib/axios/axios'
 import {
   GetCurrentUserInfoAPIResponse,
   GetGroupMembersAPIResponse,
-  GetUsersByRoleAPIResponse
+  GetUsersByRoleAPIResponse,
+  UploadFilesAPIResponse
 } from '@/models/api/users/res.model'
 
 class UserService {
@@ -18,6 +19,19 @@ class UserService {
 
   async getUsersByRole(role: number[]) {
     const { data } = await httpInstance.get<GetUsersByRoleAPIResponse>('/users/role?role=' + `[${role}]`)
+    return data.result
+  }
+
+  async uploadFiles(formData: FormData) {
+    const { data } = await httpInstance.post<UploadFilesAPIResponse>(
+      'https://cyperstack.com/medias/upload-image',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    )
     return data.result
   }
 }

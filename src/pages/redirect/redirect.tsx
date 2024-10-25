@@ -27,7 +27,7 @@ export default function Redirect() {
     return <PageLoader />
   } else if (phase) {
     if (isAllowRoles([ROLES.ADMIN], user)) {
-      return <Navigate to={PRIVATE_ROUTES.DASHBOARD.path} replace />
+      return <Navigate to={PRIVATE_ROUTES.ACCOUNTS.path} replace />
     } else if (phase[0].startsWith('BS')) {
       return <Navigate to={PRIVATE_ROUTES.SUBMISSION.path} replace />
     } else if (phase[0].startsWith('IS')) {

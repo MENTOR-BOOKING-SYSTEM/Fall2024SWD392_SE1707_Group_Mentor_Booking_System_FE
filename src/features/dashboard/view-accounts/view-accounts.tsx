@@ -1,13 +1,14 @@
-import EmptyContainer from '@/components/shared/empty-container'
-import { Account } from '@/models/user.model'
-import { useViewAccounts } from './use-view-accounts'
-import { getKeyValue, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/table'
-import { Avatar, Chip, Pagination, Spinner } from '@nextui-org/react'
-import { getColor } from './utils/account.util'
-import { format } from 'date-fns'
+import ViewAccountsTable from './view-accounts-table'
+import CreateAccount from '../create-account/create-account-form.provider'
 import { DATE_FORMAT } from '@/constants'
+import { Account } from '@/models/user.model'
+import { Avatar, Chip, Select, SelectItem, Skeleton } from '@nextui-org/react'
+import { format } from 'date-fns'
 import { EditIcon, EyeIcon } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useViewAccounts } from './use-view-accounts'
+import { getColor } from './utils/account.util'
+import { useViewSemesters } from '@/features/semesters/view-semesters/use-view-semesters'
 
 const columns = [
   {
@@ -58,91 +59,93 @@ const columns = [
 ]
 
 const transformData = (accounts: Account[]) => {
-  return accounts
-    .sort((a, b) => a.userID - b.userID)
-    .map((account) => ({
-      userID: account.userID,
-      avatarUrl: (
-        <div className='flex justify-center'>
-          <Avatar src={account.avatarUrl || ''} isBordered color='primary' />
-        </div>
-      ),
-      email: account.email,
-      username: account.username,
-      name: `${account.firstName} ${account.lastName}`,
-      roles: (
-        <div className='flex flex-wrap items-center gap-2'>
-          {account.roles.map((role) => (
-            <Chip size='sm' variant='flat' color={getColor(role.roleName)}>
-              {role.roleName}
-            </Chip>
-          ))}
-        </div>
-      ),
-      createdAt: <p className='text-center'>{format(account.createdAt, DATE_FORMAT.DEFAULT)}</p>,
-      updatedAt: <p className='text-center'>{format(account.updatedAt, DATE_FORMAT.DEFAULT)}</p>,
-      actions: (
-        <div className='flex justify-center items-center gap-3'>
-          <EyeIcon className='w-5 h-5 stroke-1 cursor-pointer' />
-          <EditIcon className='w-5 h-5 stroke-1 cursor-pointer' />
-        </div>
-      )
-    }))
+  return accounts.map((account) => ({
+    userID: account.userID,
+    avatarUrl: (
+      <div className='flex justify-center'>
+        <Avatar src={account.avatarUrl || ''} isBordered color='primary' />
+      </div>
+    ),
+    email: account.email,
+    username: account.username,
+    name: `${account.firstName} ${account.lastName}`,
+    roles: (
+      <div className='flex flex-wrap items-center gap-2'>
+        {account.roles.map((role) => (
+          <Chip key={role.roleID} size='sm' variant='flat' color={getColor(role.roleName)}>
+            {role.roleName}
+          </Chip>
+        ))}
+      </div>
+    ),
+    createdAt: <p className='text-center'>{format(account.createdAt, DATE_FORMAT.DEFAULT)}</p>,
+    updatedAt: <p className='text-center'>{format(account.updatedAt, DATE_FORMAT.DEFAULT)}</p>,
+    actions: (
+      <div className='flex justify-center items-center gap-3'>
+        <EyeIcon className='w-5 h-5 stroke-1 cursor-pointer' />
+        <EditIcon className='w-5 h-5 stroke-1 cursor-pointer' />
+      </div>
+    )
+  }))
 }
 
 export default function ViewAccounts() {
   const [page, setPage] = useState(1)
-  const { data, isLoading } = useViewAccounts(page, 10)
-  const transformedData = transformData(data?.accounts || [])
+  const { data: semesters, isLoading: isLoadingSemesters } = useViewSemesters()
+  const [selectedSemesterID, setSelectedSemesterID] = useState<number | undefined>(undefined)
+  const { data, isLoading } = useViewAccounts(page, 10, selectedSemesterID || 0)
+
+  useEffect(() => {
+    if (semesters) {
+      const currentSemester = semesters.find((semester) => {
+        const currentDate = new Date()
+        const startDate = new Date(semester.startDate)
+        const endDate = new Date(semester.endDate)
+
+        return startDate <= currentDate && endDate >= currentDate
+      })
+      setSelectedSemesterID(currentSemester?.semesterID)
+    }
+  }, [semesters])
 
   return (
-    <Table
-      classNames={{
-        table: 'min-h-60'
-      }}
-      color='default'
-      selectionMode='single'
-      disallowEmptySelection
-      aria-label='Accounts Table'
-      bottomContent={
-        data?.pages || 0 > 0 ? (
-          <div className='flex w-full justify-center'>
-            <Pagination
-              isCompact
-              showControls
-              showShadow
-              color='primary'
-              page={page}
-              total={data?.pages || 0}
-              onChange={(page) => setPage(page)}
-            />
-          </div>
-        ) : null
-      }
-    >
-      <TableHeader columns={columns}>
-        {(column) => (
-          <TableColumn className={column.className} key={column.key}>
-            {column.label}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody
-        items={transformedData}
+    <div className='flex flex-col gap-3'>
+      {isLoadingSemesters ? (
+        <Skeleton className='w-full rounded-lg'>
+          <div className='h-12 w-full rounded-lg bg-default-300'></div>
+        </Skeleton>
+      ) : (
+        <Select
+          items={semesters}
+          label='Semester'
+          placeholder='Select a semester'
+          selectedKeys={selectedSemesterID ? [String(selectedSemesterID)] : []}
+          onChange={(e) => setSelectedSemesterID(parseInt(e.target.value))}
+          disallowEmptySelection
+        >
+          {(semester) => (
+            <SelectItem key={semester.semesterID}>
+              {semester.semesterName +
+                ' (' +
+                format(semester.startDate, DATE_FORMAT.DEFAULT) +
+                ' to ' +
+                format(semester.endDate, DATE_FORMAT.DEFAULT) +
+                ')'}
+            </SelectItem>
+          )}
+        </Select>
+      )}
+      <div className='ml-auto'>
+        <CreateAccount isDisabled={isLoading} semesterID={selectedSemesterID} page={page} />
+      </div>
+      <ViewAccountsTable
+        columns={columns}
+        data={data}
         isLoading={isLoading}
-        loadingContent={<Spinner />}
-        emptyContent={<EmptyContainer />}
-      >
-        {(account) => (
-          <TableRow key={account.userID}>
-            {(columnKey) => (
-              <TableCell className='max-w-32' key={columnKey}>
-                {getKeyValue(account, columnKey)}
-              </TableCell>
-            )}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+        page={page}
+        setPage={setPage}
+        transformData={transformData}
+      />
+    </div>
   )
 }
