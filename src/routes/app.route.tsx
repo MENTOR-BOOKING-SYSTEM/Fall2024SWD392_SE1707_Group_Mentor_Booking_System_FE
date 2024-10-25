@@ -24,6 +24,7 @@ import Timestamps from '@/pages/timestamps'
 import ReviewProject from '@/features/projects/review-project/review-project'
 import ProjectReview from '@/pages/projects/project-review'
 import ProjectDetail from '@/pages/projects/project-detail'
+import Accounts from '@/pages/dashboard/accounts'
 import ErrorLayout from '@/layouts/error.layout'
 
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './routes'
@@ -105,7 +106,7 @@ export const routes = createBrowserRouter([
                   },
                   {
                     path: PRIVATE_ROUTES.ACCOUNT.path,
-                    element: <div>Accounts</div>
+                    element: <Accounts />
                   },
                   {
                     path: PRIVATE_ROUTES.SEMESTERS.path,

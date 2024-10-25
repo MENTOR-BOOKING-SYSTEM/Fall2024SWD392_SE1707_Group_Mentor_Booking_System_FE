@@ -15,4 +15,10 @@ export interface User {
   avatarUrl: string | null
   firstName: string
   lastName: string
+  createdAt: string
+  updatedAt: string
+}
+
+export interface Account extends User {
+  roles: { roleID: number; roleName: string }[]
 }

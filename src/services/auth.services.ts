@@ -1,6 +1,7 @@
 import httpInstance from '@/lib/axios/axios'
-import { GeneralAPIResponse, LoginAPIResponse } from '@/models/api/res.model'
-import type { ForgotPwdAPIRequest, LoginAPIRequest, ResetPasswordAPIRequest } from '@/models/api/req.model'
+import { LoginAPIResponse } from '@/models/api/auth/res.model'
+import { GeneralAPIResponse } from '@/models/base.model'
+import type { ForgotPwdAPIRequest, LoginAPIRequest, ResetPasswordAPIRequest } from '@/models/api/auth/req.model'
 
 export const URL_LOGIN = 'users/login'
 export const URL_REGISTER = 'users/register'

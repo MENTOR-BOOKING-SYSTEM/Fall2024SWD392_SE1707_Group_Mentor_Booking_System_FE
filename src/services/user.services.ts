@@ -3,7 +3,7 @@ import {
   GetCurrentUserInfoAPIResponse,
   GetGroupMembersAPIResponse,
   GetUsersByRoleAPIResponse
-} from '@/models/api/res.model'
+} from '@/models/api/users/res.model'
 
 class UserService {
   async getCurrentUserInfo() {
