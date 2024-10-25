@@ -8,11 +8,11 @@ export default function AuthLayout() {
   const { isAuth } = useAuth()
 
   if (isAuth) {
-    return <Navigate to={PRIVATE_ROUTES.ROOT} replace />
+    return <Navigate to={PRIVATE_ROUTES.ROOT.path} replace />
   }
 
   return (
-    <div className='flex min-h-screen  items-center justify-center'>
+    <div className='flex min-h-screen items-center justify-center'>
       <Card
         isBlurred
         className='border-none bg-background/60 max-w-screen-xl mx-4 md:mx-6 min-w-80 h-[620px] flex flex-col'

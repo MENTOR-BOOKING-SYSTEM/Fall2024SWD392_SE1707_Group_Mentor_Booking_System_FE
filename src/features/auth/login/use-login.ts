@@ -23,14 +23,16 @@ export const useLogin = () => {
     mutationFn: authService.login,
     onSuccess: (response) => {
       const { accessToken, refreshToken } = response
-      navigate(PRIVATE_ROUTES.ROOT)
+      navigate(PRIVATE_ROUTES.ROOT.path)
       setAuth({ accessToken, refreshToken })
       methods.reset()
     },
     onError: () => {
-      methods.reset()
+      methods.reset({
+        email: '',
+        password: ''
+      })
       toaster.error({
-        title: 'Error',
         text: 'Invalid credentials'
       })
     }

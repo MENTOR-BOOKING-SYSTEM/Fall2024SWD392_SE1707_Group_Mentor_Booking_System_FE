@@ -5,6 +5,116 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
 .Toastify__toast-body {
   padding: 14px !important;
+}
+
+.modal-dialog > button {
+  display: none;
+}
+
+/* Tiptap */
+.tiptap {
+  padding: 10px 2px;
+}
+
+.tiptap p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.tiptap a {
+  color: #338ef7;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.tiptap p.is-editor-empty:first-child::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+.tiptap p.is-empty::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+.tiptap h2 {
+  font-size: 2em;
+  font-weight: 500;
+  margin: 0.7em 0 1em;
+  line-height: 1.5;
+}
+
+.tiptap h3 {
+  font-size: 1.5em;
+  font-weight: 500;
+  margin: 0.6em 0 1em;
+  line-height: 1.5;
+}
+
+.tiptap h4 {
+  font-size: 1.25em;
+  font-weight: 500;
+  margin: 0.5em 0 1em;
+  line-height: 1.5;
+}
+
+.tiptap ul li {
+  position: relative;
+  margin-bottom: 10px;
+  padding-left: 1.25em;
+}
+
+.tiptap ul li:before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  top: 0.15em;
+  font-weight: bolder;
+}
+
+.tiptap ol {
+  margin: 15px 0;
+  padding-left: 1.5em;
+  counter-reset: list-counter;
+}
+
+.tiptap ol li {
+  position: relative;
+  margin-bottom: 10px;
+  padding-left: 1.25em;
+  list-style: none; /* Remove default list styling */
+}
+
+.tiptap ol li:before {
+  content: counter(list-counter) '.';
+  counter-increment: list-counter;
+  position: absolute;
+  left: 0;
+  top: 0.2em;
+  font-weight: bolder;
+}
+
+/* Normal CSS */
+p {
+  margin: 0;
+  line-height: 1.5;
 }

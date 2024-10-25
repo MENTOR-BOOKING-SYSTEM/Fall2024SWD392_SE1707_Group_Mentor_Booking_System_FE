@@ -1,5 +1,3 @@
-import ViewCurrentProject from '@/features/projects/view-current-project/view-current-project'
-import { STUDENT_SIDEBAR_MENU_ITEMS } from '@/constants/menu-items'
 import { cn } from '@/utils'
 import { useLocation, useNavigate } from 'react-router-dom'
 import type { SidebarMenuItem } from '@/models/ui.model'
@@ -9,14 +7,20 @@ interface SidebarItemProps {
   isCurrentPath: boolean
 }
 
-export default function Sidebar() {
+interface SidebarProps {
+  items: SidebarMenuItem[]
+  children?: React.ReactNode
+  urlPositon: number
+}
+
+export default function Sidebar({ items, children, urlPositon }: SidebarProps) {
   const { pathname } = useLocation()
 
   return (
-    <div className='flex flex-col gap-2 '>
-      <ViewCurrentProject />
-      {STUDENT_SIDEBAR_MENU_ITEMS.map((item) => {
-        const isCurrentPath = pathname.split('/')[2] === item.value
+    <div className='flex flex-col gap-2 min-w-72 p-4'>
+      {children}
+      {items.map((item) => {
+        const isCurrentPath = pathname.split('/')[urlPositon] === item.value
         return <SidebarItem key={item.id} item={item} isCurrentPath={isCurrentPath} />
       })}
     </div>

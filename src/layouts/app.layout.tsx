@@ -13,10 +13,10 @@ export default function AppLayout() {
   return (
     <QueryProvider>
       <Provider store={store}>
-        <NextUIProvider>
+        <NextUIProvider locale='en-GB'>
           <main className='text-foreground bg-background font-open text-base w-screen'>
             <Outlet />
-            <ToastContainer stacked autoClose={3000} hideProgressBar icon={false} />
+            <ToastContainer stacked autoClose={3000} icon={false} />
           </main>
         </NextUIProvider>
       </Provider>

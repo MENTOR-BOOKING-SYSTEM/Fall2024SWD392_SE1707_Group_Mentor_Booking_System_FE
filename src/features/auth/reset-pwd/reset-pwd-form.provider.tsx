@@ -1,17 +1,28 @@
 import AuthIcons from '../components/auth-icons'
 import ResetPwdForm from './reset-pwd-form'
 import Button from '@/components/ui/button'
-import { FormProvider } from 'react-hook-form'
-import { ResetPwdFormValues, useResetPwd } from './use-reset-pwd'
+import { FormProvider, SubmitHandler } from 'react-hook-form'
 import { PUBLIC_ROUTES } from '@/routes/routes'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
+import { useVerifyCode } from '../verify-code/use-verify-code'
+import { useLocalStorage } from 'usehooks-ts'
+import { CodeModel } from '@/models/base.model'
+import { Spinner } from '@nextui-org/react'
+import { type ResetPwdFormValues, useResetPwd } from './use-reset-pwd'
 
 export default function ResetPwdFormProvider() {
+  const [{ code }] = useLocalStorage<CodeModel>('code', { code: '' })
   const { resetPwdMutation, methods } = useResetPwd()
+  const { isLoading, isError } = useVerifyCode(code || '')
 
-  const onSubmit = (data: ResetPwdFormValues) => {
-    // resetPwdMutation.mutate(data)
-    console.log(data)
+  if (isLoading) {
+    return <Spinner />
+  } else if (isError) {
+    return <Navigate to={PUBLIC_ROUTES.FORGOT_PASSWORD} replace />
+  }
+
+  const onSubmit: SubmitHandler<ResetPwdFormValues> = (data) => {
+    resetPwdMutation.mutate({ forgotPasswordToken: code, ...data })
   }
 
   return (
