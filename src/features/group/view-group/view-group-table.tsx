@@ -54,11 +54,12 @@ export default function ViewGroupTable() {
 
   const handleViewDetail = (user: any) => {
     setSelectedUser({
-      id: user.userID,
+      userId: user.userID,
       name: `${user.firstName} ${user.lastName}`,
       role: user.position,
       team: user.groupName,
-      email: user.email
+      email: user.email,
+      avatarUrl: user.avatarUrl
     })
     setIsModalOpen(true)
   }
@@ -93,10 +94,16 @@ export default function ViewGroupTable() {
               </Tooltip>
               {currentUser?.position === 'Leader' && user.position !== 'Leader' && (
                 <EditGroupMemberModal
-                  member={user}
+                  member={{
+                    userID: user.userID,
+                    name: `${user.firstName} ${user.lastName}`,
+                    position: user.position,
+                    email: user.email,
+                    avatarUrl: user.avatarUrl
+                  }}
                   groupID={userInfo.groupID || 0}
                   onSuccess={() => refetch()}
-                  isCurrentUserLeader={true}
+                  isCurrentUserLeader={currentUser?.position === 'Leader'}
                 />
               )}
             </div>

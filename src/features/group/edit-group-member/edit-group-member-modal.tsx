@@ -78,6 +78,7 @@ export default function EditGroupMemberModal({
                 <p className='font-semibold'>{member.name}</p>
                 <p className='text-sm text-gray-500'>{member.email}</p>
                 <p className='text-sm'>Position: {member.position}</p>
+                <p className='text-sm'>User ID: {member.userID}</p>
               </div>
             </div>
           </ModalBody>
