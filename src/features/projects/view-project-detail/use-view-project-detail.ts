@@ -1,24 +1,24 @@
 import projectService from '@/services/project.services'
 import { useSuspenseQueries } from '@tanstack/react-query'
 
-export const useViewProjectDetail = (projectID: string) => {
+export const useViewProjectDetail = (slug: string) => {
   return useSuspenseQueries({
     queries: [
       {
-        queryKey: ['project-detail', projectID],
-        queryFn: () => projectService.getProjectDetail(projectID)
+        queryKey: ['project-detail', slug],
+        queryFn: () => projectService.getProjectDetail(slug)
       },
       {
-        queryKey: ['project-owner', projectID],
-        queryFn: () => projectService.getProjectOwner(projectID)
+        queryKey: ['project-owner', slug],
+        queryFn: () => projectService.getProjectOwner(slug)
       },
       {
-        queryKey: ['project-review', projectID],
-        queryFn: () => projectService.getProjectReviewer(projectID)
+        queryKey: ['project-review', slug],
+        queryFn: () => projectService.getProjectReviewer(slug)
       },
       {
-        queryKey: ['project-technologies', projectID],
-        queryFn: () => projectService.getProjectTechnologies(projectID)
+        queryKey: ['project-technologies', slug],
+        queryFn: () => projectService.getProjectTechnologies(slug)
       }
     ]
   })

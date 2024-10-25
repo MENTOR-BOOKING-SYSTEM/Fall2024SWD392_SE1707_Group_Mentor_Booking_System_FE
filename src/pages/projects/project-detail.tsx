@@ -2,11 +2,11 @@ import ViewProjectDetail from '@/features/projects/view-project-detail/view-proj
 import { useParams } from 'react-router-dom'
 
 export default function ProjectDetail() {
-  const { projectID } = useParams()
+  const { slug } = useParams()
 
   return (
     <div className='px-72'>
-      <ViewProjectDetail projectID={projectID || ''} />
+      <ViewProjectDetail slug={slug || ''} />
     </div>
   )
 }
