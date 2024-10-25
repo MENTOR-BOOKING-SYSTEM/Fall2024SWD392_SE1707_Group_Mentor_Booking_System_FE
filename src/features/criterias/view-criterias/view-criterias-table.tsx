@@ -18,7 +18,7 @@ export default function ViewCriteriasTable({ data, isLoading, columns, transform
       classNames={{
         table: 'min-h-60'
       }}
-      color='default'
+      color='primary'
       selectionMode='single'
       disallowEmptySelection
       aria-label='Criteria Table'
