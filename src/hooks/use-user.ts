@@ -5,6 +5,7 @@ import { useAuth } from './use-auth'
 export const useUser = () => {
   const { user } = useAuth()
   const [currentUserInfo, setcurrentUserInfo, removecurrentUserInfo] = useLocalStorage<UserInfo>('userInfo', {
+    userID: 0,
     email: '',
     firstName: '',
     lastName: '',
