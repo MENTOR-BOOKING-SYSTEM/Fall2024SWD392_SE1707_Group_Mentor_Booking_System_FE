@@ -11,8 +11,8 @@ import { Navigate } from 'react-router-dom'
 
 export default function Redirect() {
   const { user } = useAuth()
-  const { data: phase, isLoading: isLoadingPhase } = useGetCurrentPhase()
-  const { data: userInfo, isLoading: isLoadingInfo } = useGetCurrentUserInfo()
+  const { data: phase, isLoading: isLoadingPhase } = useGetCurrentPhase(user?.user_id)
+  const { data: userInfo, isLoading: isLoadingInfo } = useGetCurrentUserInfo(user?.user_id)
 
   const { setCurrentUserInfo, setCurrentPhase } = useUser()
 

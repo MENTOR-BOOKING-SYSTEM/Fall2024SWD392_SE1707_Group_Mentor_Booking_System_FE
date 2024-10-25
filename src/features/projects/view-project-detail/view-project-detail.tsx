@@ -1,23 +1,22 @@
 import { Avatar, AvatarGroup } from '@nextui-org/avatar'
 import { Card, CardBody, CardHeader } from '@nextui-org/card'
-import { MoveRight } from 'lucide-react'
-import { useViewProjectDetail } from './use-view-project-detail'
-import { parse } from 'node-html-parser'
 import { Chip } from '@nextui-org/chip'
 import { Divider } from '@nextui-org/divider'
+import { MoveRight } from 'lucide-react'
+import { useViewProjectDetail } from './use-view-project-detail'
+import Tooltip from '@/components/shared/tooltip'
 
 interface ViewProjectDetailProps {
-  projectID: string
+  slug: string
 }
 
-export default function ViewProjectDetail({ projectID }: ViewProjectDetailProps) {
-  console.log(projectID)
+export default function ViewProjectDetail({ slug }: ViewProjectDetailProps) {
   const {
     '0': { data: projectDetail, isLoading: isLoadingDetail },
     '1': { data: projectOwner, isLoading: isLoadingOwner },
     '2': { data: projectReviewer, isLoading: isLoadingReviewer },
     '3': { data: projectTechnologies, isLoading: isLoadingTechnologies }
-  } = useViewProjectDetail(projectID)
+  } = useViewProjectDetail(slug)
 
   return (
     <div className='p-4 flex flex-col gap-4'>
@@ -26,9 +25,11 @@ export default function ViewProjectDetail({ projectID }: ViewProjectDetailProps)
         <div className='flex items-center justify-between'>
           <div className='flex items-center gap-3'>
             {projectOwner && projectOwner?.length > 1 ? (
-              <AvatarGroup isBordered max={3}>
+              <AvatarGroup isBordered>
                 {projectOwner?.map((owner) => (
-                  <Avatar size='sm' isBordered color='primary' src={owner.avatarUrl || ''} />
+                  <Tooltip content={owner.email} key={owner.userID}>
+                    <Avatar size='sm' isBordered color='primary' src={owner?.avatarUrl || ''} />
+                  </Tooltip>
                 ))}
               </AvatarGroup>
             ) : (
@@ -36,7 +37,7 @@ export default function ViewProjectDetail({ projectID }: ViewProjectDetailProps)
             )}
             <MoveRight className='text-primary' />
             {projectReviewer && projectReviewer?.length > 1 ? (
-              <AvatarGroup isBordered max={3}>
+              <AvatarGroup isBordered>
                 {projectReviewer?.map((owner) => (
                   <Avatar size='sm' isBordered color='primary' src={owner.avatarUrl || ''} />
                 ))}
@@ -46,12 +47,17 @@ export default function ViewProjectDetail({ projectID }: ViewProjectDetailProps)
                 size='sm'
                 isBordered
                 color='primary'
-                src={(projectReviewer && projectReviewer[0].avatarUrl) || ''}
+                src={(projectReviewer.length && projectReviewer[0].avatarUrl) || ''}
               />
             )}
           </div>
           <div className='flex items-center gap-2'>
-            {projectTechnologies && projectTechnologies.map((tech) => <Chip color='primary'>{tech.techName}</Chip>)}
+            {projectTechnologies &&
+              projectTechnologies.map((tech) => (
+                <Chip key={tech.techID} color='primary'>
+                  {tech.techName}
+                </Chip>
+              ))}
           </div>
         </div>
       </div>

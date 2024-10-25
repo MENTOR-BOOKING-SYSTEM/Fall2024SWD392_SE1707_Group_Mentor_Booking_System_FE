@@ -27,6 +27,7 @@ import ProjectDetail from '@/pages/projects/project-detail'
 import Accounts from '@/pages/dashboard/accounts'
 import ErrorLayout from '@/layouts/error.layout'
 import CreateGroupForm from '@/features/group/create-group/create-group-form.provider'
+import Reviewers from '@/pages/reviewers'
 
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './routes'
 import { PHASES, ROLES } from '@/constants'
@@ -133,7 +134,7 @@ export const routes = createBrowserRouter([
                 children: [
                   {
                     path: PRIVATE_ROUTES.REVIEWERS.path,
-                    element: <div>Assign reviewers</div>
+                    element: <Reviewers />
                   },
                   {
                     path: PRIVATE_ROUTES.APPROVAL_CRITERIAS.path,
