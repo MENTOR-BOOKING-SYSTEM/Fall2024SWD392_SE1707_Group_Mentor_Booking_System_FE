@@ -20,7 +20,7 @@ export default function Sidebar({ items, children, urlPositon }: SidebarProps) {
     <div className='flex flex-col gap-2 min-w-72 p-4'>
       {children}
       {items.map((item) => {
-        const isCurrentPath = pathname.split('/')[urlPositon] === item.value
+        const isCurrentPath = pathname === item.url
         return <SidebarItem key={item.id} item={item} isCurrentPath={isCurrentPath} />
       })}
     </div>

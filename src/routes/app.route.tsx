@@ -26,6 +26,7 @@ import ProjectReview from '@/pages/projects/project-review'
 import ProjectDetail from '@/pages/projects/project-detail'
 import Accounts from '@/pages/dashboard/accounts'
 import ErrorLayout from '@/layouts/error.layout'
+import CreateGroupForm from '@/features/group/create-group/create-group-form.provider'
 import Reviewers from '@/pages/reviewers'
 
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './routes'
@@ -163,7 +164,11 @@ export const routes = createBrowserRouter([
                   },
                   {
                     path: PRIVATE_ROUTES.GROUP.path,
-                    element: <div>Group</div>
+                    element: (
+                      <div>
+                        <CreateGroupForm isDisabled={false} />
+                      </div>
+                    )
                   }
                 ]
               },
