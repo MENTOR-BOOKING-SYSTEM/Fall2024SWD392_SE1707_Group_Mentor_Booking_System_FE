@@ -28,7 +28,7 @@ export default function ViewAccountsTable({
       classNames={{
         table: 'min-h-60'
       }}
-      color='default'
+      color='primary'
       selectionMode='single'
       disallowEmptySelection
       aria-label='Accounts Table'
