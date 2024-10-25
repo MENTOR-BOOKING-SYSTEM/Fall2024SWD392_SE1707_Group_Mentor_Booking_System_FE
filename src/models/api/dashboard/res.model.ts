@@ -17,3 +17,8 @@ export interface GetRolesAPIResponse {
     roleName: string
   }[]
 }
+
+export interface GetAccountDetailAPIResponse {
+  message: string
+  result: Account
+}

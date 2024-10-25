@@ -1,14 +1,14 @@
 import ViewAccountsTable from './view-accounts-table'
 import CreateAccount from '../create-account/create-account-form.provider'
+import AccountActions from './components/account-actions/account-actions'
 import { DATE_FORMAT } from '@/constants'
+import { useViewSemesters } from '@/features/semesters/view-semesters/use-view-semesters'
 import { Account } from '@/models/user.model'
 import { Avatar, Chip, Select, SelectItem, Skeleton } from '@nextui-org/react'
 import { format } from 'date-fns'
-import { EditIcon, EyeIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useViewAccounts } from './use-view-accounts'
 import { getColor } from './utils/account.util'
-import { useViewSemesters } from '@/features/semesters/view-semesters/use-view-semesters'
 
 const columns = [
   {
@@ -58,37 +58,6 @@ const columns = [
   }
 ]
 
-const transformData = (accounts: Account[]) => {
-  return accounts.map((account) => ({
-    userID: account.userID,
-    avatarUrl: (
-      <div className='flex justify-center'>
-        <Avatar src={account.avatarUrl || ''} isBordered color='primary' />
-      </div>
-    ),
-    email: account.email,
-    username: account.username,
-    name: `${account.firstName} ${account.lastName}`,
-    roles: (
-      <div className='flex flex-wrap items-center gap-2'>
-        {account.roles.map((role) => (
-          <Chip key={role.roleID} size='sm' variant='flat' color={getColor(role.roleName)}>
-            {role.roleName}
-          </Chip>
-        ))}
-      </div>
-    ),
-    createdAt: <p className='text-center'>{format(account.createdAt, DATE_FORMAT.DEFAULT)}</p>,
-    updatedAt: <p className='text-center'>{format(account.updatedAt, DATE_FORMAT.DEFAULT)}</p>,
-    actions: (
-      <div className='flex justify-center items-center gap-3'>
-        <EyeIcon className='w-5 h-5 stroke-1 cursor-pointer' />
-        <EditIcon className='w-5 h-5 stroke-1 cursor-pointer' />
-      </div>
-    )
-  }))
-}
-
 export default function ViewAccounts() {
   const [page, setPage] = useState(1)
   const { data: semesters, isLoading: isLoadingSemesters } = useViewSemesters()
@@ -107,6 +76,37 @@ export default function ViewAccounts() {
       setSelectedSemesterID(currentSemester?.semesterID)
     }
   }, [semesters])
+
+  const transformData = (accounts: Account[]) => {
+    return accounts.map((account) => ({
+      userID: account.userID,
+      avatarUrl: (
+        <div className='flex justify-center'>
+          <Avatar src={account.avatarUrl || ''} isBordered color='primary' />
+        </div>
+      ),
+      email: account.email,
+      username: account.username,
+      name: `${account.firstName} ${account.lastName}`,
+      roles: (
+        <div className='flex flex-wrap items-center gap-2'>
+          {account.roles.map((role) => (
+            <Chip key={role.roleID} size='sm' variant='flat' color={getColor(role.roleName)}>
+              {role.roleName}
+            </Chip>
+          ))}
+        </div>
+      ),
+      createdAt: <p className='text-center'>{format(account.createdAt, DATE_FORMAT.DEFAULT)}</p>,
+      updatedAt: <p className='text-center'>{format(account.updatedAt, DATE_FORMAT.DEFAULT)}</p>,
+      actions: (
+        <div className='flex justify-center items-center gap-3'>
+          {/* <AccountActions userID={account.userID} semesterID={selectedSemesterID} /> */}
+          <AccountActions userID={account.userID} semesterID={selectedSemesterID} isEdit page={page} />
+        </div>
+      )
+    }))
+  }
 
   return (
     <div className='flex flex-col gap-3'>
