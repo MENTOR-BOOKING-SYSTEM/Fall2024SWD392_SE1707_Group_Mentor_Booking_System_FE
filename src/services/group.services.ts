@@ -7,12 +7,14 @@ class GroupService {
   }
 
   async removeMember(groupID: number, userID: number) {
-    const { data } = await httpInstance.post('/groups/remove-member', { groupID, userID })
+    const { data } = await httpInstance.delete('/groups/remove-member', {
+      data: { groupID, userID }
+    })
     return data
   }
 
   async assignLeader(groupID: number, userID: number) {
-    const { data } = await httpInstance.post('/groups/assign-leader', { groupID, userID })
+    const { data } = await httpInstance.patch('/groups/assign-leader', { groupID, userID })
     return data
   }
 

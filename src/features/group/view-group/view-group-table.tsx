@@ -12,7 +12,7 @@ import {
   getKeyValue
 } from '@nextui-org/react'
 import { EyeIcon } from 'lucide-react'
-import { useUserInfo } from './use-user-infor'
+import { useUser } from '@/hooks/use-user'
 import { useViewGroupMembers } from './use-view-group-members'
 import { PackageOpen } from 'lucide-react'
 import ViewGroupMemberDetail from '../view-group-member-detail/view-group-member-detail'
@@ -34,8 +34,8 @@ const transformData = (members: any[]) => {
 }
 
 export default function ViewGroupTable() {
-  const { userInfo } = useUserInfo()
-  const { data: members, isLoading, refetch } = useViewGroupMembers(userInfo.groupID || 0)
+  const { currentUserInfo } = useUser()
+  const { data: members, isLoading, refetch } = useViewGroupMembers(currentUserInfo.groupID || 0)
   const [selectedUser, setSelectedUser] = useState<any>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [transformedData, setTransformedData] = useState<any[]>([])
@@ -45,12 +45,12 @@ export default function ViewGroupTable() {
     if (members && Array.isArray(members.result)) {
       const transformed = transformData(members.result)
       setTransformedData(transformed)
-      const current = transformed.find((user) => user.userID === userInfo.userID)
+      const current = transformed.find((user) => user.userID === currentUserInfo.userID)
       setCurrentUser(current)
       console.log('Current User:', current)
       console.log('Is Current User Leader:', current?.position === 'Leader')
     }
-  }, [members, userInfo.userID])
+  }, [members, currentUserInfo.userID])
 
   const handleViewDetail = (user: any) => {
     setSelectedUser({
@@ -101,7 +101,7 @@ export default function ViewGroupTable() {
                     email: user.email,
                     avatarUrl: user.avatarUrl
                   }}
-                  groupID={userInfo.groupID || 0}
+                  groupID={currentUserInfo.groupID || 0}
                   onSuccess={() => refetch()}
                   isCurrentUserLeader={currentUser?.position === 'Leader'}
                 />
@@ -112,10 +112,10 @@ export default function ViewGroupTable() {
           return null
       }
     },
-    [currentUser, handleViewDetail, userInfo.groupID, refetch]
+    [currentUser, handleViewDetail, currentUserInfo.groupID, refetch]
   )
 
-  if (!userInfo.groupID) {
+  if (!currentUserInfo.groupID) {
     return (
       <div className='flex flex-col items-center gap-2 py-8'>
         <PackageOpen className='w-10 h-10 stroke-1 text-default-300' />

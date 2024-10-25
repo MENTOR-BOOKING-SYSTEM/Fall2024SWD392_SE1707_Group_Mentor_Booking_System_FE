@@ -5,7 +5,7 @@ export interface UserInfo {
   avatarUrl: string | null
   groupID: number | null
   projectID: number | null
-  position: string | null
+  position: string
   userID: number
 }
 

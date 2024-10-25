@@ -63,13 +63,13 @@ export default function EditGroupMemberModal({
 
   return (
     <>
-      {isCurrentUserLeader && member.position !== 'Leader' && (
-        <EditIcon onClick={onOpen} className='w-5 h-5 stroke-1 cursor-pointer' />
-      )}
+      {/* {isCurrentUserLeader && member.position !== 'Leader' && ( */}
+      <EditIcon onClick={onOpen} className='w-5 h-5 stroke-1 cursor-pointer' />
+      {/* )} */}
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           <ModalHeader className='flex flex-col gap-1'>
-            {isCurrentUserLeader && member.position !== 'Leader' ? 'Edit Member:' : 'View Member Detail:'} {member.name}
+            {/* {isCurrentUserLeader && member.position !== 'Leader' ? 'Edit Member:' : 'View Member Detail:'} {member.name} */}
           </ModalHeader>
           <ModalBody>
             <div className='flex items-center gap-4'>
@@ -83,16 +83,16 @@ export default function EditGroupMemberModal({
             </div>
           </ModalBody>
           <ModalFooter>
-            {isCurrentUserLeader && member.position !== 'Leader' && (
-              <>
-                <Button color='danger' variant='light' onPress={() => removeMemberMutation.mutate()}>
-                  Remove Member
-                </Button>
-                <Button color='danger' variant='light' onPress={() => assignLeaderMutation.mutate()}>
-                  Assign Leader
-                </Button>
-              </>
-            )}
+            {/* {isCurrentUserLeader && member.position !== 'Leader' && ( */}
+            <>
+              <Button color='danger' variant='light' onPress={() => removeMemberMutation.mutate()}>
+                Remove Member
+              </Button>
+              <Button color='danger' variant='light' onPress={() => assignLeaderMutation.mutate()}>
+                Assign Leader
+              </Button>
+            </>
+            {/* )} */}
           </ModalFooter>
         </ModalContent>
       </Modal>

@@ -17,7 +17,10 @@ export default function Redirect() {
 
   useEffect(() => {
     if (userInfo) {
-      setcurrentUserInfo(userInfo)
+      setcurrentUserInfo({
+        ...userInfo,
+        position: userInfo.position || 'Member'
+      })
     }
   }, [userInfo, setcurrentUserInfo])
 

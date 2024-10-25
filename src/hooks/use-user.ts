@@ -12,13 +12,21 @@ export const useUser = () => {
     avatarUrl: null,
     groupID: null,
     projectID: null,
-    position: null
+    position: ''
   })
+
+  const updateUserInfo = (newInfo: Partial<UserInfo>) => {
+    setcurrentUserInfo((prevInfo) => ({
+      ...prevInfo,
+      ...newInfo
+    }))
+  }
 
   return {
     user,
     currentUserInfo,
     setcurrentUserInfo,
+    updateUserInfo,
     removecurrentUserInfo
   }
 }
