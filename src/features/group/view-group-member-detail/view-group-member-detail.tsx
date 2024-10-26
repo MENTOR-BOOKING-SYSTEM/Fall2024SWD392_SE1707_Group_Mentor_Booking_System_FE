@@ -1,48 +1,35 @@
 import React from 'react'
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from '@nextui-org/react'
-
-interface User {
-  userId: number
-  name: string
-  role: string
-  team: string
-  email: string
-  avatarUrl: string | null
-}
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Avatar } from '@nextui-org/react'
 
 interface ViewGroupMemberDetailProps {
   isOpen: boolean
   onOpenChange: () => void
-  user: User
+  member: {
+    name: string
+    position: string
+    email: string
+    avatarUrl: string | null
+  }
 }
 
-export default function ViewGroupMemberDetail({ isOpen, onOpenChange, user }: ViewGroupMemberDetailProps) {
+export default function ViewGroupMemberDetail({ isOpen, onOpenChange, member }: ViewGroupMemberDetailProps) {
   return (
-    <Modal size='xl' isOpen={isOpen} onOpenChange={onOpenChange} placement='top-center'>
+    <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
       <ModalContent>
-        {(onClose) => (
-          <>
-            <ModalHeader className='flex flex-col gap-1'>
-              <img
-                className='w-10 h-10 rounded-full mr-3'
-                src={user.avatarUrl || 'https://i.pravatar.cc/150?img=default'}
-                alt='Avatar'
-              />
-              {user.name}
-            </ModalHeader>
-            <ModalBody>
-              <p>ID: {user.userId}</p>
-              <p>Email: {user.email}</p>
-              <p>Position: {user.role}</p>
-              <p>GroupName: {user.team}</p>
-            </ModalBody>
-            <ModalFooter>
-              <Button color='danger' variant='light' onPress={onClose}>
-                CLose
-              </Button>
-            </ModalFooter>
-          </>
-        )}
+        <ModalHeader className='flex flex-col gap-1'>Member Detail</ModalHeader>
+        <ModalBody>
+          <div className='flex flex-col gap-2'>
+            <Avatar src={member.avatarUrl || 'https://i.pravatar.cc/150?img=default'} className='w-20 h-20 mx-auto' />
+            <p className='text-sm text-center'>{member.position}</p>
+            <p className='text-lg font-semibold text-center'>{member.name}</p>
+            <p className='text-wrap text-center'>{member.email}</p>
+          </div>
+        </ModalBody>
+        <ModalFooter>
+          <Button color='danger' variant='light' onPress={onOpenChange}>
+            Close
+          </Button>
+        </ModalFooter>
       </ModalContent>
     </Modal>
   )

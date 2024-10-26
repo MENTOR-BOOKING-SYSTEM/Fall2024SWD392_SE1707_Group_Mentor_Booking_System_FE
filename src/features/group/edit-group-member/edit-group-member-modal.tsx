@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   Modal,
   ModalContent,
@@ -63,37 +64,45 @@ export default function EditGroupMemberModal({
 
   return (
     <>
-      {/* {isCurrentUserLeader && member.position !== 'Leader' && ( */}
-      <EditIcon onClick={onOpen} className='w-5 h-5 stroke-1 cursor-pointer' />
-      {/* )} */}
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+      {isCurrentUserLeader && member.position !== 'Leader' && (
+        <EditIcon onClick={onOpen} className='w-5 h-5 stroke-1 cursor-pointer' />
+      )}
+      <Modal size='xl' isOpen={isOpen} onOpenChange={onOpenChange} placement='top-center'>
         <ModalContent>
-          <ModalHeader className='flex flex-col gap-1'>
-            {/* {isCurrentUserLeader && member.position !== 'Leader' ? 'Edit Member:' : 'View Member Detail:'} {member.name} */}
-          </ModalHeader>
-          <ModalBody>
-            <div className='flex items-center gap-4'>
-              <Avatar src={member.avatarUrl || undefined} alt={member.name} className='w-16 h-16' />
-              <div>
-                <p className='font-semibold'>{member.name}</p>
-                <p className='text-sm text-gray-500'>{member.email}</p>
-                <p className='text-sm'>Position: {member.position}</p>
-                <p className='text-sm'>User ID: {member.userID}</p>
-              </div>
-            </div>
-          </ModalBody>
-          <ModalFooter>
-            {/* {isCurrentUserLeader && member.position !== 'Leader' && ( */}
+          {(onClose) => (
             <>
-              <Button color='danger' variant='light' onPress={() => removeMemberMutation.mutate()}>
-                Remove Member
-              </Button>
-              <Button color='danger' variant='light' onPress={() => assignLeaderMutation.mutate()}>
-                Assign Leader
-              </Button>
+              <ModalHeader className='flex flex-col gap-1'>Edit Member</ModalHeader>
+              <ModalBody>
+                <div className='flex flex-col text-center'>
+                  <div className='mb-3'>
+                    <Avatar
+                      src={member.avatarUrl || 'https://i.pravatar.cc/150?img=default'}
+                      className='w-20 h-20 mx-auto'
+                    />
+                    <p className='text-lg font-semibold text-center'>{member.name}</p>
+                  </div>
+                  <p className='text-sm'>{member.position}</p>
+                  <p className='text-nowrap'>Student ID {member.userID}</p>
+                  <p className='text-nowrap'>{member.email}</p>
+                </div>
+              </ModalBody>
+              <ModalFooter>
+                {isCurrentUserLeader && member.position !== 'Leader' && (
+                  <>
+                    <Button color='danger' variant='light' onPress={() => removeMemberMutation.mutate()}>
+                      Remove Member
+                    </Button>
+                    <Button color='danger' variant='light' onPress={() => assignLeaderMutation.mutate()}>
+                      Assign Leader
+                    </Button>
+                  </>
+                )}
+                <Button color='danger' variant='light' onPress={onClose}>
+                  Close
+                </Button>
+              </ModalFooter>
             </>
-            {/* )} */}
-          </ModalFooter>
+          )}
         </ModalContent>
       </Modal>
     </>

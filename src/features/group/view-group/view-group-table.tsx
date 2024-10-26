@@ -9,7 +9,15 @@ import {
   User,
   Tooltip,
   Spinner,
-  getKeyValue
+  getKeyValue,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+  Button,
+  Avatar
 } from '@nextui-org/react'
 import { EyeIcon } from 'lucide-react'
 import { useUser } from '@/hooks/use-user'
@@ -36,32 +44,27 @@ const transformData = (members: any[]) => {
 export default function ViewGroupTable() {
   const { currentUserInfo } = useUser()
   const { data: members, isLoading, refetch } = useViewGroupMembers(currentUserInfo.groupID || 0)
+
   const [selectedUser, setSelectedUser] = useState<any>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [transformedData, setTransformedData] = useState<any[]>([])
   const [currentUser, setCurrentUser] = useState<any>(null)
+  const [selectedMember, setSelectedMember] = useState<any>(null)
+  const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
   useEffect(() => {
     if (members && Array.isArray(members.result)) {
       const transformed = transformData(members.result)
       setTransformedData(transformed)
-      const current = transformed.find((user) => user.userID === currentUserInfo.userID)
+      const current = transformed.find((user) => user.email === currentUserInfo.email)
       setCurrentUser(current)
-      console.log('Current User:', current)
       console.log('Is Current User Leader:', current?.position === 'Leader')
     }
   }, [members, currentUserInfo.userID])
 
   const handleViewDetail = (user: any) => {
-    setSelectedUser({
-      userId: user.userID,
-      name: `${user.firstName} ${user.lastName}`,
-      role: user.position,
-      team: user.groupName,
-      email: user.email,
-      avatarUrl: user.avatarUrl
-    })
-    setIsModalOpen(true)
+    setSelectedMember(user)
+    onOpen()
   }
 
   const renderCell = React.useCallback(
@@ -84,14 +87,9 @@ export default function ViewGroupTable() {
         case 'actions':
           return (
             <div className='relative flex items-center gap-2 justify-center'>
-              <Tooltip content='View Detail'>
-                <span
-                  className='text-lg text-default-400 cursor-pointer active:opacity-50'
-                  onClick={() => handleViewDetail(user)}
-                >
-                  <EyeIcon />
-                </span>
-              </Tooltip>
+              <Button isIconOnly size='sm' variant='light' onPress={() => handleViewDetail(user)}>
+                <EyeIcon className='w-4 h-4' />
+              </Button>
               {currentUser?.position === 'Leader' && user.position !== 'Leader' && (
                 <EditGroupMemberModal
                   member={{
@@ -156,8 +154,17 @@ export default function ViewGroupTable() {
         </TableBody>
       </Table>
 
-      {selectedUser && (
-        <ViewGroupMemberDetail isOpen={isModalOpen} onOpenChange={() => setIsModalOpen(false)} user={selectedUser} />
+      {selectedMember && (
+        <ViewGroupMemberDetail
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+          member={{
+            name: selectedMember.name,
+            position: selectedMember.position,
+            email: selectedMember.email,
+            avatarUrl: selectedMember.avatarUrl
+          }}
+        />
       )}
     </>
   )
