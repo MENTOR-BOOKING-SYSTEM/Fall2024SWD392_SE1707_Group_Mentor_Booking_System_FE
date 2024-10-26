@@ -38,4 +38,4 @@ jobs:
             docker stop booking
             docker rm booking
             docker rmi $(docker images -f "dangling=true" -q)
-            docker run -dp 4000:4000 --name booking trantien123/booking:v0
+            docker run -dp 3000:3000 --name booking trantien123/booking:v0
