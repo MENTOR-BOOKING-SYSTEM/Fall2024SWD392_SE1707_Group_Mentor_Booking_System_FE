@@ -5,25 +5,33 @@ import { CurrentPhaseModel } from '@/models/base.model'
 
 export const useUser = () => {
   const { user } = useAuth()
-
-  const [currentUserInfo, setCurrentUserInfo, removecurrentUserInfo] = useLocalStorage<UserInfo>('userInfo', {
+  const [currentUserInfo, setcurrentUserInfo, removecurrentUserInfo] = useLocalStorage<UserInfo>('userInfo', {
+    userID: 0,
     email: '',
     firstName: '',
     lastName: '',
     avatarUrl: null,
     groupID: null,
     projectID: null,
-    position: null
+    position: ''
   })
 
   const [currentPhase, setCurrentPhase, removeCurrentPhase] = useLocalStorage<CurrentPhaseModel>('currentPhase', {
     currentPhase: []
   })
 
+  const updateUserInfo = (newInfo: Partial<UserInfo>) => {
+    setcurrentUserInfo((prevInfo) => ({
+      ...prevInfo,
+      ...newInfo
+    }))
+  }
+
   return {
     user,
     currentUserInfo,
-    setCurrentUserInfo,
+    setcurrentUserInfo,
+    updateUserInfo,
     removecurrentUserInfo,
     currentPhase,
     setCurrentPhase,

@@ -14,14 +14,17 @@ export default function Redirect() {
   const { data: phase, isLoading: isLoadingPhase } = useGetCurrentPhase(user?.user_id)
   const { data: userInfo, isLoading: isLoadingInfo } = useGetCurrentUserInfo(user?.user_id)
 
-  const { setCurrentUserInfo, setCurrentPhase } = useUser()
+  const { setcurrentUserInfo, setCurrentPhase } = useUser()
 
   useEffect(() => {
     if (userInfo && phase) {
-      setCurrentUserInfo(userInfo)
+      setcurrentUserInfo({
+        ...userInfo,
+        position: userInfo.position || 'Member'
+      })
       setCurrentPhase({ currentPhase: phase })
     }
-  }, [userInfo, phase, setCurrentUserInfo, setCurrentPhase])
+  }, [userInfo, phase, setcurrentUserInfo, setCurrentPhase])
 
   if (isLoadingPhase || isLoadingInfo) {
     return <PageLoader />

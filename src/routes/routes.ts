@@ -100,5 +100,9 @@ export const PRIVATE_ROUTES: Route = {
   PROJECT_DETAIL: {
     path: '/:slug/detail',
     bcLabel: 'Project detail'
+  },
+  VIEW_GROUP: {
+    path: '/view-group',
+    bcLabel: 'View group'
   }
 }

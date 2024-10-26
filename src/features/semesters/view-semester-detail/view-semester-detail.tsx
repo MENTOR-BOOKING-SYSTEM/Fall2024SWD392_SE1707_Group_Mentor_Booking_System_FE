@@ -76,6 +76,7 @@ export default function ViewSemesterDetail({ semesterID, isEdit }: ViewDetailSem
                 </Tabs>
               </ShouldRender>
             </ModalBody>
+
             <ModalFooter>
               <Button color='danger' variant='light' isLoading={editSemesterMutation.isPending} onPress={onClose}>
                 Close
