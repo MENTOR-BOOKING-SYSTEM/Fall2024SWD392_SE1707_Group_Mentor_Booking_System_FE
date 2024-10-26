@@ -1,14 +1,14 @@
 import httpInstance from '@/lib/axios/axios'
-import type {
+import type { SemesterFormValues } from '@/features/semesters/create-semester/use-create-semester'
+import {
   CreateSemesterAPIResponse,
-  GeneralAPIResponse,
   GetAllSemestersResponse,
   GetCurrentPhaseAPIResponse,
   GetSemesterCriteriasAPIResponse,
   GetSemesterDetailAPIResponse,
   GetSemesterTimestampsAPIResponse
-} from '@/models/api/res.model'
-import type { SemesterFormValues } from '@/features/semesters/create-semester/use-create-semester'
+} from '@/models/api/semesters/res.model'
+import { GeneralAPIResponse } from '@/models/base.model'
 
 class SemesterService {
   async getAllSemesters() {

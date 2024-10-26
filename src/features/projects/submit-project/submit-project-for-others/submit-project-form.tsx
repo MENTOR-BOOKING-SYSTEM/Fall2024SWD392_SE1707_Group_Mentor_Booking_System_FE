@@ -1,55 +1,44 @@
-import FormError from '@/components/forms/form-error'
 import RichTextEditor from '@/components/shared/tiptap/rich-text-editor'
 import Tooltip from '@/components/shared/tooltip'
 import GetAllTechnologies from '@/features/technologies/get-all-techonologies/get-all-technologies'
 import GetAllMentors from '@/features/users/mentors/get-all-mentors/get-all-mentors'
-import { TOOLTIP, TRANSPARENT_INPUT_CLASS_NAME } from '@/constants'
 import { useAuth } from '@/hooks/use-auth'
+import { TOOLTIP, TRANSPARENT_INPUT_CLASS_NAME } from '@/constants'
 import { Code } from '@nextui-org/code'
 import { Input } from '@nextui-org/input'
 import { Controller, useFormContext } from 'react-hook-form'
-import { SubmitProjectFormValues } from './use-submit-project'
+import { SubmitProjectForOthersFormValues } from './use-submit-project'
 
 export default function SubmitProjectForm() {
   const { user } = useAuth()
   const {
     control,
     formState: { errors }
-  } = useFormContext<SubmitProjectFormValues>()
+  } = useFormContext<SubmitProjectForOthersFormValues>()
 
-  const getErrorState = (name: keyof SubmitProjectFormValues) => {
+  const getErrorState = (name: keyof SubmitProjectForOthersFormValues) => {
     return errors[name]
   }
 
   return (
     <>
-      <div className='flex items-center gap-4 h-32'>
-        <Controller
-          control={control}
-          name='technologies'
-          render={({ field: { onChange } }) => <GetAllTechnologies onChange={onChange} />}
-        />
-        <FormError<SubmitProjectFormValues> identifier='technologies' errors={errors} />
-        {user?.role.includes('Mentor') && (
-          <Controller
-            control={control}
-            name='collaborators'
-            render={({ field: { onChange } }) => {
-              return <GetAllMentors onChange={onChange} isMultiline isForMentor />
-            }}
+      <Controller
+        control={control}
+        name='technologies'
+        render={({ field: { onChange } }) => <GetAllTechnologies onChange={onChange} />}
+      />
+      <Controller
+        control={control}
+        name='mentorID'
+        render={({ field: { onChange } }) => (
+          <GetAllMentors
+            onChange={onChange}
+            isMultiline
+            isInvalid={!!getErrorState('mentorID')}
+            errorMessage={getErrorState('mentorID')?.message}
           />
         )}
-        {!user?.role.includes('Mentor') && (
-          <div className='flex flex-col gap-2 relative w-full'>
-            <Controller
-              control={control}
-              name='mentorID'
-              render={({ field: { onChange } }) => <GetAllMentors onChange={onChange} isMultiline />}
-            />
-            <FormError<SubmitProjectFormValues> errors={errors} identifier='mentorID' className='absolute -bottom-5' />
-          </div>
-        )}
-      </div>
+      />
       <Controller
         control={control}
         name='projectName'
@@ -60,7 +49,9 @@ export default function SubmitProjectForm() {
             autoFocus
             spellCheck={false}
             placeholder='Enter your project name here...'
-            className='mb-5'
+            isInvalid={!!getErrorState('projectName')}
+            errorMessage={getErrorState('projectName')?.message}
+            className='my-5'
             classNames={{
               inputWrapper: TRANSPARENT_INPUT_CLASS_NAME,
               input: 'text-6xl font-bold p-0 h-full w-full'

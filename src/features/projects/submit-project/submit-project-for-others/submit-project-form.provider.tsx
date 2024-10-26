@@ -1,13 +1,13 @@
-import SubmitProjectForm from './submit-project-form'
 import Button from '@/components/ui/button'
+import SubmitProjectForm from './submit-project-form'
 import { FormProvider, SubmitHandler } from 'react-hook-form'
-import { SubmitProjectFormValues, useSubmitProject } from './use-submit-project'
+import { SubmitProjectForOthersFormValues, useSubmitProject } from './use-submit-project'
 import { Send } from 'lucide-react'
 
 export default function SubmitProjectFormProvider() {
   const { methods, submitProjectMutation } = useSubmitProject()
 
-  const onSubmit: SubmitHandler<SubmitProjectFormValues> = async (data) => {
+  const onSubmit: SubmitHandler<SubmitProjectForOthersFormValues> = async (data) => {
     submitProjectMutation.mutate(data)
   }
 

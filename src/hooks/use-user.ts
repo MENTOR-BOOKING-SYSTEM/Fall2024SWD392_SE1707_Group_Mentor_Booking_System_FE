@@ -1,6 +1,7 @@
 import { UserInfo } from '@/models/user.model'
 import { useLocalStorage } from 'usehooks-ts'
 import { useAuth } from './use-auth'
+import { CurrentPhaseModel } from '@/models/base.model'
 
 export const useUser = () => {
   const { user } = useAuth()
@@ -15,6 +16,10 @@ export const useUser = () => {
     position: ''
   })
 
+  const [currentPhase, setCurrentPhase, removeCurrentPhase] = useLocalStorage<CurrentPhaseModel>('currentPhase', {
+    currentPhase: []
+  })
+
   const updateUserInfo = (newInfo: Partial<UserInfo>) => {
     setcurrentUserInfo((prevInfo) => ({
       ...prevInfo,
@@ -27,6 +32,9 @@ export const useUser = () => {
     currentUserInfo,
     setcurrentUserInfo,
     updateUserInfo,
-    removecurrentUserInfo
+    removecurrentUserInfo,
+    currentPhase,
+    setCurrentPhase,
+    removeCurrentPhase
   }
 }
