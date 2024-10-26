@@ -16,6 +16,7 @@ import searchUserService, { SearchUserResult } from '@/services/search-user.serv
 import GroupForm from './group-form'
 import { useFormContext } from 'react-hook-form'
 import { GroupFormValues } from './use-create-group'
+import { useAuth } from '@/hooks/use-auth'
 
 export default function CreateGroupForm() {
   const {
@@ -32,6 +33,8 @@ export default function CreateGroupForm() {
   const [removedUsers, setRemovedUsers] = React.useState<SearchUserResult[]>([])
   const maxUsers = 4
   const searchTimeoutRef = React.useRef<NodeJS.Timeout | null>(null)
+
+  const { user } = useAuth()
 
   const handleSearch = React.useCallback(
     (value: string) => {
@@ -63,7 +66,10 @@ export default function CreateGroupForm() {
 
         try {
           const result = await searchUserService.searchUsers([1], true, value, false)
-          const filteredResult = result.filter((user) => !selectedUsers.some((u) => u.userID === user.userID))
+          const filteredResult = result.filter(
+            (searchUser) =>
+              !selectedUsers.some((u) => u.userID === searchUser.userID) && searchUser.userID !== user?.user_id
+          )
 
           setAvailableUsers(filteredResult)
           setAllUsers(result)
