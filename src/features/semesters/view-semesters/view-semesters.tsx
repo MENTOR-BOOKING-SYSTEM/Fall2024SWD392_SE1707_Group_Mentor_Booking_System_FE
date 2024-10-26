@@ -110,7 +110,7 @@ export default function ViewSemesters() {
         classNames={{
           table: 'min-h-60'
         }}
-        color='default'
+        color='primary'
         selectionMode='single'
         disallowEmptySelection
         aria-label='Semester Table'

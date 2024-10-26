@@ -28,7 +28,10 @@ export const useLogin = () => {
       methods.reset()
     },
     onError: () => {
-      methods.reset()
+      methods.reset({
+        email: '',
+        password: ''
+      })
       toaster.error({
         text: 'Invalid credentials'
       })

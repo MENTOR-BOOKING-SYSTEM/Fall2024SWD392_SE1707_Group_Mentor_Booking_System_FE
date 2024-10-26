@@ -22,23 +22,23 @@ export const PRIVATE_ROUTES: Route = {
     bcLabel: 'My project'
   },
   TIMELINE: {
-    path: '/:projectId/timeline',
+    path: '/:slug/timeline',
     bcLabel: 'Timeline'
   },
   BOARDS: {
-    path: '/:projectId/boards',
+    path: '/:slug/boards',
     bcLabel: 'Boards'
   },
   CALENDAR: {
-    path: '/:projectId/calendar',
+    path: '/:slug/calendar',
     bcLabel: 'Calendar'
   },
   BACKLOG: {
-    path: '/:projectId/backlog',
+    path: '/:slug/backlog',
     bcLabel: 'Backlog'
   },
   MEMBERS: {
-    path: '/:projectId/members',
+    path: '/:slug/members',
     bcLabel: 'Members'
   },
   SUBMIT_PROJECT: {
@@ -69,7 +69,7 @@ export const PRIVATE_ROUTES: Route = {
     path: '/group',
     bcLabel: 'Group'
   },
-  ACCOUNT: {
+  ACCOUNTS: {
     path: '/accounts',
     bcLabel: 'Accounts'
   },
@@ -86,7 +86,7 @@ export const PRIVATE_ROUTES: Route = {
     bcLabel: 'Review'
   },
   REVIEW_PROJECT: {
-    path: '/review/:projectId',
+    path: '/review/:slug',
     bcLabel: 'Review project'
   },
   POSTS: {
@@ -96,5 +96,9 @@ export const PRIVATE_ROUTES: Route = {
   TIMESTAMPS: {
     path: '/timestamps',
     bcLabel: 'Timestamps'
+  },
+  PROJECT_DETAIL: {
+    path: '/:slug/detail',
+    bcLabel: 'Project detail'
   }
 }

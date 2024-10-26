@@ -9,11 +9,12 @@ import { useNavigate } from 'react-router-dom'
 
 export default function Submission() {
   const navigate = useNavigate()
-  const { currentUserInfo, user } = useUser()
+  const { user } = useUser()
+  const { currentUserInfo } = useUser()
 
   const isValid = () => {
     if (isAllowRoles([ROLES.STUDENT], user)) {
-      if (currentUserInfo.groupID && !currentUserInfo.projectID && currentUserInfo.position === 'Leader') {
+      if (currentUserInfo?.groupID && !currentUserInfo?.projectID && currentUserInfo?.position === 'Leader') {
         return true
       } else {
         return false
@@ -23,18 +24,19 @@ export default function Submission() {
   }
 
   return (
-    <div className='flex flex-col gap-2'>
-      {isValid() ? (
-        <Button
-          color='primary'
-          startContent={<CirclePlus className='w-4 h-4' />}
-          className='ml-auto'
-          onClick={() => navigate(PRIVATE_ROUTES.SUBMIT_PROJECT.path)}
-        >
-          Submit project
-        </Button>
-      ) : null}
-      <ViewSubmission />
+    <div className='flex flex-col gap-2 h-full'>
+      <Button
+        color='primary'
+        startContent={<CirclePlus className='w-4 h-4' />}
+        className='ml-auto'
+        onClick={() => navigate(PRIVATE_ROUTES.SUBMIT_PROJECT.path)}
+        disabled={!isValid()}
+      >
+        Submit project
+      </Button>
+      <div className='flex-1'>
+        <ViewSubmission />
+      </div>
     </div>
   )
 }

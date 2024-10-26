@@ -10,7 +10,7 @@ const passwordMatchRefinement = (schema: PasswordSchema, ctx: z.RefinementCtx) =
   if (schema.password !== schema.confirmPassword) {
     ctx.addIssue({
       code: 'custom',
-      message: 'mismatch_password',
+      message: 'Passwords do not match',
       path: ['confirmPassword']
     })
   }
@@ -38,7 +38,9 @@ export const loginSchema = z.object({
 export const passwordsSchema = z
   .object({
     password: z
-      .string()
+      .string({
+        message: 'Password is required'
+      })
       .refine((val) => val.length !== 0, {
         message: 'Password is required'
       })
@@ -49,7 +51,9 @@ export const passwordsSchema = z
         message:
           'Password must contain at least one uppercase letter, one lowercase letter, one number and one special character'
       }),
-    confirmPassword: z.string()
+    confirmPassword: z.string({
+      message: 'Confirm password is required'
+    })
   })
   .superRefine(passwordMatchRefinement)
 

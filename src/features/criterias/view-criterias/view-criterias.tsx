@@ -73,7 +73,7 @@ const transformData = (criterias: Criteria[]) => {
       type: (
         <div className='flex justify-center'>
           <Chip color={getColor(type)} variant='flat' size='sm'>
-            {type.toUpperCase()}
+            {type}
           </Chip>
         </div>
       ),

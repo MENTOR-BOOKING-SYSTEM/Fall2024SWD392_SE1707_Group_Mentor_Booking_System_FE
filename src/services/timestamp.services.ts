@@ -1,9 +1,9 @@
 import httpInstance from '@/lib/axios/axios'
-import { GetAllTimestampsResponse } from '@/models/api/res.model'
+import { GetAllTimestampsAPIResponse } from '@/models/api/timestamps/res.model'
 
 class TimestampService {
   async getAllTimestamps() {
-    const { data } = await httpInstance.get<GetAllTimestampsResponse>('/timestamps/all')
+    const { data } = await httpInstance.get<GetAllTimestampsAPIResponse>('/timestamps/all')
     return data.result
   }
 }

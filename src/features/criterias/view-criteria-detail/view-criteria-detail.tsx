@@ -2,10 +2,11 @@ import Button from '@/components/ui/button'
 import CreateCriteriaForm from '../create-criteria/create-criteria-form'
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@nextui-org/modal'
 import { EditIcon, EyeIcon } from 'lucide-react'
-import { useEditCriteriaDetail, useViewCriteriaDetail } from './use-view-criteria-detail'
+import { useViewCriteriaDetail } from './use-view-criteria-detail'
 import { Spinner } from '@nextui-org/react'
 import { FormProvider, SubmitHandler } from 'react-hook-form'
 import { CriteriaFormValues } from '../create-criteria/use-create-criteria'
+import { useEditCriteriaDetail } from '../edit-criteria-detail/use-edit-criteria-detail'
 
 interface ViewCriteriaDetailProps {
   criteriaID: number | undefined

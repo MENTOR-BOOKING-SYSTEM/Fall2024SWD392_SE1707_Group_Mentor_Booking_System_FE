@@ -9,9 +9,17 @@ interface GetAllMentorsProps {
   onChange: (...event: any[]) => void
   isMultiline?: boolean
   isForMentor?: boolean
+  isInvalid?: boolean
+  errorMessage?: string
 }
 
-export default function GetAllMentors({ onChange, isMultiline, isForMentor }: GetAllMentorsProps) {
+export default function GetAllMentors({
+  onChange,
+  isMultiline,
+  isForMentor,
+  isInvalid,
+  errorMessage
+}: GetAllMentorsProps) {
   const { data, isLoading } = useGetAllMentors()
   const { user } = useUser()
 
@@ -29,16 +37,20 @@ export default function GetAllMentors({ onChange, isMultiline, isForMentor }: Ge
           trigger: 'min-h-12 py-2'
         }}
         scrollShadowProps={{ isEnabled: false }}
-        disallowEmptySelection
+        isInvalid={isInvalid}
+        label={isForMentor ? 'Collaborators' : 'Mentor'}
+        errorMessage={errorMessage}
         defaultSelectedKeys={isForMentor ? [String(user?.user_id)] : []}
         disabledKeys={isForMentor ? [String(user?.user_id)] : []}
         isMultiline={isMultiline}
         aria-label='select'
         selectionMode={isMultiline ? 'multiple' : 'single'}
-        placeholder={isForMentor ? 'Select collaborators' : 'Select mentor'}
+        placeholder={isForMentor ? 'Select collaborators (optional)' : 'Select at least one mentor for guidance'}
         onChange={(e) => {
           if (e.target.value) {
             onChange(e.target.value.split(',').map((id) => parseInt(id)))
+          } else {
+            onChange([])
           }
         }}
         renderValue={(items) => {

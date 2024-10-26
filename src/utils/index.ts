@@ -104,3 +104,9 @@ export const formatDBDate = ({
   }
   return format(new Date(date), formatter || DATE_FORMAT.DATEPICKER)
 }
+
+export const getTextFromHTML = (html: string) => {
+  const parser = new DOMParser()
+  const parsed = parser.parseFromString(html, 'text/html')
+  return parsed.body.textContent || ''
+}
